@@ -1,0 +1,20 @@
+[package]
+name = "tensor-api"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "fs", "sync"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+fastnbt = "2.6"
+flate2 = "1"
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "chrono", "derive"] }
+notify = "6"
+blake3 = "1"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
