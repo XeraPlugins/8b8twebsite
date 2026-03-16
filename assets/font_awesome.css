@@ -155,3 +155,43 @@
 .fa-youtube:before {
     content: "\f167";
 }
+
+.fa-gamepad:before {
+    content: "\f11b";
+}
+
+.fa-seedling:before {
+    content: "\f4d8";
+}
+
+.fa-users:before {
+    content: "\f0c0";
+}
+
+.fa-ban:before {
+    content: "\f05e";
+}
+
+.fa-code-branch:before {
+    content: "\f126";
+}
+
+.fa-window-maximize:before {
+    content: "\f2d0";
+}
+
+.fa-file-code:before {
+    content: "\f1c9";
+}
+
+.fa-triangle-exclamation:before {
+    content: "\f071";
+}
+
+.fa-map:before {
+    content: "\f279";
+}
+
+.fa-flask:before {
+    content: "\f0c3";
+}
