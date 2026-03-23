@@ -61,21 +61,21 @@ struct PaperData {
 }
 
 fn read_player_dat(server_path: &str, uuid: &str) -> Option<(String, i64, i64, i64)> {
-    let dat_path = format!("{}/world/playerdata/{}.dat", server_path, uuid);
-    
+    let dat_path = format!("{}/0b0t/playerdata/{}.dat", server_path, uuid);
+
     let file = match File::open(&dat_path) {
         Ok(f) => f,
         Err(_) => return None,
     };
-    
+
     let mut decoder = GzDecoder::new(file);
     let mut data = Vec::new();
     if decoder.read_to_end(&mut data).is_err() {
         return None;
     }
-    
+
     let player: Result<PlayerDat, _> = from_bytes(data.as_slice());
-    
+
     match player {
         Ok(p) => {
             let name = p.last_known_name
@@ -100,7 +100,7 @@ fn get_player_name_from_usercache(server_path: &str, uuid: &str) -> Option<Strin
     let cache_path = format!("{}/usercache.json", server_path);
     let content = std::fs::read_to_string(cache_path).ok()?;
     let entries: Vec<UserCacheEntry> = serde_json::from_str(&content).ok()?;
-    
+
     entries.into_iter()
         .find(|e| e.uuid == uuid)
         .map(|e| e.name)
@@ -108,12 +108,12 @@ fn get_player_name_from_usercache(server_path: &str, uuid: &str) -> Option<Strin
 
 fn resolve_player_info(server_path: &str, uuid: &str) -> (String, i64, i64, i64) {
     let name_from_cache = get_player_name_from_usercache(server_path, uuid);
-    
+
     if let Some((name, first, last, last_seen)) = read_player_dat(server_path, uuid) {
         let final_name = name_from_cache.unwrap_or(name);
         return (final_name, first, last, last_seen);
     }
-    
+
     (name_from_cache.unwrap_or_else(|| uuid.to_string()), 0, 0, 0)
 }
 
@@ -153,22 +153,22 @@ struct PlayerStatsJson {
 }
 
 fn read_player_stats(server_path: &str, uuid: &str) -> Option<PlayerStatsJson> {
-    let stats_path = format!("{}/world/stats/{}.json", server_path, uuid);
+    let stats_path = format!("{}/0b0t/stats/{}.json", server_path, uuid);
     let content = std::fs::read_to_string(&stats_path).ok()?;
     let stats: StatsJson = serde_json::from_str(&content).ok()?;
-    
+
     let custom = &stats.stats.custom;
     let mined = &stats.stats.mined;
     let used = &stats.stats.used;
     let dropped = &stats.stats.dropped;
-    
+
     Some(PlayerStatsJson {
         time_played: *custom.get("minecraft:play_time").unwrap_or(&0),
         deaths: *custom.get("minecraft:deaths").unwrap_or(&0),
         kills: *custom.get("minecraft:player_kills").unwrap_or(&0),
         mobs_killed: *custom.get("minecraft:mob_kills").unwrap_or(&0),
-        distance_travelled: custom.get("minecraft:walk_one_cm").unwrap_or(&0) 
-            + custom.get("minecraft:sprint_one_cm").unwrap_or(&0) 
+        distance_travelled: custom.get("minecraft:walk_one_cm").unwrap_or(&0)
+            + custom.get("minecraft:sprint_one_cm").unwrap_or(&0)
             + custom.get("minecraft:fly_one_cm").unwrap_or(&0),
         tnt_used: *used.get("minecraft:tnt").unwrap_or(&0),
         arrows_shot: *used.get("minecraft:bow").unwrap_or(&0),
@@ -242,12 +242,12 @@ fn get_file_hash(path: &str) -> Option<String> {
 }
 
 async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
-    let stats_path = format!("{}/world/stats/{}.json", state.server_path, uuid);
+    let stats_path = format!("{}/0b0t/stats/{}.json", state.server_path, uuid);
     let file_hash = match get_file_hash(&stats_path) {
         Some(h) => h,
         None => return false,
     };
-    
+
     {
         let file_hashes = state.file_hashes.read().await;
         if let Some(last_hash) = file_hashes.get(uuid) {
@@ -256,10 +256,10 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
             }
         }
     }
-    
+
     if let Some(stats) = read_player_stats(&state.server_path, uuid) {
         let (name, first_played, _last_played, last_seen) = resolve_player_info(&state.server_path, uuid);
-        
+
         let result = sqlx::query(
             "INSERT INTO player_stats (uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
@@ -316,8 +316,8 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
 }
 
 async fn sync_from_files(State(state): State<AppState>) -> (StatusCode, Json<ApiResponse>) {
-    let stats_dir = format!("{}/world/stats", state.server_path);
-    
+    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
         Err(e) => {
@@ -328,9 +328,9 @@ async fn sync_from_files(State(state): State<AppState>) -> (StatusCode, Json<Api
             }));
         }
     };
-    
+
     let mut synced = 0;
-    
+
     for entry in entries.flatten() {
         let path = entry.path();
         if path.extension().and_then(|s| s.to_str()) == Some("json") {
@@ -363,13 +363,13 @@ fn get_block_hash(stats_dir: &str, start_idx: usize, uuids: &[String]) -> String
 }
 
 async fn sync_blocks_on_startup(state: &AppState) -> String {
-    let stats_dir = format!("{}/world/stats", state.server_path);
-    
+    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
         Err(e) => return format!("Error reading stats dir: {}", e),
     };
-    
+
     let all_uuids: Vec<String> = entries
         .flatten()
         .filter_map(|e| {
@@ -381,34 +381,34 @@ async fn sync_blocks_on_startup(state: &AppState) -> String {
             }
         })
         .collect();
-    
+
     let total_players = all_uuids.len();
     let total_blocks = (total_players + BLOCK_SIZE - 1) / BLOCK_SIZE;
-    
+
     let mut synced_players = 0;
     let mut updated_blocks = 0;
-    
+
     let mut current_block_hashes = state.block_hashes.write().await;
-    
+
     for block_idx in 0..total_blocks {
         let block_hash = get_block_hash(&stats_dir, block_idx * BLOCK_SIZE, &all_uuids);
-        
+
         let block_key = block_idx as u32;
         if let Some(last_hash) = current_block_hashes.get(&block_key) {
             if block_hash == *last_hash {
                 continue;
             }
         }
-        
+
         updated_blocks += 1;
-        
+
         let start = block_idx * BLOCK_SIZE;
         for uuid in all_uuids.iter().skip(start).take(BLOCK_SIZE) {
             if sync_single_player(state, uuid).await {
                 synced_players += 1;
             }
         }
-        
+
         current_block_hashes.insert(block_key, block_hash);
     }
 
@@ -416,8 +416,8 @@ async fn sync_blocks_on_startup(state: &AppState) -> String {
 }
 
 async fn sync_blocks(State(state): State<AppState>) -> (StatusCode, Json<ApiResponse>) {
-    let stats_dir = format!("{}/world/stats", state.server_path);
-    
+    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
         Err(e) => {
@@ -428,7 +428,7 @@ async fn sync_blocks(State(state): State<AppState>) -> (StatusCode, Json<ApiResp
             }));
         }
     };
-    
+
     let all_uuids: Vec<String> = entries
         .flatten()
         .filter_map(|e| {
@@ -440,36 +440,36 @@ async fn sync_blocks(State(state): State<AppState>) -> (StatusCode, Json<ApiResp
             }
         })
         .collect();
-    
+
     let total_players = all_uuids.len();
     let total_blocks = (total_players + BLOCK_SIZE - 1) / BLOCK_SIZE;
-    
+
     let mut synced_players = 0;
     let mut checked_blocks = 0;
     let mut updated_blocks = 0;
-    
+
     let mut current_block_hashes = state.block_hashes.write().await;
-    
+
     for block_idx in 0..total_blocks {
         let block_hash = get_block_hash(&stats_dir, block_idx * BLOCK_SIZE, &all_uuids);
         checked_blocks += 1;
-        
+
         let block_key = block_idx as u32;
         if let Some(last_hash) = current_block_hashes.get(&block_key) {
             if block_hash == *last_hash {
                 continue;
             }
         }
-        
+
         updated_blocks += 1;
-        
+
         let start = block_idx * BLOCK_SIZE;
         for uuid in all_uuids.iter().skip(start).take(BLOCK_SIZE) {
             if sync_single_player(&state, uuid).await {
                 synced_players += 1;
             }
         }
-        
+
         current_block_hashes.insert(block_idx as u32, block_hash);
     }
 
@@ -574,7 +574,7 @@ async fn get_player(
     axum::extract::Path(name): axum::extract::Path<String>,
 ) -> (StatusCode, Json<ApiResponse>) {
     let search_key = name.to_lowercase();
-    
+
     {
         let cache = state.cache.read().await;
         if let Some((player, time)) = cache.get(&search_key) {
@@ -643,10 +643,10 @@ async fn get_player(
                 totems_used: player.totems_used,
                 skin_url: get_skin_url(&player.uuid),
             };
-            
+
             let mut cache = state.cache.write().await;
             cache.insert(search_key, (player.clone(), Instant::now()));
-            
+
             (StatusCode::OK, Json(ApiResponse {
                 success: true,
                 data: Some(response),
@@ -677,7 +677,7 @@ async fn get_leaderboard(
     axum::extract::Query(params): axum::extract::Query<std::collections::HashMap<String, String>>,
 ) -> (StatusCode, Json<serde_json::Value>) {
     let limit = params.get("limit").and_then(|l| l.parse().ok()).unwrap_or(10);
-    
+
     let result = sqlx::query_as::<_, PlayerQuery>(
          "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
          FROM player_stats ORDER BY join_date DESC LIMIT ?"
@@ -700,7 +700,7 @@ async fn get_leaderboard(
                     skin_url: get_skin_url(&uuid),
                 }
             }).collect();
-            
+
             (StatusCode::OK, Json(serde_json::json!({
                 "success": true,
                 "data": entries
@@ -716,16 +716,16 @@ async fn get_leaderboard(
 #[tokio::main]
 async fn main() {
     let server_path = std::env::var("SERVER_PATH").unwrap_or_else(|_| "../../server".to_string());
-    
+
     let cwd = std::env::current_dir().expect("Failed to get current directory");
     let db_path = cwd.join("tensor.db");
-    
+
     let db_url = format!("sqlite://{}", db_path.display());
     let options = SqliteConnectOptions::from_str(&db_url)
         .expect("Failed to parse DB URL")
         .create_if_missing(true);
     let db = SqlitePool::connect_with(options).await.unwrap();
-    
+
     sqlx::query(
         "CREATE TABLE IF NOT EXISTS player_stats (
             uuid TEXT PRIMARY KEY,
@@ -754,23 +754,28 @@ async fn main() {
     .await
     .unwrap();
 
-    let state = AppState { 
+    let state = AppState {
         db,
         cache: Arc::new(RwLock::new(HashMap::new())),
         server_path: server_path.clone(),
         block_hashes: Arc::new(RwLock::new(HashMap::new())),
         file_hashes: Arc::new(RwLock::new(HashMap::new())),
     };
-    
-    sync_blocks_on_startup(&state).await;
-    
+
+    // FIX: run startup sync in background so the server binds immediately
+    let state_for_sync = state.clone();
+    tokio::spawn(async move {
+        let result = sync_blocks_on_startup(&state_for_sync).await;
+        println!("Startup sync complete: {}", result);
+    });
+
     let state_clone = state.clone();
     std::thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().unwrap();
         rt.block_on(async {
-            let stats_dir = format!("{}/world/stats", server_path);
+            let stats_dir = format!("{}/0b0t/stats", server_path);
             let (tx, mut rx) = tokio::sync::mpsc::channel(100);
-            
+
             let mut watcher = RecommendedWatcher::new(
                 move |res: Result<Event, notify::Error>| {
                     if let Ok(event) = res {
@@ -785,9 +790,9 @@ async fn main() {
                 },
                 notify::Config::default(),
             ).unwrap();
-            
+
             watcher.watch(std::path::Path::new(&stats_dir), RecursiveMode::NonRecursive).unwrap();
-            
+
             while let Some(uuid) = rx.recv().await {
                 sync_single_player(&state_clone, &uuid).await;
             }
@@ -799,6 +804,7 @@ async fn main() {
         .route("/leaderboard", get(get_leaderboard))
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    println!("Server listening on 0.0.0.0:5300");
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:5300").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
