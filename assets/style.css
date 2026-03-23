@@ -142,7 +142,32 @@ body::-webkit-scrollbar {
     text-align: left;
 }
 
+.btn-blue {
+  background-color: #007bff;
+  /* Direct white text */
+  color: #ffffff !important; 
+  
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  /* Making it slightly bolder for better legibility */
+  font-weight: 700; 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Ensures text is centered and crisp */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
 
+.btn-blue:hover {
+  background-color: #0056b3;
+  color: #ffffff; /* Keeps text white on hover */
+  transform: translateY(-2px);
+}
 
 
 .inner-wide {

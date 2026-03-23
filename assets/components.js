@@ -15,13 +15,15 @@ const headerHTML = `
                 <ul class="nav">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
+                    <li><a href="support.html">Support</a></li>
                     <li><a href="stats.html">Stats</a></li>
                     <li><a href="commands.html">Commands</a></li>
                     <li><a href="lce.html">LCE</a></li>
                     <li><a href="https://track.8b8t.me/">Track</a></li>                 
                     <li><a href="https://shop.8b8t.me/">Shop</a></li>
                     <li><a href="https://www.8b8t.me/vote">Vote</a></li>
-                    <li><a href="terms.html">Terms</a></li>
+                    <li><a href="/terms.html">Terms</a></li>
+                    
                 </ul>
             </nav>
         </div>
@@ -54,11 +56,11 @@ const footerHTML = `
                 <div class="footer-column">
                     <h4>Legal & Support</h4>
                     <ul class="footer-links">
-                        <li><a href="https://www.8b8t.me/support/">Help Center</a></li>
+                        <li><a href="https://www.8b8t.me/support">Help Center</a></li>
                         <li><a href="terms.html">Terms of Service</a></li>
                         <li><a href="lce.html">LCE</a></li>
                         <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="https://www.8b8t.me/support/">Contact Us</a></li>
+                        <li><a href="https://www.8b8t.me/support">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
