@@ -19,7 +19,6 @@ const headerHTML = `
                     <li><a href="commands.html">Commands</a></li>
                     <li><a href="lce.html">LCE</a></li>
                     <li><a href="https://track.8b8t.me/">Track</a></li>                 
-                    <li><a href="https://discord.8b8t.me/">Discord</a></li>
                     <li><a href="https://shop.8b8t.me/">Shop</a></li>
                     <li><a href="https://www.8b8t.me/vote">Vote</a></li>
                     <li><a href="terms.html">Terms</a></li>
