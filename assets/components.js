@@ -18,12 +18,11 @@ const headerHTML = `
                     <li><a href="stats.html">Stats</a></li>
                     <li><a href="commands.html">Commands</a></li>
                     <li><a href="lce.html">LCE</a></li>
-                    <li><a href="https://www.youtube.com/watch?v=IR_rbAer7kY">Rules</a></li>
-                    <li><a href="https://track.8b8t.me/">Track</a></li>
-                    <li><a href="https://www.8b8t.me/hytale/">Hytale</a></li>
+                    <li><a href="https://track.8b8t.me/">Track</a></li>                 
                     <li><a href="https://discord.8b8t.me/">Discord</a></li>
                     <li><a href="https://shop.8b8t.me/">Shop</a></li>
-                    <li><a href="terms.html">ToS</a></li>
+                    <li><a href="https://www.8b8t.me/vote">Vote</a></li>
+                    <li><a href="terms.html">Terms</a></li>
                 </ul>
             </nav>
         </div>
@@ -37,8 +36,7 @@ const footerHTML = `
                 <div class="footer-column">
                     <h4>Community</h4>
                     <ul class="footer-links">
-                        <li><a href="https://discord.8b8t.me/">Discord Server</a></li>
-                        <li><a href="https://matrix.8b8t.me/">Matrix</a></li>
+                        <li><a href="https://telegram.8b8t.me">Telegram</a></li>
                         <li><a href="https://videos.8b8t.me/">Videos</a></li>
                         <li><a href="https://votefor.8b8t.me/">Vote for Server</a></li>
                     </ul>
@@ -50,7 +48,7 @@ const footerHTML = `
                         <li><a href="https://www.8b8t.me/how-to-join/">How to Join</a></li>
                         <li><a href="https://track.8b8t.me/">Track</a></li>
                         <li><a href="https://shop.8b8t.me/">Store</a></li>
-                        <li><a href="https://track.8b8t.me/">Server Status</a></li>
+                        <li><a href="https://track.8b8t.me/">Anarchy Server Track Site</a></li>
                     </ul>
                 </div>
 
