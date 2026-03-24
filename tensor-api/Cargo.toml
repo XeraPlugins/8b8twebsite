@@ -13,6 +13,7 @@ flate2 = "1"
 sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "chrono", "derive"] }
 notify = "6"
 blake3 = "1"
+tower-http = { version = "0.6", features = ["cors"] }
 
 [profile.release]
 strip = true

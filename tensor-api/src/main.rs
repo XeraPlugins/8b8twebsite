@@ -1,10 +1,11 @@
 use axum::{
     extract::State,
-    http::StatusCode,
+    http::{StatusCode, header},
     response::Json,
     routing::{get},
     Router,
 };
+use axum::http::header::HeaderValue;
 use serde::{Deserialize, Serialize};
 use sqlx::{sqlite::SqliteConnectOptions, SqlitePool};
 use std::str::FromStr;
@@ -815,9 +816,15 @@ async fn main() {
         });
     });
 
+    let cors = tower_http::cors::CorsLayer::new()
+        .allow_origin(tower_http::cors::Any)
+        .allow_methods(tower_http::cors::Any)
+        .allow_headers(tower_http::cors::Any);
+
     let app = Router::new()
         .route("/player/:name", get(get_player))
         .route("/leaderboard", get(get_leaderboard))
+        .layer(cors)
         .with_state(state);
 
     println!("Server listening on 0.0.0.0:5300");
