@@ -107,6 +107,16 @@ fn get_player_name_from_usercache(server_path: &str, uuid: &str) -> Option<Strin
         .map(|e| e.name)
 }
 
+fn get_player_uuid_from_usercache(server_path: &str, name: &str) -> Option<String> {
+    let cache_path = format!("{}/usercache.json", server_path);
+    let content = std::fs::read_to_string(cache_path).ok()?;
+    let entries: Vec<UserCacheEntry> = serde_json::from_str(&content).ok()?;
+
+    entries.into_iter()
+        .find(|e| e.name.to_lowercase() == name.to_lowercase())
+        .map(|e| e.uuid)
+}
+
 fn resolve_player_info(server_path: &str, uuid: &str) -> (String, i64, i64, i64) {
     let name_from_cache = get_player_name_from_usercache(server_path, uuid);
 
@@ -654,11 +664,69 @@ async fn get_player(
                 error: None,
             }))
         }
-        _ => (StatusCode::NOT_FOUND, Json(ApiResponse {
-            success: false,
-            data: None,
-            error: Some("Player not found".to_string()),
-        })),
+        _ => {
+            if let Some(uuid) = get_player_uuid_from_usercache(&state.server_path, &name) {
+                if sync_single_player(&state, &uuid).await {
+                    let result = sqlx::query_as::<_, PlayerQuery>(
+                         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
+                         FROM player_stats WHERE LOWER(name) = ? OR LOWER(uuid) = ?"
+                    )
+                    .bind(&search_key)
+                    .bind(&search_key)
+                    .fetch_optional(&state.db)
+                    .await;
+
+                    if let Ok(Some(player)) = result {
+                        let response = PlayerResponse {
+                            uuid: player.uuid.clone(),
+                            name: player.name.clone(),
+                            join_date: player.join_date,
+                            last_seen: player.last_seen,
+                            deaths: player.deaths,
+                            kills: player.kills,
+                            mobs_killed: player.mobs_killed,
+                            blocks_broken: player.blocks_broken,
+                            blocks_placed: player.blocks_placed,
+                            time_played: player.time_played,
+                            tnt_used: player.tnt_used,
+                            arrows_shot: player.arrows_shot,
+                            items_dropped: player.items_dropped,
+                            distance_travelled: player.distance_travelled,
+                            obsidian_mined: player.obsidian_mined,
+                            obsidian_placed: player.obsidian_placed,
+                            netherite_mined: player.netherite_mined,
+                            elytra_used: player.elytra_used,
+                            totems_used: player.totems_used,
+                            skin_url: get_skin_url(&player.uuid),
+                        };
+
+                        (StatusCode::OK, Json(ApiResponse {
+                            success: true,
+                            data: Some(response),
+                            error: None,
+                        }))
+                    } else {
+                        (StatusCode::NOT_FOUND, Json(ApiResponse {
+                            success: false,
+                            data: None,
+                            error: Some("Player not found".to_string()),
+                        }))
+                    }
+                } else {
+                    (StatusCode::NOT_FOUND, Json(ApiResponse {
+                        success: false,
+                        data: None,
+                        error: Some("Player not found".to_string()),
+                    }))
+                }
+            } else {
+                (StatusCode::NOT_FOUND, Json(ApiResponse {
+                    success: false,
+                    data: None,
+                    error: Some("Player not found".to_string()),
+                }))
+            }
+        }
     }
 }
 
