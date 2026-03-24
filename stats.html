@@ -185,224 +185,224 @@
     </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+<div id="header-placeholder"></div>
 
-    <main class="stats-page-main">
+<main class="stats-page-main">
 
-        <!-- inline search -->
-        <section class="stats-hero outer">
-            <div class="inner">
-                <div class="stats-hero-row">
-                    <div class="stats-hero-text">
-                        <h1 class="stats-page-title">Player Stats</h1>
-                        <p class="stats-page-sub">Look up any player on 8b8t</p>
+    <!-- inline search -->
+    <section class="stats-hero outer">
+        <div class="inner">
+            <div class="stats-hero-row">
+                <div class="stats-hero-text">
+                    <h1 class="stats-page-title">Player Stats</h1>
+                    <p class="stats-page-sub">Look up any player on 8b8t</p>
+                </div>
+                <form class="stats-search-form" id="search-form">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="player-search" placeholder="Enter a username..." autocomplete="off">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard — default view -->
+    <section class="stats-body outer" id="leaderboard-section">
+        <div class="inner">
+            <p class="stats-section-label"><i class="fa-solid fa-khanda"></i> Top Killers</p>
+            <div class="lb-table" id="leaderboard-list">
+                <div class="lb-skeleton"></div>
+                <div class="lb-skeleton"></div>
+                <div class="lb-skeleton"></div>
+                <div class="lb-skeleton"></div>
+                <div class="lb-skeleton"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Player result view -->
+    <section class="stats-body outer" id="player-result" style="display:none;">
+        <div class="inner">
+            <button class="stats-back-btn" onclick="showLeaderboard()">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+
+            <div class="player-card">
+                <div class="player-card-header">
+                    <div class="player-card-avatar">
+                        <img id="player-skin" src="" alt="Skin">
                     </div>
-                    <form class="stats-search-form" id="search-form">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="player-search" placeholder="Enter a username..." autocomplete="off">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Leaderboard — default view -->
-        <section class="stats-body outer" id="leaderboard-section">
-            <div class="inner">
-                <p class="stats-section-label"><i class="fa-solid fa-clock-rotate-left"></i> Newest Players</p>
-                <div class="lb-table" id="leaderboard-list">
-                    <div class="lb-skeleton"></div>
-                    <div class="lb-skeleton"></div>
-                    <div class="lb-skeleton"></div>
-                    <div class="lb-skeleton"></div>
-                    <div class="lb-skeleton"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Player result view -->
-        <section class="stats-body outer" id="player-result" style="display:none;">
-            <div class="inner">
-                <button class="stats-back-btn" onclick="showLeaderboard()">
-                    <i class="fa-solid fa-arrow-left"></i> Back
-                </button>
-
-                <div class="player-card">
-                    <div class="player-card-header">
-                        <div class="player-card-avatar">
-                            <img id="player-skin" src="" alt="Skin">
-                        </div>
-                        <div class="player-card-info">
-                            <h2 id="player-name"></h2>
-                            <code id="player-uuid"></code>
-                            <span class="player-join-date">
+                    <div class="player-card-info">
+                        <h2 id="player-name"></h2>
+                        <code id="player-uuid"></code>
+                        <span class="player-join-date">
                                 <i class="fa-solid fa-calendar-days"></i>
                                 <span id="join-date"></span>
                             </span>
-                        </div>
-                    </div>
-
-                    <div class="player-stats-grid">
-                        <div class="pstat deaths">
-                            <div class="pstat-icon"><i class="fa-solid fa-skull"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-deaths">—</span>
-                                <span class="pstat-label">Deaths</span>
-                            </div>
-                        </div>
-                        <div class="pstat kills">
-                            <div class="pstat-icon"><i class="fa-solid fa-khanda"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-kills">—</span>
-                                <span class="pstat-label">Kills</span>
-                            </div>
-                        </div>
-                        <div class="pstat mobs">
-                            <div class="pstat-icon"><i class="fa-solid fa-ghost"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-mobs">—</span>
-                                <span class="pstat-label">Mobs Killed</span>
-                            </div>
-                        </div>
-                        <div class="pstat time">
-                            <div class="pstat-icon"><i class="fa-solid fa-clock"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-time">—</span>
-                                <span class="pstat-label">Time Played</span>
-                            </div>
-                        </div>
-                        <div class="pstat blocks">
-                            <div class="pstat-icon"><i class="fa-solid fa-hammer"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-blocks-broken">—</span>
-                                <span class="pstat-label">Blocks Broken</span>
-                            </div>
-                        </div>
-                        <div class="pstat blocks">
-                            <div class="pstat-icon"><i class="fa-solid fa-cube"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-blocks-placed">—</span>
-                                <span class="pstat-label">Blocks Placed</span>
-                            </div>
-                        </div>
-                        <div class="pstat tnt">
-                            <div class="pstat-icon"><i class="fa-solid fa-bomb"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-tnt">—</span>
-                                <span class="pstat-label">TNT Used</span>
-                            </div>
-                        </div>
-                        <div class="pstat obsidian">
-                            <div class="pstat-icon"><i class="fa-solid fa-gem"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-obsidian-mined">—</span>
-                                <span class="pstat-label">Obsidian</span>
-                            </div>
-                        </div>
-                        <div class="pstat netherite">
-                            <div class="pstat-icon"><i class="fa-solid fa-dragon"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-netherite">—</span>
-                                <span class="pstat-label">Netherite</span>
-                            </div>
-                        </div>
-                        <div class="pstat elytra">
-                            <div class="pstat-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-elytra">—</span>
-                                <span class="pstat-label">Elytra Used</span>
-                            </div>
-                        </div>
-                        <div class="pstat totems">
-                            <div class="pstat-icon"><i class="fa-solid fa-heart"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-totems">—</span>
-                                <span class="pstat-label">Totems Used</span>
-                            </div>
-                        </div>
-                        <div class="pstat arrows">
-                            <div class="pstat-icon"><i class="fa-solid fa-crosshairs"></i></div>
-                            <div class="pstat-body">
-                                <span class="pstat-val" id="stat-arrows">—</span>
-                                <span class="pstat-label">Arrows Shot</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Loading section -->
-        <section class="stats-body outer" id="loading-section" style="display:none;">
-            <div class="inner">
-                <div class="stats-state-box">
-                    <div class="stats-spinner"></div>
-                    <p>Loading player data...</p>
+                <div class="player-stats-grid">
+                    <div class="pstat deaths">
+                        <div class="pstat-icon"><i class="fa-solid fa-skull"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-deaths">—</span>
+                            <span class="pstat-label">Deaths</span>
+                        </div>
+                    </div>
+                    <div class="pstat kills">
+                        <div class="pstat-icon"><i class="fa-solid fa-khanda"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-kills">—</span>
+                            <span class="pstat-label">Kills</span>
+                        </div>
+                    </div>
+                    <div class="pstat mobs">
+                        <div class="pstat-icon"><i class="fa-solid fa-ghost"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-mobs">—</span>
+                            <span class="pstat-label">Mobs Killed</span>
+                        </div>
+                    </div>
+                    <div class="pstat time">
+                        <div class="pstat-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-time">—</span>
+                            <span class="pstat-label">Time Played</span>
+                        </div>
+                    </div>
+                    <div class="pstat blocks">
+                        <div class="pstat-icon"><i class="fa-solid fa-hammer"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-blocks-broken">—</span>
+                            <span class="pstat-label">Blocks Broken</span>
+                        </div>
+                    </div>
+                    <div class="pstat blocks">
+                        <div class="pstat-icon"><i class="fa-solid fa-cube"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-blocks-placed">—</span>
+                            <span class="pstat-label">Blocks Placed</span>
+                        </div>
+                    </div>
+                    <div class="pstat tnt">
+                        <div class="pstat-icon"><i class="fa-solid fa-bomb"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-tnt">—</span>
+                            <span class="pstat-label">TNT Used</span>
+                        </div>
+                    </div>
+                    <div class="pstat obsidian">
+                        <div class="pstat-icon"><i class="fa-solid fa-gem"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-obsidian-mined">—</span>
+                            <span class="pstat-label">Obsidian</span>
+                        </div>
+                    </div>
+                    <div class="pstat netherite">
+                        <div class="pstat-icon"><i class="fa-solid fa-dragon"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-netherite">—</span>
+                            <span class="pstat-label">Netherite</span>
+                        </div>
+                    </div>
+                    <div class="pstat elytra">
+                        <div class="pstat-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-elytra">—</span>
+                            <span class="pstat-label">Elytra Used</span>
+                        </div>
+                    </div>
+                    <div class="pstat totems">
+                        <div class="pstat-icon"><i class="fa-solid fa-heart"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-totems">—</span>
+                            <span class="pstat-label">Totems Used</span>
+                        </div>
+                    </div>
+                    <div class="pstat arrows">
+                        <div class="pstat-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-arrows">—</span>
+                            <span class="pstat-label">Arrows Shot</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Error section -->
-        <section class="stats-body outer" id="error-section" style="display:none;">
-            <div class="inner">
-                <div class="stats-state-box error">
-                    <div class="stats-state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <h3 id="error-title">Error</h3>
-                    <p id="error-message">Something went wrong.</p>
-                    <button class="stats-back-btn" onclick="showLeaderboard()" style="margin-top:20px;">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Leaderboard
-                    </button>
-                </div>
+    <!-- Loading section -->
+    <section class="stats-body outer" id="loading-section" style="display:none;">
+        <div class="inner">
+            <div class="stats-state-box">
+                <div class="stats-spinner"></div>
+                <p>Loading player data...</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+    <!-- Error section -->
+    <section class="stats-body outer" id="error-section" style="display:none;">
+        <div class="inner">
+            <div class="stats-state-box error">
+                <div class="stats-state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h3 id="error-title">Error</h3>
+                <p id="error-message">Something went wrong.</p>
+                <button class="stats-back-btn" onclick="showLeaderboard()" style="margin-top:20px;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Leaderboard
+                </button>
+            </div>
+        </div>
+    </section>
 
-    <div id="footer-placeholder"></div>
+</main>
 
-    <script src="assets/components.js"></script>
-    <script>
-        const API_URL = 'http://192.168.2.10:5300';
+<div id="footer-placeholder"></div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadLeaderboard();
-        });
+<script src="assets/components.js"></script>
+<script>
+    const API_URL = 'http://192.168.2.10:5300';
 
-        document.getElementById('search-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('player-search').value.trim();
-            if (!name) return;
-            showLoading();
-            try {
-                const res = await fetch(`${API_URL}/player/${encodeURIComponent(name)}`);
-                const data = await res.json();
-                if (data.success && data.data) {
-                    showPlayer(data.data);
-                } else {
-                    showError('Player Not Found', 'This player has no recorded stats or has never joined 8b8t.');
-                }
-            } catch (err) {
-                showError('Connection Error', 'Unable to reach the stats server. Try again in a moment.');
+    document.addEventListener('DOMContentLoaded', () => {
+        loadLeaderboard();
+    });
+
+    document.getElementById('search-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('player-search').value.trim();
+        if (!name) return;
+        showLoading();
+        try {
+            const res = await fetch(`${API_URL}/player/${encodeURIComponent(name)}`);
+            const data = await res.json();
+            if (data.success && data.data) {
+                showPlayer(data.data);
+            } else {
+                showError('Player Not Found', 'This player has no recorded stats or has never joined 8b8t.');
             }
-        });
+        } catch (err) {
+            showError('Connection Error', 'Unable to reach the stats server. Try again in a moment.');
+        }
+    });
 
-        async function loadLeaderboard() {
-            try {
-                const res = await fetch(`${API_URL}/leaderboard?limit=10`);
-                const data = await res.json();
-                if (data.success && data.data) {
-                    renderLeaderboard(data.data);
-                } else {
-                    showLeaderboardUnavailable();
-                }
-            } catch (err) {
+    async function loadLeaderboard() {
+        try {
+            const res = await fetch(`${API_URL}/leaderboard?sort=kills&limit=10`);
+            const data = await res.json();
+            if (data.success && data.data) {
+                renderLeaderboard(data.data);
+            } else {
                 showLeaderboardUnavailable();
             }
+        } catch (err) {
+            showLeaderboardUnavailable();
         }
+    }
 
-        function renderLeaderboard(players) {
-            const list = document.getElementById('leaderboard-list');
-            list.innerHTML = players.map((p, i) => `
+    function renderLeaderboard(players) {
+        const list = document.getElementById('leaderboard-list');
+        list.innerHTML = players.map((p, i) => `
                 <div class="lb-row" onclick="searchPlayer('${p.name}')">
                     <span class="lb-num">#${i + 1}</span>
                     <img class="lb-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
@@ -411,89 +411,89 @@
                     <span class="lb-kills-badge">${formatNumber(p.kills)} kills</span>
                 </div>
             `).join('');
-        }
+    }
 
-        function showLeaderboardUnavailable() {
-            const list = document.getElementById('leaderboard-list');
-            list.innerHTML = `
+    function showLeaderboardUnavailable() {
+        const list = document.getElementById('leaderboard-list');
+        list.innerHTML = `
                 <div class="lb-unavailable">
                     <i class="fa-solid fa-wrench"></i>
                     <p>Leaderboard data is temporarily unavailable.</p>
                 </div>
             `;
-        }
+    }
 
-        function searchPlayer(name) {
-            document.getElementById('player-search').value = name;
-            document.getElementById('search-form').dispatchEvent(new Event('submit'));
-        }
+    function searchPlayer(name) {
+        document.getElementById('player-search').value = name;
+        document.getElementById('search-form').dispatchEvent(new Event('submit'));
+    }
 
-        function showLeaderboard() {
-            document.getElementById('leaderboard-section').style.display = 'block';
-            document.getElementById('player-result').style.display = 'none';
-            document.getElementById('error-section').style.display = 'none';
-            document.getElementById('loading-section').style.display = 'none';
-        }
+    function showLeaderboard() {
+        document.getElementById('leaderboard-section').style.display = 'block';
+        document.getElementById('player-result').style.display = 'none';
+        document.getElementById('error-section').style.display = 'none';
+        document.getElementById('loading-section').style.display = 'none';
+    }
 
-        function showPlayer(p) {
-            document.getElementById('leaderboard-section').style.display = 'none';
-            document.getElementById('error-section').style.display = 'none';
-            document.getElementById('loading-section').style.display = 'none';
-            document.getElementById('player-result').style.display = 'block';
+    function showPlayer(p) {
+        document.getElementById('leaderboard-section').style.display = 'none';
+        document.getElementById('error-section').style.display = 'none';
+        document.getElementById('loading-section').style.display = 'none';
+        document.getElementById('player-result').style.display = 'block';
 
-            document.getElementById('player-skin').src = p.skin_url || 'assets/img/default-skin.png';
-            document.getElementById('player-name').textContent = p.name;
-            document.getElementById('player-uuid').textContent = p.uuid;
-            document.getElementById('join-date').textContent = formatDate(p.join_date);
+        document.getElementById('player-skin').src = p.skin_url || 'assets/img/default-skin.png';
+        document.getElementById('player-name').textContent = p.name;
+        document.getElementById('player-uuid').textContent = p.uuid;
+        document.getElementById('join-date').textContent = formatDate(p.join_date);
 
-            document.getElementById('stat-deaths').textContent = formatNumber(p.deaths);
-            document.getElementById('stat-kills').textContent = formatNumber(p.kills);
-            document.getElementById('stat-mobs').textContent = formatNumber(p.mobs_killed);
-            document.getElementById('stat-time').textContent = formatTime(p.time_played);
-            document.getElementById('stat-blocks-broken').textContent = formatNumber(p.blocks_broken);
-            document.getElementById('stat-blocks-placed').textContent = formatNumber(p.blocks_placed);
-            document.getElementById('stat-tnt').textContent = formatNumber(p.tnt_used);
-            document.getElementById('stat-obsidian-mined').textContent = formatNumber(p.obsidian_mined);
-            document.getElementById('stat-netherite').textContent = formatNumber(p.netherite_mined);
-            document.getElementById('stat-elytra').textContent = formatNumber(p.elytra_used);
-            document.getElementById('stat-totems').textContent = formatNumber(p.totems_used);
-            document.getElementById('stat-arrows').textContent = formatNumber(p.arrows_shot);
-        }
+        document.getElementById('stat-deaths').textContent = formatNumber(p.deaths);
+        document.getElementById('stat-kills').textContent = formatNumber(p.kills);
+        document.getElementById('stat-mobs').textContent = formatNumber(p.mobs_killed);
+        document.getElementById('stat-time').textContent = formatTime(p.time_played);
+        document.getElementById('stat-blocks-broken').textContent = formatNumber(p.blocks_broken);
+        document.getElementById('stat-blocks-placed').textContent = formatNumber(p.blocks_placed);
+        document.getElementById('stat-tnt').textContent = formatNumber(p.tnt_used);
+        document.getElementById('stat-obsidian-mined').textContent = formatNumber(p.obsidian_mined);
+        document.getElementById('stat-netherite').textContent = formatNumber(p.netherite_mined);
+        document.getElementById('stat-elytra').textContent = formatNumber(p.elytra_used);
+        document.getElementById('stat-totems').textContent = formatNumber(p.totems_used);
+        document.getElementById('stat-arrows').textContent = formatNumber(p.arrows_shot);
+    }
 
-        function showLoading() {
-            document.getElementById('leaderboard-section').style.display = 'none';
-            document.getElementById('player-result').style.display = 'none';
-            document.getElementById('error-section').style.display = 'none';
-            document.getElementById('loading-section').style.display = 'block';
-        }
+    function showLoading() {
+        document.getElementById('leaderboard-section').style.display = 'none';
+        document.getElementById('player-result').style.display = 'none';
+        document.getElementById('error-section').style.display = 'none';
+        document.getElementById('loading-section').style.display = 'block';
+    }
 
-        function showError(title, msg) {
-            document.getElementById('leaderboard-section').style.display = 'none';
-            document.getElementById('player-result').style.display = 'none';
-            document.getElementById('loading-section').style.display = 'none';
-            document.getElementById('error-section').style.display = 'block';
-            document.getElementById('error-title').textContent = title;
-            document.getElementById('error-message').textContent = msg;
-        }
+    function showError(title, msg) {
+        document.getElementById('leaderboard-section').style.display = 'none';
+        document.getElementById('player-result').style.display = 'none';
+        document.getElementById('loading-section').style.display = 'none';
+        document.getElementById('error-section').style.display = 'block';
+        document.getElementById('error-title').textContent = title;
+        document.getElementById('error-message').textContent = msg;
+    }
 
-        function formatNumber(n) {
-            if (!n) return '0';
-            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-            if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-            return n.toString();
-        }
+    function formatNumber(n) {
+        if (!n) return '0';
+        if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+        if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+        return n.toString();
+    }
 
-        function formatTime(ticks) {
-            if (!ticks) return '0m';
-            const h = Math.floor(ticks / 72000);
-            const m = Math.floor((ticks % 72000) / 1200);
-            return h > 0 ? `${h}h ${m}m` : `${m}m`;
-        }
+    function formatTime(ticks) {
+        if (!ticks) return '0m';
+        const h = Math.floor(ticks / 72000);
+        const m = Math.floor((ticks % 72000) / 1200);
+        return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
 
-        function formatDate(ts) {
-            if (!ts) return 'Unknown';
-            return new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
-    </script>
+    function formatDate(ts) {
+        if (!ts) return 'Unknown';
+        return new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+</script>
 </body>
 </html>

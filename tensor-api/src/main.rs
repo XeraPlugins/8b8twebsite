@@ -677,11 +677,27 @@ async fn get_leaderboard(
     axum::extract::Query(params): axum::extract::Query<std::collections::HashMap<String, String>>,
 ) -> (StatusCode, Json<serde_json::Value>) {
     let limit = params.get("limit").and_then(|l| l.parse().ok()).unwrap_or(10);
+    let sort = params.get("sort").map(|s| s.as_str()).unwrap_or("kills");
 
-    let result = sqlx::query_as::<_, PlayerQuery>(
+    let order_column = match sort {
+        "deaths" => "deaths",
+        "mobs_killed" => "mobs_killed",
+        "time_played" => "time_played",
+        "blocks_broken" => "blocks_broken",
+        "blocks_placed" => "blocks_placed",
+        "tnt_used" => "tnt_used",
+        "obsidian_mined" => "obsidian_mined",
+        "netherite_mined" => "netherite_mined",
+        _ => "kills",
+    };
+
+    let query = format!(
          "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
-         FROM player_stats ORDER BY join_date DESC LIMIT ?"
-    )
+         FROM player_stats ORDER BY {} DESC LIMIT ?",
+         order_column
+    );
+
+    let result = sqlx::query_as::<_, PlayerQuery>(&query)
     .bind(limit)
     .fetch_all(&state.db)
     .await;
