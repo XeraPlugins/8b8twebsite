@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stats - 8b8t</title>
-    <link rel="stylesheet" href="assets/font_awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
     <style>
         .stats-page-main {
@@ -123,38 +123,67 @@
             border-radius: 22px; padding: 36px; max-width: 1000px;
         }
         .player-card-header {
-            display: flex; align-items: center; gap: 22px;
+            display: flex; align-items: flex-start; gap: 24px;
             margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .player-card-avatar { width: 72px; height: 72px; border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+        .player-card-avatar-wrap { position: relative; flex-shrink: 0; }
+        .player-card-avatar { width: 96px; height: 96px; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.08); }
         .player-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .player-card-info h2 { font-size: 26px; font-weight: 700; color: #fff; margin: 0 0 6px; }
-        .player-card-info code { display: block; font-size: 12px; color: #6e6e73; font-family: monospace; margin-bottom: 8px; word-break: break-all; }
-        .player-join-date { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #86868b; }
-        .player-join-date i { color: #2997ff; }
-
-        .player-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-        .pstat {
-            display: flex; align-items: center; gap: 14px;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 14px; padding: 16px 18px; transition: background 0.2s, transform 0.2s;
+        .player-rank-badge {
+            position: absolute; bottom: -8px; right: -8px;
+            background: linear-gradient(135deg, #2997ff, #0a84ff);
+            color: #fff; font-size: 11px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(41,151,255,0.4);
         }
-        .pstat:hover { background: rgba(255,255,255,0.04); transform: translateY(-1px); }
-        .pstat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-        .pstat.deaths .pstat-icon  { background: rgba(255,69,58,.12);   color: #ff453a; }
-        .pstat.kills .pstat-icon   { background: rgba(255,159,10,.12);  color: #ff9f0a; }
-        .pstat.mobs .pstat-icon    { background: rgba(162,132,94,.12);  color: #a2845e; }
-        .pstat.time .pstat-icon    { background: rgba(41,151,255,.12);  color: #2997ff; }
-        .pstat.blocks .pstat-icon  { background: rgba(191,90,242,.12);  color: #bf5af2; }
-        .pstat.tnt .pstat-icon     { background: rgba(255,92,55,.12);   color: #ff5c37; }
-        .pstat.obsidian .pstat-icon{ background: rgba(88,101,242,.12);  color: #5865f2; }
-        .pstat.netherite .pstat-icon{ background: rgba(255,0,85,.12);   color: #ff0055; }
-        .pstat.elytra .pstat-icon  { background: rgba(48,209,88,.12);   color: #30d158; }
-        .pstat.totems .pstat-icon  { background: rgba(255,215,0,.12);   color: #ffd700; }
-        .pstat.arrows .pstat-icon  { background: rgba(255,255,255,.08); color: #fff; }
+        .player-card-info { flex: 1; min-width: 0; }
+        .player-card-info h2 { font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 4px; letter-spacing: -0.02em; }
+        .player-uuid-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .player-card-info code { font-size: 12px; color: #6e6e73; font-family: monospace; }
+        .player-copy-btn {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #86868b; padding: 4px 8px; border-radius: 6px; cursor: pointer;
+            transition: all 0.2s; font-size: 11px;
+        }
+        .player-copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .player-meta-row { display: flex; flex-wrap: wrap; gap: 16px; }
+        .player-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #86868b; }
+        .player-meta-item i { font-size: 12px; }
+        .player-meta-item.join i { color: #30d158; }
+        .player-meta-item.seen i { color: #ff9f0a; }
+        .player-meta-item.kd i { color: #bf5af2; }
+        .player-meta-item.rank i { color: #2997ff; }
+        .player-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .player-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+        }
+        .player-badge.kills { background: rgba(255,159,10,0.12); color: #ff9f0a; border: 1px solid rgba(255,159,10,0.2); }
+        .player-badge.deaths { background: rgba(255,69,58,0.12); color: #ff453a; border: 1px solid rgba(255,69,58,0.2); }
+        .player-badge.ratio { background: rgba(191,90,242,0.12); color: #bf5af2; border: 1px solid rgba(191,90,242,0.2); }
+
+        .player-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        .pstat {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px; padding: 20px 16px; transition: all 0.25s;
+        }
+        .pstat:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); border-color: rgba(255,255,255,0.12); }
+        .pstat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
+        .pstat.deaths .pstat-icon  { background: rgba(255,69,58,.15);   color: #ff453a; }
+        .pstat.kills .pstat-icon   { background: rgba(255,159,10,.15);  color: #ff9f0a; }
+        .pstat.mobs .pstat-icon    { background: rgba(162,132,94,.15);  color: #a2845e; }
+        .pstat.time .pstat-icon    { background: rgba(41,151,255,.15);  color: #2997ff; }
+        .pstat.blocks .pstat-icon  { background: rgba(191,90,242,.15);  color: #bf5af2; }
+        .pstat.tnt .pstat-icon     { background: rgba(255,92,55,.15);   color: #ff5c37; }
+        .pstat.obsidian .pstat-icon{ background: rgba(88,101,242,.15);  color: #5865f2; }
+        .pstat.netherite .pstat-icon{ background: rgba(255,0,85,.15);   color: #ff0055; }
+        .pstat.elytra .pstat-icon  { background: rgba(48,209,88,.15);   color: #30d158; }
+        .pstat.totems .pstat-icon  { background: rgba(255,215,0,.15);   color: #ffd700; }
+        .pstat.arrows .pstat-icon  { background: rgba(255,255,255,.1); color: #fff; }
         .pstat-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .pstat-val { font-size: 20px; font-weight: 700; color: #fff; line-height: 1; }
-        .pstat-label { font-size: 12px; color: #86868b; white-space: nowrap; }
+        .pstat-val { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
+        .pstat-label { font-size: 11px; color: #86868b; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
 
         .stats-state-box {
             max-width: 440px; margin: 0 auto; text-align: center; padding: 64px 40px;
@@ -180,7 +209,51 @@
             .player-stats-grid { grid-template-columns: repeat(2, 1fr); }
             .player-card { padding: 20px; }
             .player-card-header { flex-direction: column; align-items: flex-start; }
+            .player-card-avatar { width: 80px; height: 80px; }
+            .player-card-info h2 { font-size: 24px; }
+            .player-meta-row { flex-direction: column; gap: 8px; }
+            .player-badges { margin-top: 10px; }
             .lb-meta { display: none; }
+        }
+
+        .lb-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .lb-sort-select {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 8px 14px;
+        }
+        .lb-sort-select label {
+            font-size: 12px;
+            color: #6e6e73;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .lb-sort-select select {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            padding-right: 20px;
+        }
+        .lb-sort-select select option {
+            background: #1c1c1e;
+            color: #fff;
         }
     </style>
 </head>
@@ -209,7 +282,23 @@
     <!-- Leaderboard — default view -->
     <section class="stats-body outer" id="leaderboard-section">
         <div class="inner">
-            <p class="stats-section-label"><i class="fa-solid fa-khanda"></i> Top Killers</p>
+            <div class="lb-header-row">
+                <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Leaderboard</p>
+                <div class="lb-sort-select">
+                    <label>Sort by</label>
+                    <select id="lb-sort" onchange="loadLeaderboard()">
+                        <option value="kills">Most Kills</option>
+                        <option value="deaths">Most Deaths</option>
+                        <option value="mobs_killed">Most Mob Kills</option>
+                        <option value="time_played">Most Time Played</option>
+                        <option value="blocks_broken">Most Blocks Broken</option>
+                        <option value="blocks_placed">Most Blocks Placed</option>
+                        <option value="tnt_used">Most TNT Used</option>
+                        <option value="obsidian_mined">Most Obsidian Mined</option>
+                        <option value="netherite_mined">Most Netherite</option>
+                    </select>
+                </div>
+            </div>
             <div class="lb-table" id="leaderboard-list">
                 <div class="lb-skeleton"></div>
                 <div class="lb-skeleton"></div>
@@ -229,32 +318,53 @@
 
             <div class="player-card">
                 <div class="player-card-header">
-                    <div class="player-card-avatar">
-                        <img id="player-skin" src="" alt="Skin">
+                    <div class="player-card-avatar-wrap">
+                        <div class="player-card-avatar">
+                            <img id="player-skin" src="" alt="Skin">
+                        </div>
+                        <div class="player-rank-badge" id="player-rank">#1</div>
                     </div>
                     <div class="player-card-info">
                         <h2 id="player-name"></h2>
-                        <code id="player-uuid"></code>
-                        <span class="player-join-date">
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span id="join-date"></span>
-                            </span>
+                        <div class="player-uuid-row">
+                            <code id="player-uuid"></code>
+                            <button class="player-copy-btn" onclick="copyUuid()"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                        <div class="player-meta-row">
+                            <div class="player-meta-item join">
+                                <i class="fa-solid fa-calendar-plus"></i>
+                                <span>Joined <span id="join-date"></span></span>
+                            </div>
+                            <div class="player-meta-item seen">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Last seen <span id="last-seen"></span></span>
+                            </div>
+                            <div class="player-meta-item kd">
+                                <i class="fa-solid fa-divide"></i>
+                                <span>K/D <span id="player-kd"></span></span>
+                            </div>
+                        </div>
+                        <div class="player-badges" style="margin-top: 14px;">
+                            <span class="player-badge kills"><i class="fa-solid fa-khanda"></i> <span id="badge-kills">0</span> kills</span>
+                            <span class="player-badge deaths"><i class="fa-solid fa-skull"></i> <span id="badge-deaths">0</span> deaths</span>
+                            <span class="player-badge ratio"><i class="fa-solid fa-arrow-trend-up"></i> <span id="badge-ratio">0.00</span></span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="player-stats-grid">
-                    <div class="pstat deaths">
-                        <div class="pstat-icon"><i class="fa-solid fa-skull"></i></div>
-                        <div class="pstat-body">
-                            <span class="pstat-val" id="stat-deaths">—</span>
-                            <span class="pstat-label">Deaths</span>
-                        </div>
-                    </div>
                     <div class="pstat kills">
                         <div class="pstat-icon"><i class="fa-solid fa-khanda"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-kills">—</span>
                             <span class="pstat-label">Kills</span>
+                        </div>
+                    </div>
+                    <div class="pstat deaths">
+                        <div class="pstat-icon"><i class="fa-solid fa-skull"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-deaths">—</span>
+                            <span class="pstat-label">Deaths</span>
                         </div>
                     </div>
                     <div class="pstat mobs">
@@ -265,7 +375,7 @@
                         </div>
                     </div>
                     <div class="pstat time">
-                        <div class="pstat-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="pstat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-time">—</span>
                             <span class="pstat-label">Time Played</span>
@@ -296,7 +406,7 @@
                         <div class="pstat-icon"><i class="fa-solid fa-gem"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-obsidian-mined">—</span>
-                            <span class="pstat-label">Obsidian</span>
+                            <span class="pstat-label">Obsidian Mined</span>
                         </div>
                     </div>
                     <div class="pstat netherite">
@@ -362,7 +472,7 @@
 
 <script src="assets/components.js"></script>
 <script>
-    const API_URL = 'http://192.168.2.10:5300';
+    const API_URL = 'https://api.xera.ca';
 
     document.addEventListener('DOMContentLoaded', () => {
         loadLeaderboard();
@@ -388,7 +498,8 @@
 
     async function loadLeaderboard() {
         try {
-            const res = await fetch(`${API_URL}/leaderboard?sort=kills&limit=10`);
+            const sort = document.getElementById('lb-sort').value;
+            const res = await fetch(`${API_URL}/leaderboard?sort=${sort}&limit=10`);
             const data = await res.json();
             if (data.success && data.data) {
                 renderLeaderboard(data.data);
@@ -402,13 +513,30 @@
 
     function renderLeaderboard(players) {
         const list = document.getElementById('leaderboard-list');
+        const sort = document.getElementById('lb-sort').value;
+        const statLabels = {
+            kills: 'kills',
+            deaths: 'deaths',
+            mobs_killed: 'mob kills',
+            time_played: 'played',
+            blocks_broken: 'blocks broken',
+            blocks_placed: 'blocks placed',
+            tnt_used: 'TNT',
+            obsidian_mined: 'obsidian',
+            netherite_mined: 'netherite'
+        };
+        const label = statLabels[sort] || sort;
+        const formatValue = (p, sort) => {
+            if (sort === 'time_played') return formatTime(p[sort]);
+            return formatNumber(p[sort]);
+        };
         list.innerHTML = players.map((p, i) => `
                 <div class="lb-row" onclick="searchPlayer('${p.name}')">
                     <span class="lb-num">#${i + 1}</span>
                     <img class="lb-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
                     <span class="lb-pname">${p.name}</span>
                     <span class="lb-meta">${formatTime(p.time_played)} played</span>
-                    <span class="lb-kills-badge">${formatNumber(p.kills)} kills</span>
+                    <span class="lb-kills-badge">${formatValue(p, sort)} ${label}</span>
                 </div>
             `).join('');
     }
@@ -445,9 +573,18 @@
         document.getElementById('player-name').textContent = p.name;
         document.getElementById('player-uuid').textContent = p.uuid;
         document.getElementById('join-date').textContent = formatDate(p.join_date);
+        document.getElementById('last-seen').textContent = formatDate(p.last_seen);
 
-        document.getElementById('stat-deaths').textContent = formatNumber(p.deaths);
-        document.getElementById('stat-kills').textContent = formatNumber(p.kills);
+        const kills = p.kills || 0;
+        const deaths = p.deaths || 0;
+        const kd = deaths > 0 ? (kills / deaths).toFixed(2) : (kills > 0 ? '∞' : '0');
+        document.getElementById('player-kd').textContent = kd;
+        document.getElementById('badge-kills').textContent = formatNumber(kills);
+        document.getElementById('badge-deaths').textContent = formatNumber(deaths);
+        document.getElementById('badge-ratio').textContent = kd;
+
+        document.getElementById('stat-deaths').textContent = formatNumber(deaths);
+        document.getElementById('stat-kills').textContent = formatNumber(kills);
         document.getElementById('stat-mobs').textContent = formatNumber(p.mobs_killed);
         document.getElementById('stat-time').textContent = formatTime(p.time_played);
         document.getElementById('stat-blocks-broken').textContent = formatNumber(p.blocks_broken);
@@ -458,6 +595,14 @@
         document.getElementById('stat-elytra').textContent = formatNumber(p.elytra_used);
         document.getElementById('stat-totems').textContent = formatNumber(p.totems_used);
         document.getElementById('stat-arrows').textContent = formatNumber(p.arrows_shot);
+    }
+
+    function copyUuid() {
+        const uuid = document.getElementById('player-uuid').textContent;
+        navigator.clipboard.writeText(uuid);
+        const btn = document.querySelector('.player-copy-btn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-copy"></i>'; }, 1500);
     }
 
     function showLoading() {
