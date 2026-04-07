@@ -1,0 +1,37 @@
+{
+  "stats": {
+    "minecraft:mined": {
+      "minecraft:short_grass": 8,
+      "minecraft:pink_petals": 3
+    },
+    "minecraft:used": {
+      "minecraft:pink_petals": 1
+    },
+    "minecraft:killed_by": {
+      "minecraft:skeleton": 1,
+      "minecraft:player": 1
+    },
+    "minecraft:custom": {
+      "minecraft:time_since_rest": 2855,
+      "minecraft:walk_one_cm": 3797,
+      "minecraft:leave_game": 1,
+      "minecraft:damage_taken": 482,
+      "minecraft:play_time": 12825,
+      "minecraft:jump": 148,
+      "minecraft:time_since_death": 2831,
+      "minecraft:drop": 1,
+      "minecraft:sprint_one_cm": 14195,
+      "minecraft:fall_one_cm": 4200,
+      "minecraft:total_world_time": 12825,
+      "minecraft:fly_one_cm": 34619,
+      "minecraft:deaths": 2
+    },
+    "minecraft:picked_up": {
+      "minecraft:pink_petals": 4
+    },
+    "minecraft:dropped": {
+      "minecraft:pink_petals": 3
+    }
+  },
+  "DataVersion": 4671
+}

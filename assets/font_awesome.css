@@ -195,3 +195,22 @@
 .fa-flask:before {
     content: "\f0c3";
 }
+.fa-skull:before { content: "\f54c"; }
+.fa-ghost:before { content: "\f6e2"; }
+.fa-clock:before { content: "\f017"; }
+.fa-hammer:before { content: "\f6e3"; }
+.fa-bomb:before { content: "\f1e2"; }
+.fa-gem:before { content: "\f3a5"; }
+.fa-dragon:before { content: "\f6d5"; }
+.fa-heart:before { content: "\f004"; }
+.fa-crosshairs:before { content: "\f05b"; }
+.fa-shoe-prints:before { content: "\f54b"; }
+.fa-arrow-left:before { content: "\f060"; }
+.fa-copy:before { content: "\f0c5"; }
+.fa-check:before { content: "\f00c"; }
+.fa-calendar-plus:before { content: "\f271"; }
+.fa-divide:before { content: "\f529"; }
+.fa-arrow-trend-up:before { content: "\e098"; }
+.fa-trophy:before { content: "\f091"; }
+.fa-magnifying-glass:before { content: "\f002"; }
+.fa-hourglass-half:before { content: "\f252"; }

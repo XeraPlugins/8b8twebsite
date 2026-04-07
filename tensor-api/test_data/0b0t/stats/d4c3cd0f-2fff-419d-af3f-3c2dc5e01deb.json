@@ -1,0 +1,48 @@
+{
+  "stats": {
+    "minecraft:dropped": {
+      "minecraft:filled_map": 2
+    },
+    "minecraft:picked_up": {
+      "minecraft:leather": 4,
+      "minecraft:azure_bluet": 3,
+      "minecraft:beef": 4
+    },
+    "minecraft:used": {
+      "minecraft:flint_and_steel": 2,
+      "minecraft:map": 4,
+      "minecraft:ender_pearl": 2,
+      "minecraft:netherite_spear": 3,
+      "minecraft:tnt": 13,
+      "minecraft:mace": 3,
+      "minecraft:obsidian": 16,
+      "minecraft:spruce_chest_boat": 1
+    },
+    "minecraft:killed": {
+      "minecraft:cow": 2
+    },
+    "minecraft:custom": {
+      "minecraft:time_since_rest": 11869,
+      "minecraft:walk_one_cm": 21104,
+      "minecraft:leave_game": 1,
+      "minecraft:horse_one_cm": 5403,
+      "minecraft:mob_kills": 2,
+      "minecraft:walk_under_water_one_cm": 3975,
+      "minecraft:damage_dealt": 251,
+      "minecraft:boat_one_cm": 3946,
+      "minecraft:play_time": 64328,
+      "minecraft:jump": 44,
+      "minecraft:time_since_death": 11843,
+      "minecraft:drop": 2,
+      "minecraft:sprint_one_cm": 5450,
+      "minecraft:fall_one_cm": 650,
+      "minecraft:total_world_time": 64328,
+      "minecraft:fly_one_cm": 1342088,
+      "minecraft:walk_on_water_one_cm": 286,
+      "minecraft:crouch_one_cm": 223,
+      "minecraft:sneak_time": 241,
+      "minecraft:deaths": 1
+    }
+  },
+  "DataVersion": 4671
+}

@@ -1,11 +1,10 @@
 use axum::{
     extract::State,
-    http::{StatusCode, header},
+    http::StatusCode,
     response::Json,
     routing::{get},
     Router,
 };
-use axum::http::header::HeaderValue;
 use serde::{Deserialize, Serialize};
 use sqlx::{sqlite::SqliteConnectOptions, SqlitePool};
 use std::str::FromStr;
@@ -20,6 +19,16 @@ use fastnbt::from_bytes;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher, Event};
 use blake3::Hasher;
 
+fn is_safe_path(s: &str) -> bool {
+    if s.is_empty() || s.len() > 64 {
+        return false;
+    }
+    if s.contains("..") || s.contains('/') || s.contains('\\') || s.contains('\0') {
+        return false;
+    }
+    s.chars().all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
+}
+
 #[derive(Clone)]
 struct AppState {
     db: SqlitePool,
@@ -31,16 +40,10 @@ struct AppState {
 
 #[derive(Debug, Deserialize)]
 struct PlayerDat {
-    #[serde(rename = "LastKnownName")]
-    last_known_name: Option<String>,
     #[serde(rename = "bukkit")]
     bukkit_data: Option<BukkitData>,
     #[serde(rename = "Paper")]
     paper_data: Option<PaperData>,
-    #[serde(rename = "firstPlayed")]
-    first_played: Option<i64>,
-    #[serde(rename = "lastPlayed")]
-    last_played: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default)]
@@ -62,6 +65,9 @@ struct PaperData {
 }
 
 fn read_player_dat(server_path: &str, uuid: &str) -> Option<(String, i64, i64, i64)> {
+    if !is_safe_path(uuid) {
+        return None;
+    }
     let dat_path = format!("{}/0b0t/playerdata/{}.dat", server_path, uuid);
 
     let file = match File::open(&dat_path) {
@@ -79,53 +85,30 @@ fn read_player_dat(server_path: &str, uuid: &str) -> Option<(String, i64, i64, i
 
     match player {
         Ok(p) => {
-            let name = p.last_known_name
-                .or_else(|| p.bukkit_data.as_ref().and_then(|b| b.last_known_name.clone()))
+            let name = p.bukkit_data.as_ref()
+                .and_then(|b| b.last_known_name.clone())
                 .unwrap_or_else(|| uuid.to_string());
-            let first = p.first_played.or_else(|| p.bukkit_data.as_ref().and_then(|b| b.first_played)).unwrap_or(0);
-            let last = p.last_played.or_else(|| p.bukkit_data.as_ref().and_then(|b| b.last_played)).unwrap_or(0);
-            let last_seen = p.paper_data.as_ref().and_then(|p| p.last_seen).unwrap_or(last);
+            let first = p.bukkit_data.as_ref()
+                .and_then(|b| b.first_played)
+                .unwrap_or(0);
+            let last = p.bukkit_data.as_ref()
+                .and_then(|b| b.last_played)
+                .unwrap_or(0);
+            let last_seen = p.paper_data.as_ref()
+                .and_then(|p| p.last_seen)
+                .unwrap_or(last);
             Some((name, first, last, last_seen))
         }
         Err(_) => None,
     }
 }
 
-#[derive(Debug, Deserialize)]
-struct UserCacheEntry {
-    uuid: String,
-    name: String,
-}
-
-fn get_player_name_from_usercache(server_path: &str, uuid: &str) -> Option<String> {
-    let cache_path = format!("{}/usercache.json", server_path);
-    let content = std::fs::read_to_string(cache_path).ok()?;
-    let entries: Vec<UserCacheEntry> = serde_json::from_str(&content).ok()?;
-
-    entries.into_iter()
-        .find(|e| e.uuid == uuid)
-        .map(|e| e.name)
-}
-
-fn get_player_uuid_from_usercache(server_path: &str, name: &str) -> Option<String> {
-    let cache_path = format!("{}/usercache.json", server_path);
-    let content = std::fs::read_to_string(cache_path).ok()?;
-    let entries: Vec<UserCacheEntry> = serde_json::from_str(&content).ok()?;
-
-    entries.into_iter()
-        .find(|e| e.name.to_lowercase() == name.to_lowercase())
-        .map(|e| e.uuid)
-}
-
 fn resolve_player_info(server_path: &str, uuid: &str) -> (String, i64, i64, i64) {
-    let name_from_cache = get_player_name_from_usercache(server_path, uuid);
-
     if let Some((name, first, last, last_seen)) = read_player_dat(server_path, uuid) {
-        let final_name = name_from_cache.unwrap_or(name);
-        return (final_name, first, last, last_seen);
+        return (name, first, last, last_seen);
     }
 
-    (name_from_cache.unwrap_or_else(|| uuid.to_string()), 0, 0, 0)
+    (uuid.to_string(), 0, 0, 0)
 }
 
 #[derive(Debug, Deserialize)]
@@ -161,9 +144,13 @@ struct PlayerStatsJson {
     obsidian_mined: i32,
     obsidian_placed: i32,
     netherite_mined: i32,
+    totems_used: i32,
 }
 
 fn read_player_stats(server_path: &str, uuid: &str) -> Option<PlayerStatsJson> {
+    if !is_safe_path(uuid) {
+        return None;
+    }
     let stats_path = format!("{}/0b0t/stats/{}.json", server_path, uuid);
     let content = std::fs::read_to_string(&stats_path).ok()?;
     let stats: StatsJson = serde_json::from_str(&content).ok()?;
@@ -189,6 +176,7 @@ fn read_player_stats(server_path: &str, uuid: &str) -> Option<PlayerStatsJson> {
         obsidian_mined: *mined.get("minecraft:obsidian").unwrap_or(&0),
         obsidian_placed: *used.get("minecraft:obsidian").unwrap_or(&0),
         netherite_mined: *mined.get("minecraft:netherite_block").unwrap_or(&0),
+        totems_used: *used.get("minecraft:totem_of_undying").unwrap_or(&0),
     })
 }
 
@@ -201,7 +189,6 @@ struct PlayerStats {
     kills: Option<i32>,
     mobs_killed: Option<i32>,
     blocks_broken: Option<i32>,
-    blocks_placed: Option<i32>,
     time_played: Option<i32>,
     tnt_used: Option<i32>,
     arrows_shot: Option<i32>,
@@ -224,7 +211,6 @@ struct PlayerResponse {
     kills: i32,
     mobs_killed: i32,
     blocks_broken: i32,
-    blocks_placed: i32,
     time_played: i32,
     tnt_used: i32,
     arrows_shot: i32,
@@ -253,6 +239,9 @@ fn get_file_hash(path: &str) -> Option<String> {
 }
 
 async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
+    if !is_safe_path(uuid) {
+        return false;
+    }
     let stats_path = format!("{}/0b0t/stats/{}.json", state.server_path, uuid);
     let file_hash = match get_file_hash(&stats_path) {
         Some(h) => h,
@@ -272,8 +261,8 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
         let (name, first_played, _last_played, last_seen) = resolve_player_info(&state.server_path, uuid);
 
         let result = sqlx::query(
-            "INSERT INTO player_stats (uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            "INSERT INTO player_stats (uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
              ON CONFLICT(uuid) DO UPDATE SET
                 name = excluded.name,
                 join_date = excluded.join_date,
@@ -282,7 +271,6 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
                 kills = excluded.kills,
                 mobs_killed = excluded.mobs_killed,
                 blocks_broken = excluded.blocks_broken,
-                blocks_placed = excluded.blocks_placed,
                 time_played = excluded.time_played,
                 tnt_used = excluded.tnt_used,
                 arrows_shot = excluded.arrows_shot,
@@ -303,7 +291,6 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
         .bind(stats.kills)
         .bind(stats.mobs_killed)
         .bind(stats.blocks_broken)
-        .bind(0i32)
         .bind(stats.time_played)
         .bind(stats.tnt_used)
         .bind(stats.arrows_shot)
@@ -313,7 +300,7 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
         .bind(stats.obsidian_placed)
         .bind(stats.netherite_mined)
         .bind(stats.elytra_used)
-        .bind(0i32)
+        .bind(stats.totems_used)
         .execute(&state.db)
         .await;
 
@@ -499,15 +486,14 @@ async fn sync_stats(
 
     for player in players {
         let result = sqlx::query(
-            "INSERT INTO player_stats (uuid, name, join_date, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            "INSERT INTO player_stats (uuid, name, join_date, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
              ON CONFLICT(uuid) DO UPDATE SET
                 name = excluded.name,
                 deaths = excluded.deaths,
                 kills = excluded.kills,
                 mobs_killed = excluded.mobs_killed,
                 blocks_broken = excluded.blocks_broken,
-                blocks_placed = excluded.blocks_placed,
                 time_played = excluded.time_played,
                 tnt_used = excluded.tnt_used,
                 arrows_shot = excluded.arrows_shot,
@@ -527,7 +513,6 @@ async fn sync_stats(
         .bind(player.kills.unwrap_or(0))
         .bind(player.mobs_killed.unwrap_or(0))
         .bind(player.blocks_broken.unwrap_or(0))
-        .bind(player.blocks_placed.unwrap_or(0))
         .bind(player.time_played.unwrap_or(0))
         .bind(player.tnt_used.unwrap_or(0))
         .bind(player.arrows_shot.unwrap_or(0))
@@ -563,7 +548,6 @@ struct PlayerQuery {
     kills: i32,
     mobs_killed: i32,
     blocks_broken: i32,
-    blocks_placed: i32,
     time_played: i32,
     tnt_used: i32,
     arrows_shot: i32,
@@ -576,14 +560,22 @@ struct PlayerQuery {
     totems_used: i32,
 }
 
-fn get_skin_url(uuid: &str) -> String {
-    format!("https://api.mineatar.io/face/{}", uuid)
+fn get_skin_url(name: &str) -> String {
+    format!("https://mc-heads.net/avatar/{}", name)
 }
 
 async fn get_player(
     State(state): State<AppState>,
     axum::extract::Path(name): axum::extract::Path<String>,
 ) -> (StatusCode, Json<ApiResponse>) {
+    if !is_safe_path(&name) {
+        return (StatusCode::BAD_REQUEST, Json(ApiResponse {
+            success: false,
+            data: None,
+            error: Some("Invalid player name or UUID format".to_string()),
+        }));
+    }
+
     let search_key = name.to_lowercase();
 
     {
@@ -599,7 +591,6 @@ async fn get_player(
                     kills: player.kills,
                     mobs_killed: player.mobs_killed,
                     blocks_broken: player.blocks_broken,
-                    blocks_placed: player.blocks_placed,
                     time_played: player.time_played,
                     tnt_used: player.tnt_used,
                     arrows_shot: player.arrows_shot,
@@ -610,7 +601,7 @@ async fn get_player(
                     netherite_mined: player.netherite_mined,
                     elytra_used: player.elytra_used,
                     totems_used: player.totems_used,
-                    skin_url: get_skin_url(&player.uuid),
+                    skin_url: get_skin_url(&player.name),
                 };
                 return (StatusCode::OK, Json(ApiResponse {
                     success: true,
@@ -622,7 +613,7 @@ async fn get_player(
     }
 
     let result = sqlx::query_as::<_, PlayerQuery>(
-         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
+         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
          FROM player_stats WHERE LOWER(name) = ? OR LOWER(uuid) = ?"
     )
     .bind(&search_key)
@@ -641,7 +632,6 @@ async fn get_player(
                 kills: player.kills,
                 mobs_killed: player.mobs_killed,
                 blocks_broken: player.blocks_broken,
-                blocks_placed: player.blocks_placed,
                 time_played: player.time_played,
                 tnt_used: player.tnt_used,
                 arrows_shot: player.arrows_shot,
@@ -652,7 +642,7 @@ async fn get_player(
                 netherite_mined: player.netherite_mined,
                 elytra_used: player.elytra_used,
                 totems_used: player.totems_used,
-                skin_url: get_skin_url(&player.uuid),
+                skin_url: get_skin_url(&player.name),
             };
 
             let mut cache = state.cache.write().await;
@@ -665,67 +655,11 @@ async fn get_player(
             }))
         }
         _ => {
-            if let Some(uuid) = get_player_uuid_from_usercache(&state.server_path, &name) {
-                if sync_single_player(&state, &uuid).await {
-                    let result = sqlx::query_as::<_, PlayerQuery>(
-                         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
-                         FROM player_stats WHERE LOWER(name) = ? OR LOWER(uuid) = ?"
-                    )
-                    .bind(&search_key)
-                    .bind(&search_key)
-                    .fetch_optional(&state.db)
-                    .await;
-
-                    if let Ok(Some(player)) = result {
-                        let response = PlayerResponse {
-                            uuid: player.uuid.clone(),
-                            name: player.name.clone(),
-                            join_date: player.join_date,
-                            last_seen: player.last_seen,
-                            deaths: player.deaths,
-                            kills: player.kills,
-                            mobs_killed: player.mobs_killed,
-                            blocks_broken: player.blocks_broken,
-                            blocks_placed: player.blocks_placed,
-                            time_played: player.time_played,
-                            tnt_used: player.tnt_used,
-                            arrows_shot: player.arrows_shot,
-                            items_dropped: player.items_dropped,
-                            distance_travelled: player.distance_travelled,
-                            obsidian_mined: player.obsidian_mined,
-                            obsidian_placed: player.obsidian_placed,
-                            netherite_mined: player.netherite_mined,
-                            elytra_used: player.elytra_used,
-                            totems_used: player.totems_used,
-                            skin_url: get_skin_url(&player.uuid),
-                        };
-
-                        (StatusCode::OK, Json(ApiResponse {
-                            success: true,
-                            data: Some(response),
-                            error: None,
-                        }))
-                    } else {
-                        (StatusCode::NOT_FOUND, Json(ApiResponse {
-                            success: false,
-                            data: None,
-                            error: Some("Player not found".to_string()),
-                        }))
-                    }
-                } else {
-                    (StatusCode::NOT_FOUND, Json(ApiResponse {
-                        success: false,
-                        data: None,
-                        error: Some("Player not found".to_string()),
-                    }))
-                }
-            } else {
-                (StatusCode::NOT_FOUND, Json(ApiResponse {
-                    success: false,
-                    data: None,
-                    error: Some("Player not found".to_string()),
-                }))
-            }
+            (StatusCode::NOT_FOUND, Json(ApiResponse {
+                success: false,
+                data: None,
+                error: Some("Player not found".to_string()),
+            }))
         }
     }
 }
@@ -735,9 +669,19 @@ struct LeaderboardEntry {
     uuid: String,
     name: String,
     join_date: i64,
+    last_seen: i64,
     deaths: i32,
     kills: i32,
+    mobs_killed: i32,
     time_played: i32,
+    blocks_broken: i32,
+    tnt_used: i32,
+    obsidian_mined: i32,
+    netherite_mined: i32,
+    elytra_used: i32,
+    totems_used: i32,
+    arrows_shot: i32,
+    distance_travelled: i32,
     skin_url: String,
 }
 
@@ -745,7 +689,7 @@ async fn get_leaderboard(
     State(state): State<AppState>,
     axum::extract::Query(params): axum::extract::Query<std::collections::HashMap<String, String>>,
 ) -> (StatusCode, Json<serde_json::Value>) {
-    let limit = params.get("limit").and_then(|l| l.parse().ok()).unwrap_or(10);
+    let limit = params.get("limit").and_then(|l| l.parse().ok()).unwrap_or(10).clamp(1, 100);
     let sort = params.get("sort").map(|s| s.as_str()).unwrap_or("kills");
 
     let order_column = match sort {
@@ -753,15 +697,20 @@ async fn get_leaderboard(
         "mobs_killed" => "mobs_killed",
         "time_played" => "time_played",
         "blocks_broken" => "blocks_broken",
-        "blocks_placed" => "blocks_placed",
         "tnt_used" => "tnt_used",
         "obsidian_mined" => "obsidian_mined",
+        "obsidian_placed" => "obsidian_placed",
         "netherite_mined" => "netherite_mined",
+        "elytra_used" => "elytra_used",
+        "totems_used" => "totems_used",
+        "arrows_shot" => "arrows_shot",
+        "distance_travelled" => "distance_travelled",
+        "last_seen" => "last_seen",
         _ => "kills",
     };
 
     let query = format!(
-         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, blocks_placed, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
+         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
          FROM player_stats ORDER BY {} DESC LIMIT ?",
          order_column
     );
@@ -774,15 +723,24 @@ async fn get_leaderboard(
     match result {
         Ok(players) => {
             let entries: Vec<LeaderboardEntry> = players.into_iter().map(|p| {
-                let uuid = p.uuid.clone();
                 LeaderboardEntry {
                     uuid: p.uuid,
-                    name: p.name,
+                    name: p.name.clone(),
                     join_date: p.join_date,
+                    last_seen: p.last_seen,
                     deaths: p.deaths,
                     kills: p.kills,
+                    mobs_killed: p.mobs_killed,
                     time_played: p.time_played,
-                    skin_url: get_skin_url(&uuid),
+                    blocks_broken: p.blocks_broken,
+                    tnt_used: p.tnt_used,
+                    obsidian_mined: p.obsidian_mined,
+                    netherite_mined: p.netherite_mined,
+                    elytra_used: p.elytra_used,
+                    totems_used: p.totems_used,
+                    arrows_shot: p.arrows_shot,
+                    distance_travelled: p.distance_travelled,
+                    skin_url: get_skin_url(&p.name),
                 }
             }).collect();
 
@@ -796,6 +754,18 @@ async fn get_leaderboard(
             "error": "Database error"
         }))),
     }
+}
+
+async fn health() -> Json<serde_json::Value> {
+    Json(serde_json::json!({
+        "status": "ok",
+        "version": "1.1.0",
+        "endpoints": {
+            "GET /player/:name": "Get player stats by name or UUID",
+            "GET /leaderboard": "Get leaderboard (params: sort, limit)",
+            "GET /health": "Health check"
+        }
+    }))
 }
 
 #[tokio::main]
@@ -821,7 +791,6 @@ async fn main() {
             kills INTEGER DEFAULT 0,
             mobs_killed INTEGER DEFAULT 0,
             blocks_broken INTEGER DEFAULT 0,
-            blocks_placed INTEGER DEFAULT 0,
             time_played INTEGER DEFAULT 0,
             tnt_used INTEGER DEFAULT 0,
             arrows_shot INTEGER DEFAULT 0,
@@ -847,7 +816,6 @@ async fn main() {
         file_hashes: Arc::new(RwLock::new(HashMap::new())),
     };
 
-    // FIX: run startup sync in background so the server binds immediately
     let state_for_sync = state.clone();
     tokio::spawn(async move {
         let result = sync_blocks_on_startup(&state_for_sync).await;
@@ -892,6 +860,7 @@ async fn main() {
     let app = Router::new()
         .route("/player/:name", get(get_player))
         .route("/leaderboard", get(get_leaderboard))
+        .route("/health", get(health))
         .layer(cors)
         .with_state(state);
 
@@ -899,3 +868,6 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind("0.0.0.0:5300").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
+
+#[cfg(test)]
+mod tests;

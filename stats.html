@@ -4,265 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stats - 8b8t</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css">
-    <style>
-        .stats-page-main {
-            background: radial-gradient(circle at 50% 0%, rgba(41,151,255,0.1) 0%, rgba(0,0,0,0) 60%), #000;
-            padding-top: 75px;
-            position: relative;
-            min-height: unset !important;
-        }
-        .stats-hero {
-            padding: 48px 0 36px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .stats-hero-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 32px;
-            flex-wrap: wrap;
-        }
-        .stats-page-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0 0 4px;
-            letter-spacing: -0.02em;
-        }
-        .stats-page-sub {
-            font-size: 15px;
-            color: #6e6e73;
-            margin: 0;
-        }
-        .stats-search-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: 8px 8px 8px 18px;
-            flex-shrink: 0;
-            width: 380px;
-            max-width: 100%;
-            transition: border-color 0.2s;
-        }
-        .stats-search-form:focus-within {
-            border-color: rgba(41,151,255,0.5);
-            background: rgba(255,255,255,0.06);
-        }
-        .stats-search-form i { color: #6e6e73; font-size: 14px; flex-shrink: 0; }
-        .stats-search-form input {
-            flex: 1; background: transparent; border: none; outline: none;
-            color: #fff; font-size: 15px; font-family: inherit; min-width: 0;
-        }
-        .stats-search-form input::placeholder { color: #6e6e73; }
-        .stats-search-form button {
-            background: #2997ff; border: none; border-radius: 10px; color: #fff;
-            font-size: 14px; font-weight: 600; font-family: inherit;
-            padding: 10px 18px; cursor: pointer; transition: background 0.2s, transform 0.15s;
-            white-space: nowrap; flex-shrink: 0;
-        }
-        .stats-search-form button:hover { background: #0a84ff; transform: scale(1.03); }
-
-        .stats-body { padding: 40px 0 80px; }
-
-        .stats-section-label {
-            font-size: 12px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.1em; color: #6e6e73; margin: 0 0 16px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .lb-table {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 18px; overflow: hidden; max-width: 860px;
-        }
-        .lb-row {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,0.04);
-            cursor: pointer; transition: background 0.18s;
-        }
-        .lb-row:last-child { border-bottom: none; }
-        .lb-row:hover { background: rgba(41,151,255,0.07); }
-        .lb-num { font-size: 13px; font-weight: 800; color: #2997ff; min-width: 32px; }
-        .lb-avatar { width: 36px; height: 36px; border-radius: 7px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
-        .lb-pname { flex: 1; font-size: 15px; font-weight: 600; color: #f5f5f7; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .lb-meta { font-size: 13px; color: #6e6e73; white-space: nowrap; }
-        .lb-kills-badge {
-            font-size: 13px; font-weight: 700; color: #ff9f0a;
-            background: rgba(255,159,10,0.1); border: 1px solid rgba(255,159,10,0.2);
-            border-radius: 8px; padding: 4px 10px; white-space: nowrap; flex-shrink: 0;
-        }
-        .lb-skeleton {
-            height: 64px; border-bottom: 1px solid rgba(255,255,255,0.04);
-            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
-            background-size: 200% 100%; animation: shimmer 1.4s infinite;
-        }
-        .lb-skeleton:last-child { border-bottom: none; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .lb-unavailable {
-            padding: 60px 24px; text-align: center; color: #6e6e73;
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
-        }
-        .lb-unavailable i { font-size: 28px; opacity: 0.4; }
-        .lb-unavailable p { font-size: 14px; margin: 0; }
-
-        .stats-back-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #86868b; padding: 10px 18px; border-radius: 10px;
-            font-size: 14px; font-weight: 500; font-family: inherit;
-            cursor: pointer; transition: all 0.2s; margin-bottom: 28px;
-        }
-        .stats-back-btn:hover { background: rgba(255,255,255,0.09); color: #fff; border-color: rgba(255,255,255,0.18); }
-
-        .player-card {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 22px; padding: 36px; max-width: 1000px;
-        }
-        .player-card-header {
-            display: flex; align-items: flex-start; gap: 24px;
-            margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .player-card-avatar-wrap { position: relative; flex-shrink: 0; }
-        .player-card-avatar { width: 96px; height: 96px; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.08); }
-        .player-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .player-rank-badge {
-            position: absolute; bottom: -8px; right: -8px;
-            background: linear-gradient(135deg, #2997ff, #0a84ff);
-            color: #fff; font-size: 11px; font-weight: 700;
-            padding: 4px 10px; border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(41,151,255,0.4);
-        }
-        .player-card-info { flex: 1; min-width: 0; }
-        .player-card-info h2 { font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 4px; letter-spacing: -0.02em; }
-        .player-uuid-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .player-card-info code { font-size: 12px; color: #6e6e73; font-family: monospace; }
-        .player-copy-btn {
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-            color: #86868b; padding: 4px 8px; border-radius: 6px; cursor: pointer;
-            transition: all 0.2s; font-size: 11px;
-        }
-        .player-copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .player-meta-row { display: flex; flex-wrap: wrap; gap: 16px; }
-        .player-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #86868b; }
-        .player-meta-item i { font-size: 12px; }
-        .player-meta-item.join i { color: #30d158; }
-        .player-meta-item.seen i { color: #ff9f0a; }
-        .player-meta-item.kd i { color: #bf5af2; }
-        .player-meta-item.rank i { color: #2997ff; }
-        .player-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-        .player-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
-        }
-        .player-badge.kills { background: rgba(255,159,10,0.12); color: #ff9f0a; border: 1px solid rgba(255,159,10,0.2); }
-        .player-badge.deaths { background: rgba(255,69,58,0.12); color: #ff453a; border: 1px solid rgba(255,69,58,0.2); }
-        .player-badge.ratio { background: rgba(191,90,242,0.12); color: #bf5af2; border: 1px solid rgba(191,90,242,0.2); }
-
-        .player-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .pstat {
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px; padding: 20px 16px; transition: all 0.25s;
-        }
-        .pstat:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); border-color: rgba(255,255,255,0.12); }
-        .pstat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
-        .pstat.deaths .pstat-icon  { background: rgba(255,69,58,.15);   color: #ff453a; }
-        .pstat.kills .pstat-icon   { background: rgba(255,159,10,.15);  color: #ff9f0a; }
-        .pstat.mobs .pstat-icon    { background: rgba(162,132,94,.15);  color: #a2845e; }
-        .pstat.time .pstat-icon    { background: rgba(41,151,255,.15);  color: #2997ff; }
-        .pstat.blocks .pstat-icon  { background: rgba(191,90,242,.15);  color: #bf5af2; }
-        .pstat.tnt .pstat-icon     { background: rgba(255,92,55,.15);   color: #ff5c37; }
-        .pstat.obsidian .pstat-icon{ background: rgba(88,101,242,.15);  color: #5865f2; }
-        .pstat.netherite .pstat-icon{ background: rgba(255,0,85,.15);   color: #ff0055; }
-        .pstat.elytra .pstat-icon  { background: rgba(48,209,88,.15);   color: #30d158; }
-        .pstat.totems .pstat-icon  { background: rgba(255,215,0,.15);   color: #ffd700; }
-        .pstat.arrows .pstat-icon  { background: rgba(255,255,255,.1); color: #fff; }
-        .pstat-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .pstat-val { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
-        .pstat-label { font-size: 11px; color: #86868b; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        .stats-state-box {
-            max-width: 440px; margin: 0 auto; text-align: center; padding: 64px 40px;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 22px;
-        }
-        .stats-state-box p { font-size: 15px; color: #86868b; margin: 0; }
-        .stats-state-box.error .stats-state-icon {
-            width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%;
-            background: rgba(255,69,58,.1); display: flex; align-items: center;
-            justify-content: center; font-size: 26px; color: #ff453a;
-        }
-        .stats-state-box.error h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 0 0 10px; }
-        .stats-spinner {
-            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.08);
-            border-top-color: #2997ff; border-radius: 50%; margin: 0 auto 20px;
-            animation: spin 0.9s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        @media (max-width: 640px) {
-            .stats-hero-row { flex-direction: column; align-items: flex-start; }
-            .stats-search-form { width: 100%; }
-            .player-stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .player-card { padding: 20px; }
-            .player-card-header { flex-direction: column; align-items: flex-start; }
-            .player-card-avatar { width: 80px; height: 80px; }
-            .player-card-info h2 { font-size: 24px; }
-            .player-meta-row { flex-direction: column; gap: 8px; }
-            .player-badges { margin-top: 10px; }
-            .lb-meta { display: none; }
-        }
-
-        .lb-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-        .lb-sort-select {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 8px 14px;
-        }
-        .lb-sort-select label {
-            font-size: 12px;
-            color: #6e6e73;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .lb-sort-select select {
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            outline: none;
-            padding-right: 20px;
-        }
-        .lb-sort-select select option {
-            background: #1c1c1e;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/stats.css">
 </head>
 <body>
 <div id="header-placeholder"></div>
 
 <main class="stats-page-main">
 
-    <!-- inline search -->
     <section class="stats-hero outer">
         <div class="inner">
             <div class="stats-hero-row">
@@ -279,37 +29,15 @@
         </div>
     </section>
 
-    <!-- Leaderboard — default view -->
     <section class="stats-body outer" id="leaderboard-section">
         <div class="inner">
-            <div class="lb-header-row">
-                <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Leaderboard</p>
-                <div class="lb-sort-select">
-                    <label>Sort by</label>
-                    <select id="lb-sort" onchange="loadLeaderboard()">
-                        <option value="kills">Most Kills</option>
-                        <option value="deaths">Most Deaths</option>
-                        <option value="mobs_killed">Most Mob Kills</option>
-                        <option value="time_played">Most Time Played</option>
-                        <option value="blocks_broken">Most Blocks Broken</option>
-                        <option value="blocks_placed">Most Blocks Placed</option>
-                        <option value="tnt_used">Most TNT Used</option>
-                        <option value="obsidian_mined">Most Obsidian Mined</option>
-                        <option value="netherite_mined">Most Netherite</option>
-                    </select>
-                </div>
-            </div>
-            <div class="lb-table" id="leaderboard-list">
-                <div class="lb-skeleton"></div>
-                <div class="lb-skeleton"></div>
-                <div class="lb-skeleton"></div>
-                <div class="lb-skeleton"></div>
-                <div class="lb-skeleton"></div>
+            <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Leaderboard</p>
+            <div class="lb-cards-grid" id="leaderboard-cards">
+                <!-- Cards injected by JS -->
             </div>
         </div>
     </section>
 
-    <!-- Player result view -->
     <section class="stats-body outer" id="player-result" style="display:none;">
         <div class="inner">
             <button class="stats-back-btn" onclick="showLeaderboard()">
@@ -388,13 +116,6 @@
                             <span class="pstat-label">Blocks Broken</span>
                         </div>
                     </div>
-                    <div class="pstat blocks">
-                        <div class="pstat-icon"><i class="fa-solid fa-cube"></i></div>
-                        <div class="pstat-body">
-                            <span class="pstat-val" id="stat-blocks-placed">—</span>
-                            <span class="pstat-label">Blocks Placed</span>
-                        </div>
-                    </div>
                     <div class="pstat tnt">
                         <div class="pstat-icon"><i class="fa-solid fa-bomb"></i></div>
                         <div class="pstat-body">
@@ -437,12 +158,18 @@
                             <span class="pstat-label">Arrows Shot</span>
                         </div>
                     </div>
+                    <div class="pstat time">
+                        <div class="pstat-icon"><i class="fa-solid fa-shoe-prints"></i></div>
+                        <div class="pstat-body">
+                            <span class="pstat-val" id="stat-distance">—</span>
+                            <span class="pstat-label">Distance</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Loading section -->
     <section class="stats-body outer" id="loading-section" style="display:none;">
         <div class="inner">
             <div class="stats-state-box">
@@ -452,7 +179,6 @@
         </div>
     </section>
 
-    <!-- Error section -->
     <section class="stats-body outer" id="error-section" style="display:none;">
         <div class="inner">
             <div class="stats-state-box error">
@@ -474,81 +200,90 @@
 <script>
     const API_URL = 'https://api.xera.ca';
 
+    const STAT_CATEGORIES = [
+        { key: 'kills', label: 'Kills', icon: 'fa-khanda', color: '#ff9f0a', format: formatNumber },
+        { key: 'deaths', label: 'Deaths', icon: 'fa-skull', color: '#ff453a', format: formatNumber },
+        { key: 'mobs_killed', label: 'Mob Kills', icon: 'fa-ghost', color: '#a2845e', format: formatNumber },
+        { key: 'time_played', label: 'Time Played', icon: 'fa-clock', color: '#2997ff', format: formatTime },
+        { key: 'blocks_broken', label: 'Blocks Broken', icon: 'fa-hammer', color: '#bf5af2', format: formatNumber },
+        { key: 'tnt_used', label: 'TNT Used', icon: 'fa-bomb', color: '#ff5c37', format: formatNumber },
+        { key: 'obsidian_mined', label: 'Obsidian Mined', icon: 'fa-gem', color: '#5865f2', format: formatNumber },
+        { key: 'netherite_mined', label: 'Netherite', icon: 'fa-dragon', color: '#ff0055', format: formatNumber },
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
-        loadLeaderboard();
+        loadAllLeaderboards();
+
+        document.getElementById('search-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('player-search').value.trim();
+            if (!name) return;
+            showLoading();
+            try {
+                const res = await fetch(`${API_URL}/player/${encodeURIComponent(name)}`);
+                const data = await res.json();
+                if (data.success && data.data) {
+                    showPlayer(data.data);
+                } else {
+                    showError('Player Not Found', 'This player has no recorded stats or has never joined 8b8t.');
+                }
+            } catch (err) {
+                showError('Connection Error', 'Unable to reach the stats server. Try again in a moment.');
+            }
+        });
     });
 
-    document.getElementById('search-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('player-search').value.trim();
-        if (!name) return;
-        showLoading();
-        try {
-            const res = await fetch(`${API_URL}/player/${encodeURIComponent(name)}`);
-            const data = await res.json();
-            if (data.success && data.data) {
-                showPlayer(data.data);
-            } else {
-                showError('Player Not Found', 'This player has no recorded stats or has never joined 8b8t.');
-            }
-        } catch (err) {
-            showError('Connection Error', 'Unable to reach the stats server. Try again in a moment.');
-        }
-    });
-
-    async function loadLeaderboard() {
-        try {
-            const sort = document.getElementById('lb-sort').value;
-            const res = await fetch(`${API_URL}/leaderboard?sort=${sort}&limit=10`);
-            const data = await res.json();
-            if (data.success && data.data) {
-                renderLeaderboard(data.data);
-            } else {
-                showLeaderboardUnavailable();
-            }
-        } catch (err) {
-            showLeaderboardUnavailable();
-        }
-    }
-
-    function renderLeaderboard(players) {
-        const list = document.getElementById('leaderboard-list');
-        const sort = document.getElementById('lb-sort').value;
-        const statLabels = {
-            kills: 'kills',
-            deaths: 'deaths',
-            mobs_killed: 'mob kills',
-            time_played: 'played',
-            blocks_broken: 'blocks broken',
-            blocks_placed: 'blocks placed',
-            tnt_used: 'TNT',
-            obsidian_mined: 'obsidian',
-            netherite_mined: 'netherite'
-        };
-        const label = statLabels[sort] || sort;
-        const formatValue = (p, sort) => {
-            if (sort === 'time_played') return formatTime(p[sort]);
-            return formatNumber(p[sort]);
-        };
-        list.innerHTML = players.map((p, i) => `
-                <div class="lb-row" onclick="searchPlayer('${p.name}')">
-                    <span class="lb-num">#${i + 1}</span>
-                    <img class="lb-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
-                    <span class="lb-pname">${p.name}</span>
-                    <span class="lb-meta">${formatTime(p.time_played)} played</span>
-                    <span class="lb-kills-badge">${formatValue(p, sort)} ${label}</span>
+    async function loadAllLeaderboards() {
+        const container = document.getElementById('leaderboard-cards');
+        container.innerHTML = STAT_CATEGORIES.map(cat => `
+            <div class="lb-card" id="lb-card-${cat.key}">
+                <div class="lb-card-header">
+                    <div class="lb-card-icon" style="background:${cat.color}18;color:${cat.color}">
+                        <i class="fa-solid ${cat.icon}"></i>
+                    </div>
+                    <div>
+                        <div class="lb-card-title">${cat.label}</div>
+                        <div class="lb-card-sub">Top 5 players</div>
+                    </div>
                 </div>
-            `).join('');
-    }
-
-    function showLeaderboardUnavailable() {
-        const list = document.getElementById('leaderboard-list');
-        list.innerHTML = `
-                <div class="lb-unavailable">
-                    <i class="fa-solid fa-wrench"></i>
-                    <p>Leaderboard data is temporarily unavailable.</p>
+                <div class="lb-card-list">
+                    <div class="lb-card-skeleton"></div>
+                    <div class="lb-card-skeleton"></div>
+                    <div class="lb-card-skeleton"></div>
                 </div>
-            `;
+            </div>
+        `).join('');
+
+        const results = await Promise.allSettled(
+            STAT_CATEGORIES.map(cat =>
+                fetch(`${API_URL}/leaderboard?sort=${cat.key}&limit=5`)
+                    .then(r => r.json())
+            )
+        );
+
+        STAT_CATEGORIES.forEach((cat, i) => {
+            const card = document.getElementById(`lb-card-${cat.key}`);
+            const list = card.querySelector('.lb-card-list');
+            const result = results[i];
+
+            if (result.status === 'fulfilled' && result.value.success && result.value.data) {
+                const players = result.value.data;
+                list.innerHTML = players.map((p, j) => {
+                    const rankClass = j === 0 ? 'gold' : j === 1 ? 'silver' : j === 2 ? 'bronze' : '';
+                    const val = cat.format(p[cat.key] ?? 0);
+                    return `
+                        <div class="lb-card-row" onclick="searchPlayer('${p.name}')">
+                            <span class="lb-card-rank ${rankClass}">#${j + 1}</span>
+                            <img class="lb-card-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
+                            <span class="lb-card-name">${p.name}</span>
+                            <span class="lb-card-val" style="color:${cat.color}">${val}</span>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                list.innerHTML = `<div class="lb-card-skeleton" style="height:48px;display:flex;align-items:center;justify-content:center;color:#6e6e73;font-size:13px;">Unavailable</div>`;
+            }
+        });
     }
 
     function searchPlayer(name) {
@@ -588,13 +323,13 @@
         document.getElementById('stat-mobs').textContent = formatNumber(p.mobs_killed);
         document.getElementById('stat-time').textContent = formatTime(p.time_played);
         document.getElementById('stat-blocks-broken').textContent = formatNumber(p.blocks_broken);
-        document.getElementById('stat-blocks-placed').textContent = formatNumber(p.blocks_placed);
         document.getElementById('stat-tnt').textContent = formatNumber(p.tnt_used);
         document.getElementById('stat-obsidian-mined').textContent = formatNumber(p.obsidian_mined);
         document.getElementById('stat-netherite').textContent = formatNumber(p.netherite_mined);
         document.getElementById('stat-elytra').textContent = formatNumber(p.elytra_used);
         document.getElementById('stat-totems').textContent = formatNumber(p.totems_used);
         document.getElementById('stat-arrows').textContent = formatNumber(p.arrows_shot);
+        document.getElementById('stat-distance').textContent = formatDistance(p.distance_travelled);
     }
 
     function copyUuid() {
@@ -626,6 +361,13 @@
         if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
         if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
         return n.toString();
+    }
+
+    function formatDistance(cm) {
+        if (!cm) return '0';
+        if (cm >= 100000) return (cm / 100000).toFixed(1) + 'km';
+        if (cm >= 100) return (cm / 100).toFixed(0) + 'm';
+        return cm + 'cm';
     }
 
     function formatTime(ticks) {

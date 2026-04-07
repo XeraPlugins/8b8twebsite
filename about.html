@@ -5,296 +5,421 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - 8b8t Anarchy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .lce-page { background: #000; min-height: 100vh; }
+
+        .lce-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 420px;
+            overflow: hidden;
+            padding-top: 64px;
+        }
+        .lce-hero-bg {
+            position: absolute;
+            inset: -20px;
+            background-image: url('assets/renders/2025-12-29_04.47.35.png');
+            background-size: cover;
+            background-position: center 30%;
+            filter: blur(6px) brightness(0.35);
+            transform: scale(1.04);
+        }
+        .lce-hero-fade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 75%, #000 100%);
+        }
+        .lce-hero-body {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            max-width: 75rem;
+            margin: 0 auto;
+        }
+        .lce-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #2997ff;
+            margin-bottom: 0.5rem;
+        }
+        .lce-eyebrow::before {
+            content: '';
+            display: block;
+            width: 1.125rem;
+            height: 1px;
+            background: #2997ff;
+        }
+        .lce-hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            color: #fff;
+            margin: 0 0 0.625rem;
+        }
+        .lce-hero-desc {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            max-width: 25rem;
+            margin: 0 0 1rem;
+        }
+        .lce-hero-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .lce-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5625rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.625rem 1.125rem;
+            border-radius: 0.5625rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            align-self: flex-start;
+            text-decoration: none;
+        }
+        .lce-hero-cta:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(255,255,255,0.28);
+        }
+        .lce-hero-cta.primary {
+            background: rgba(41,151,255,0.15);
+            border-color: rgba(41,151,255,0.3);
+        }
+        .lce-hero-cta.primary:hover {
+            background: rgba(41,151,255,0.25);
+        }
+        .lce-hero-cta i { color: #2997ff; font-size: 0.6875rem; }
+
+        .lce-layout {
+            width: 100%;
+            max-width: 62.5rem;
+            margin: 0 auto;
+            padding: 0 5% 6.25rem;
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            gap: 0 60px;
+            align-items: start;
+        }
+        .lce-sidebar {
+            position: sticky;
+            top: 88px;
+            padding-top: 44px;
+        }
+        .lce-toc-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.28);
+            margin-bottom: 0.75rem;
+        }
+        .lce-toc {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .lce-toc a {
+            display: block;
+            font-size: 0.8125rem;
+            color: rgba(255,255,255,0.38);
+            text-decoration: none;
+            padding: 0.3125rem 0 0.3125rem 0.875rem;
+            border-left: 1px solid rgba(255,255,255,0.08);
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .lce-toc a:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+        .lce-article { min-width: 0; }
+
+        .lce-section {
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .lce-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .lce-section-heading {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin: 0 0 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .lce-lead {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.375rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #fff;
+            margin: 0 0 0.875rem;
+        }
+        .lce-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.65);
+            margin: 0 0 0.625rem;
+        }
+        .lce-body:last-child { margin-bottom: 0; }
+        .lce-body a { color: #2997ff; text-decoration: none; font-weight: 500; }
+        .lce-body a:hover { text-decoration: underline; }
+
+        /* Hardware */
+        .lce-hw-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .lce-hw-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.02);
+        }
+        .lce-hw-icon {
+            width: 2.5rem; height: 2.5rem;
+            border-radius: 0.625rem;
+            background: rgba(41,151,255,0.1);
+            color: #2997ff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .lce-hw-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 0.125rem;
+        }
+        .lce-hw-value {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* FAQ */
+        .lce-faq {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .lce-faq-item {
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .lce-faq-item.active { border-color: #2997ff; }
+        .lce-faq-q {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #fff;
+            transition: color 0.15s;
+        }
+        .lce-faq-q i { color: rgba(255,255,255,0.2); transition: transform 0.2s; font-size: 0.75rem; }
+        .lce-faq-item.active .lce-faq-q i { transform: rotate(180deg); color: #2997ff; }
+        .lce-faq-a { overflow: hidden; transition: max-height 0.3s ease; max-height: 0; }
+        .lce-faq-item.active .lce-faq-a { max-height: 12.5rem; }
+        .lce-faq-a-inner {
+            padding: 0 1.25rem 1rem;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.6);
+        }
+        .lce-faq-a-inner a { color: #2997ff; text-decoration: none; font-weight: 500; }
+        .lce-faq-a-inner a:hover { text-decoration: underline; }
+
+        /* Contact */
+        .lce-contact {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem; flex-wrap: wrap;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 3rem;
+        }
+        .lce-contact p { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
+        .lce-contact a { color: #2997ff; text-decoration: none; font-size: 0.8125rem; font-weight: 500; }
+        .lce-contact a:hover { text-decoration: underline; }
+
+        @media (max-width: 900px) {
+            .lce-layout { grid-template-columns: 1fr; }
+            .lce-sidebar { display: none; }
+            .lce-hw-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 
 <body>
     <div id="header-placeholder"></div>
 
-    <main class="about-page-main">
-        <!-- The Hero Section with Dynamic Social Switcher -->
-        <section class="about-hero outer">
-            <div class="about-hero-bg">
-                <picture>
-                    <source srcset="assets/renders/2025-12-29_04.47.35.avif" type="image/avif">
-                    <source srcset="assets/renders/2025-12-29_04.47.35.webp" type="image/webp">
-                    <img src="assets/renders/2025-12-29_04.47.35.png" alt="8b8t Anarchy Landscape">
-                </picture>
-                <div class="about-hero-overlay"></div>
-            </div>
-            <div class="inner about-hero-container">
-                <div class="about-hero-content">
-                    <span class="hero-badge">Since 2016</span>
-                    <h1 class="about-hero-title">About 8b8t</h1>
-                    <p class="about-hero-subtitle">We remain true to the core values of anarchy. No rules, no resets,
-                        brutuality. Experience our history and our technological innovation.</p>
-                    <div class="about-hero-actions">
-                        <a href="how-to-join.html" class="gh-head-button primary">Play Now <i
-                                class="fa-solid fa-play"></i></a>
-                        <a href="#more" class="gh-head-button secondary scroll-link">Learn More <i
-                                class="fa-solid fa-chevron-down"></i></a>
-                    </div>
-                </div>
-                <div class="about-hero-side">
-                    <div class="community-switcher" id="community-switcher">
-                        <div class="">
-                            <div class="glass-card telegram-face">
-                                <div class="dw-header">
-                                    <div class="dw-icon telegram"><i class="fa-brands fa-telegram"></i></div>
-                                    <div class="dw-title">
-                                        <h3>Telegram</h3>
-                                        <span>telegram.8b8t.me</span>
-                                    </div>
-                                </div>
-                                <div class="dw-stats">
-                                    <div class="dw-stat">
-                                        <div class="dw-stat-value">100+</div>
-                                        <div class="dw-stat-label">Subscribers</div>
-                                    </div>
-                                    <div class="dw-stat">
-                                        <div class="dw-stat-value">Primary</div>
-                                        <div class="dw-stat-label">Communication</div>
-                                    </div>
-                                </div>
-                                <a href="http://telegram.8b8t.me/" class="dw-action-btn telegram-btn">Join Telegram <i
-                                        class="fa-solid fa-paper-plane"></i></a>
-                                <p class="switcher-hint">Switched to Telegram due to Discord policies</p>
-                            </div>
-                            <!-- Discord Face (Secondary) -->
-                            <!-- We keep the Discord face here for legacy reasons and to show our history, however we have switched to Telegram as our primary communication platform due to Discord's policies and direction
-                            <div class="glass-card switcher-face discord-face">
-                                <div class="dw-header">
-                                    <div class="dw-icon discord"><i class="fa-brands fa-discord"></i></div>
-                                    <div class="dw-title">
-                                        <h3>Discord</h3>
-                                        <span>discord.8b8t.me</span>
-                                    </div>
-                                </div>
-                                <div class="dw-stats">
-                                    <div class="dw-stat">
-                                        <div class="dw-stat-value">1.2K+</div>
-                                        <div class="dw-stat-label">Members</div>
-                                    </div>
-                                    <div class="dw-stat">
-                                        <div class="dw-stat-value online">300+</div>
-                                        <div class="dw-stat-label">Online</div>
-                                    </div>
-                                </div>
-
-                                <a href="http://discord.8b8t.me/" class="dw-action-btn discord-btn">Open Discord <i
-                                        class="fa-solid fa-chevron-right"></i></a>
-                                <p class="switcher-hint">Legacy community platform</p>
-                                !--->
-                            </div>
-                        </div>
-                    </div>
+    <main class="lce-page">
+        <section class="lce-hero">
+            <div class="lce-hero-bg"></div>
+            <div class="lce-hero-fade"></div>
+            <div class="lce-hero-body">
+                <div class="lce-eyebrow">Since 2016</div>
+                <h1 class="lce-hero-title">About 8b8t</h1>
+                <p class="lce-hero-desc">We remain true to the core values of anarchy. No rules, no resets, brutality. Experience our history and our technological innovation.</p>
+                <div class="lce-hero-actions">
+                    <a href="how-to-join.html" class="lce-hero-cta primary"><i class="fa-solid fa-play"></i> Play Now</a>
+                    <a href="#more" class="lce-hero-cta"><i class="fa-solid fa-chevron-down"></i> Learn More</a>
                 </div>
             </div>
         </section>
 
-        <!-- Main Content Area -->
-        <div class="clean-content-section outer" id="more">
-            <div class="inner">
-                <div class="clean-content clean-text">
-                    <h2 class="section-divider">Overview</h2>
+        <div class="lce-layout" id="more">
+            <aside class="lce-sidebar">
+                <div class="lce-toc-label">On this page</div>
+                <ul class="lce-toc">
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#hardware">Hardware info</a></li>
+                    <li><a href="#history">Where it started</a></li>
+                    <li><a href="#tech">Technologies</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </aside>
 
-                    <div class="content-intro">
- <p> 8b8t started in 2016, during a time when anarchy servers were starting to blow up—especially with 2b2t gaining massive attention and long queue wait times becoming the norm. A lot of players wanted that same no-rules experience, just without having to wait hours to actually play. That’s where 8b8t began.</p>
+            <article class="lce-article">
+                <section class="lce-section" id="overview">
+                    <div class="lce-section-heading">Overview</div>
+                    <p class="lce-lead">8b8t stands as one of the most enduring and authentic anarchy servers in Minecraft history. Evolving through names like 0b0t, 6b6t, and now 8b8t, this project has delivered pure, unrestricted chaos for over a decade.</p>
+                    <p class="lce-body">As a leading alternative to 2b2t, we offer the raw anarchy experience you crave—without the endless queue times. Here, absolutely everything is permitted: swearing, griefing, hacking, duping, PvP, and beyond. No rules. No staff interference. No resets.</p>
+                    <p class="lce-body">Our core philosophy is simple: the server is player-driven. Every update, feature, and decision revolves around what the current community wants and needs. We've continuously refined performance, stability, and gameplay to keep the experience fresh and true to anarchy's roots.</p>
+                    <p class="lce-body">Unlike many "anarchy" servers that have drifted from the original ideals—by adding rules, turning into glorified SMPs, botting fake player counts, or chasing artificial popularity—8b8t has stayed committed. We prioritize real players over inflated numbers. As one of the last true bastions of unrestricted Minecraft, we've carved our own path: no copying others, just building a unique, chaotic atmosphere shaped by the community.</p>
+                    <p class="lce-body">Our spawn remains one of the most brutally destroyed and transformed battlegrounds in anarchy history—making every escape a true test of skill and determination. Active groups, alliances, and rivalries keep the server alive and unpredictable. Join the chaos today—it's completely free.</p>
+                </section>
 
-<p>Originally launched under the name 0b0t, the server started as a simple survival world, but it quickly turned into full anarchy. The idea was straightforward: no rules, no limits, no interference. Players could do whatever they wanted, and the world would reflect that.</p>
-
-<p>Over time, the server evolved—moving from 0b0t to 6b6t, and eventually becoming 8b8t. Through all the changes, the core idea never changed. The world stayed online, growing more chaotic and destroyed as more players joined. Bases came and went, spawn turned into a wasteland, and escaping it became the first real challenge.</p>
-
-<p>As more players looked for alternatives to 2b2t’s queues, 8b8t built its own community. People joined for the freedom, stayed for the chaos, and left their mark on the world in whatever way they wanted—building, griefing, fighting, or just surviving.</p>
-
-<p> The server has been kept running and stable over the years so the anarchy can continue without interruption. There are no resets, no forced direction, and nothing telling you how to play.</p>
-
-<p>Today, 8b8t is still running on that same idea it started with—complete freedom. The world is shaped entirely by the players who come and go. As long as people keep joining, the chaos doesn’t stop.</p>
-                    </div>
-
-                    <h2 class="section-divider">Hardware info</h2>
-                    <div class="hardware-stats-v3">
-                        <div class="hardware-box">
-                            <div class="hb-icon"><i class="fa-solid fa-microchip"></i></div>
-                            <div class="hb-info">
-                                <span class="hb-label">Processor</span>
-                                <span class="hb-value">2x Intel Xeon-E5-2682</span>
+                <section class="lce-section" id="hardware">
+                    <div class="lce-section-heading">Hardware info</div>
+                    <div class="lce-hw-grid">
+                        <div class="lce-hw-item">
+                            <div class="lce-hw-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <div>
+                                <div class="lce-hw-label">Processor</div>
+                                <div class="lce-hw-value">2x Intel Xeon-E5-2682</div>
                             </div>
                         </div>
-                        <div class="hardware-box">
-                            <div class="hb-icon"><i class="fa-solid fa-memory"></i></div>
-                            <div class="hb-info">
-                                <span class="hb-label">Memory</span>
-                                <span class="hb-value">256GB DDR3</span>
+                        <div class="lce-hw-item">
+                            <div class="lce-hw-icon"><i class="fa-solid fa-memory"></i></div>
+                            <div>
+                                <div class="lce-hw-label">Memory</div>
+                                <div class="lce-hw-value">256GB DDR3</div>
                             </div>
                         </div>
-                        <div class="hardware-box">
-                            <div class="hb-icon"><i class="fa-solid fa-hard-drive"></i></div>
-                            <div class="hb-info">
-                                <span class="hb-label">Storage</span>
-                                <span class="hb-value">10 TB Enterprise SSD(s)</span>
+                        <div class="lce-hw-item">
+                            <div class="lce-hw-icon"><i class="fa-solid fa-hard-drive"></i></div>
+                            <div>
+                                <div class="lce-hw-label">Storage</div>
+                                <div class="lce-hw-value">10 TB Enterprise SSD(s)</div>
                             </div>
                         </div>
-                        <div class="hardware-box">
-                            <div class="hb-icon"><i class="fa-solid fa-location-dot"></i></div>
-                            <div class="hb-info">
-                                <span class="hb-label">Location</span>
-                                <span class="hb-value">Edmonton, Alberta, Canada</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h2 class="section-divider">Where it started</h2>
-                    <div class="history-flat-text">
-                        <p>8b8t originally started in late 2016 under the name 0b0t as a non-vanilla anarchy server
-                            created by
-                            Leee as an alternative to the server 2b2t due to the long queue times. The server was then
-                            rebranded
-                            to 6b6t on March 3, 2019.</p>
-                        <p>The original world created during the 0b0t/6b6t Era was lost sometime in 2019 due to hardware failures. We later created 8b8t and the current map started on August 2020 and has been maintained since.</p>
-                    </div>
-
-                    <h2 class="section-divider">Technologies & Mechanics</h2>
-                    <div class="tech-box-v2">
-                        <p>8b8t runs on a highly customized <strong>Folia fork</strong>, allowing for
-                            multi-threaded
-                            performance that traditional servers cannot match. Our core plugin,
-                            <strong>8b8tCore</strong>, is
-                            the most advanced anti-illegal system ever made, protecting the server at the bitstream
-                            level.
-                        </p>
-                    </div>
-
-                    <!-- Collapsible FAQ Section -->
-                    <h2 class="section-divider">Frequently Asked Questions</h2>
-                    <div class="faq-accordion-v3">
-                        <div class="faq-v3-item active">
-                            <div class="faq-v3-header">
-                                <h3>Is hacking allowed on 8b8t.me?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>Yes. 8b8t is an anarchy server with no in-game rules.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>Why is 8b8t a cracked server?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>8b8t is a cracked server because of Mojangs EULA. 8b8t goes against Mojang
-                                        politics,
-                                        we
-                                        believe in player freedom, privacy and choice.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>Why do illegal events exist?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>Illegal events are a way to make money from the server. We do not profit off our
-                                        server and
-                                        our anti-illegal system allows us to revert items after the illegal event. You
-                                        can
-                                        still
-                                        keep your illegals but you cannot use them after events illegals massively
-                                        accelerate
-                                        destruction or creation.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>Why is there /homes, /tpa, etc.?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>Being the very first non-vanilla anarchy server, we had streamlined most of the
-                                        tedious tasks
-                                        our server is not like 9b9t/Constantiam/2b2t while many players like the 2b2t
-                                        format
-                                        the
-                                        majority of our playerbase prefers such commands, dupes, etc as it makes it
-                                        easier
-                                        to make
-                                        massive builds or do big projects with less players.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>What is the seed of 8b8t?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>The seed is hashed with the Blake3 Digest algorithim this means that it's a one
-                                        way
-                                        function
-                                        to protect against world terrain exploitation such as block rotations, bedrock,
-                                        and
-                                        terrain
-                                        we keep the salt private.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>Can I join 8b8t on Bedrock?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>Yes, we have Bedrock Edition support using the IP Address <b>br.8b8t.me</b> with the Port <b>19132</b></p>
-                                  </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>How do I dupe?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>The primary method is the <a href="https://www.youtube.com/watch?v=-iSM9Vgw1Ew"
-                                            target="_blank">"8b8t donkey dupe"</a>.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="faq-v3-item">
-                            <div class="faq-v3-header">
-                                <h3>Who owns 8b8t?</h3>
-                                <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
-                            </div>
-                            <div class="faq-v3-content">
-                                <div class="faq-v3-inner">
-                                    <p>8b8t is owned and operated by a small team at <strong>XERA INC</strong>. Contact us at <a
-                                            href="mailto:contact@8b8t.me">contact@8b8t.me</a>.</p>
-                                </div>
+                        <div class="lce-hw-item">
+                            <div class="lce-hw-icon"><i class="fa-solid fa-location-dot"></i></div>
+                            <div>
+                                <div class="lce-hw-label">Location</div>
+                                <div class="lce-hw-value">Edmonton, Alberta, Canada</div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <h2 class="section-divider">Contact</h2>
-                    <div class="contact-section-v2">
-                        <p>The server is operated & owned by XERA INC. You may contact the Team at <a
-                                href="mailto:contact@8b8t.me">contact@8b8t.me</a></p>
-                        <p>We also have a <a href="http://telegram.8b8t.me/">Telegram server</a> to talk to players in our
-                            community. We post all technical updates and server announcements there.</p>
+                <section class="lce-section" id="history">
+                    <div class="lce-section-heading">Where it started</div>
+                    <p class="lce-body">8b8t originally started in late 2016 under the name 0b0t as a non-vanilla anarchy server created by Leee as an alternative to the server 2b2t due to the long queue times. The server was then rebranded to 6b6t sometime in 2019 due to losing the domain.</p>
+                    <p class="lce-body">6b6t's current map began on March 3, 2019 and stayed online until April 2020 when there was a hardware issue and this former map was thought to be lost. A new map began sometime in January 2021 and the server became what is now known as 8b8t.</p>
+                    <p class="lce-body">The current world is 6 years old and was created on August 18, 2020.</p>
+                </section>
+
+                <section class="lce-section" id="tech">
+                    <div class="lce-section-heading">Technologies &amp; Mechanics</div>
+                    <p class="lce-body">8b8t runs on a highly customized <strong style="color:#fff;">Folia fork</strong>, allowing for multi-threaded performance that traditional servers cannot match. Our core plugin, <strong style="color:#fff;">8b8tCore</strong>, is the most advanced anti-illegal system ever made, protecting the server at the bitstream level.</p>
+                </section>
+
+                <section class="lce-section" id="faq">
+                    <div class="lce-section-heading">Frequently Asked Questions</div>
+                    <div class="lce-faq">
+                        <div class="lce-faq-item active">
+                            <div class="lce-faq-q">Is hacking allowed on 8b8t.me? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Yes. 8b8t is an anarchy server with no in-game rules.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">Why is 8b8t a cracked server? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">8b8t is a cracked server because of Mojangs EULA. We believe in player freedom, privacy and choice.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">Why do illegal events exist? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Illegal events are a way to make money from the server. We do not profit off our server and our anti-illegal system allows us to revert items after the illegal event.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">Why is there /homes, /tpa, etc.? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Being the very first non-vanilla anarchy server, we streamlined most of the tedious tasks. The majority of our playerbase prefers such commands as it makes it easier to make massive builds with less players.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">What is the seed of 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">The seed is hashed with the Blake3 Digest algorithm — a one-way function to protect against world terrain exploitation such as block rotations, bedrock, and terrain. We keep the salt private.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">Can I join 8b8t on Bedrock? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Yes, we have Bedrock Edition support using the IP Address <strong>br.8b8t.me</strong> with the Port <strong>19132</strong>.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">How do I dupe? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">The primary method is the <a href="https://www.youtube.com/watch?v=-iSM9Vgw1Ew" target="_blank">"8b8t donkey dupe"</a>.</div></div>
+                        </div>
+                        <div class="lce-faq-item">
+                            <div class="lce-faq-q">Who owns 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="lce-faq-a"><div class="lce-faq-a-inner">8b8t is owned and operated by a small team at <strong>XERA INC</strong>. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a>.</div></div>
+                        </div>
                     </div>
+                </section>
+
+                <div class="lce-contact" id="contact">
+                    <p>The server is operated & owned by XERA INC. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a> or join the <a href="http://telegram.8b8t.me/">Telegram server</a>.</p>
                 </div>
-            </div>
+            </article>
         </div>
     </main>
 
@@ -302,6 +427,13 @@
 
     <script src="assets/components.js"></script>
     <script src="assets/script.js"></script>
+    <script>
+        document.querySelectorAll('.lce-faq-q').forEach(q => {
+            q.addEventListener('click', () => {
+                q.parentElement.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 
 </html>
