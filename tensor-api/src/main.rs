@@ -139,6 +139,7 @@ struct PlayerStatsJson {
     tnt_used: i32,
     arrows_shot: i32,
     items_dropped: i32,
+    items_used: i32,
     elytra_used: i32,
     blocks_broken: i32,
     obsidian_mined: i32,
@@ -173,6 +174,7 @@ fn read_player_stats(server_path: &str, uuid: &str) -> Option<PlayerStatsJson> {
         items_dropped: dropped.values().sum(),
         elytra_used: *used.get("minecraft:elytra").unwrap_or(&0),
         blocks_broken: mined.values().sum(),
+        items_used: used.values().sum(),
         obsidian_mined: *mined.get("minecraft:obsidian").unwrap_or(&0),
         obsidian_placed: *used.get("minecraft:obsidian").unwrap_or(&0),
         netherite_mined: *mined.get("minecraft:netherite_block").unwrap_or(&0),
@@ -193,6 +195,7 @@ struct PlayerStats {
     tnt_used: Option<i32>,
     arrows_shot: Option<i32>,
     items_dropped: Option<i32>,
+    items_used: Option<i32>,
     distance_travelled: Option<i32>,
     obsidian_mined: Option<i32>,
     obsidian_placed: Option<i32>,
@@ -215,6 +218,7 @@ struct PlayerResponse {
     tnt_used: i32,
     arrows_shot: i32,
     items_dropped: i32,
+    items_used: i32,
     distance_travelled: i32,
     obsidian_mined: i32,
     obsidian_placed: i32,
@@ -261,8 +265,8 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
         let (name, first_played, _last_played, last_seen) = resolve_player_info(&state.server_path, uuid);
 
         let result = sqlx::query(
-            "INSERT INTO player_stats (uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            "INSERT INTO player_stats (uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, items_used, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
              ON CONFLICT(uuid) DO UPDATE SET
                 name = excluded.name,
                 join_date = excluded.join_date,
@@ -275,6 +279,7 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
                 tnt_used = excluded.tnt_used,
                 arrows_shot = excluded.arrows_shot,
                 items_dropped = excluded.items_dropped,
+                items_used = excluded.items_used,
                 distance_travelled = excluded.distance_travelled,
                 obsidian_mined = excluded.obsidian_mined,
                 obsidian_placed = excluded.obsidian_placed,
@@ -295,6 +300,7 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
         .bind(stats.tnt_used)
         .bind(stats.arrows_shot)
         .bind(stats.items_dropped)
+        .bind(stats.items_used)
         .bind(stats.distance_travelled)
         .bind(stats.obsidian_mined)
         .bind(stats.obsidian_placed)
@@ -486,8 +492,8 @@ async fn sync_stats(
 
     for player in players {
         let result = sqlx::query(
-            "INSERT INTO player_stats (uuid, name, join_date, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+            "INSERT INTO player_stats (uuid, name, join_date, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, items_used, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
              ON CONFLICT(uuid) DO UPDATE SET
                 name = excluded.name,
                 deaths = excluded.deaths,
@@ -498,6 +504,7 @@ async fn sync_stats(
                 tnt_used = excluded.tnt_used,
                 arrows_shot = excluded.arrows_shot,
                 items_dropped = excluded.items_dropped,
+                items_used = excluded.items_used,
                 distance_travelled = excluded.distance_travelled,
                 obsidian_mined = excluded.obsidian_mined,
                 obsidian_placed = excluded.obsidian_placed,
@@ -517,6 +524,7 @@ async fn sync_stats(
         .bind(player.tnt_used.unwrap_or(0))
         .bind(player.arrows_shot.unwrap_or(0))
         .bind(player.items_dropped.unwrap_or(0))
+        .bind(player.items_used.unwrap_or(0))
         .bind(player.distance_travelled.unwrap_or(0))
         .bind(player.obsidian_mined.unwrap_or(0))
         .bind(player.obsidian_placed.unwrap_or(0))
@@ -552,6 +560,7 @@ struct PlayerQuery {
     tnt_used: i32,
     arrows_shot: i32,
     items_dropped: i32,
+    items_used: i32,
     distance_travelled: i32,
     obsidian_mined: i32,
     obsidian_placed: i32,
@@ -595,6 +604,7 @@ async fn get_player(
                     tnt_used: player.tnt_used,
                     arrows_shot: player.arrows_shot,
                     items_dropped: player.items_dropped,
+                    items_used: player.items_used,
                     distance_travelled: player.distance_travelled,
                     obsidian_mined: player.obsidian_mined,
                     obsidian_placed: player.obsidian_placed,
@@ -613,7 +623,7 @@ async fn get_player(
     }
 
     let result = sqlx::query_as::<_, PlayerQuery>(
-         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
+         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, items_used, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
          FROM player_stats WHERE LOWER(name) = ? OR LOWER(uuid) = ?"
     )
     .bind(&search_key)
@@ -636,6 +646,7 @@ async fn get_player(
                 tnt_used: player.tnt_used,
                 arrows_shot: player.arrows_shot,
                 items_dropped: player.items_dropped,
+                items_used: player.items_used,
                 distance_travelled: player.distance_travelled,
                 obsidian_mined: player.obsidian_mined,
                 obsidian_placed: player.obsidian_placed,
@@ -675,6 +686,7 @@ struct LeaderboardEntry {
     mobs_killed: i32,
     time_played: i32,
     blocks_broken: i32,
+    items_used: i32,
     tnt_used: i32,
     obsidian_mined: i32,
     netherite_mined: i32,
@@ -710,7 +722,7 @@ async fn get_leaderboard(
     };
 
     let query = format!(
-         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
+         "SELECT uuid, name, join_date, last_seen, deaths, kills, mobs_killed, blocks_broken, time_played, tnt_used, arrows_shot, items_dropped, items_used, distance_travelled, obsidian_mined, obsidian_placed, netherite_mined, elytra_used, totems_used
          FROM player_stats ORDER BY {} DESC LIMIT ?",
          order_column
     );
@@ -733,6 +745,7 @@ async fn get_leaderboard(
                     mobs_killed: p.mobs_killed,
                     time_played: p.time_played,
                     blocks_broken: p.blocks_broken,
+                    items_used: p.items_used,
                     tnt_used: p.tnt_used,
                     obsidian_mined: p.obsidian_mined,
                     netherite_mined: p.netherite_mined,
@@ -795,6 +808,7 @@ async fn main() {
             tnt_used INTEGER DEFAULT 0,
             arrows_shot INTEGER DEFAULT 0,
             items_dropped INTEGER DEFAULT 0,
+            items_used INTEGER DEFAULT 0,
             distance_travelled INTEGER DEFAULT 0,
             obsidian_mined INTEGER DEFAULT 0,
             obsidian_placed INTEGER DEFAULT 0,
