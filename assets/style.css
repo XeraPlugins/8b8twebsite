@@ -143,30 +143,31 @@ body::-webkit-scrollbar {
 }
 
 .btn-blue {
-  background-color: #007bff;
-  /* Direct white text */
-  color: #ffffff !important; 
-  
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 16px;
-  /* Making it slightly bolder for better legibility */
-  font-weight: 700; 
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-  /* Ensures text is centered and crisp */
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+    background-color: #007bff;
+    /* Direct white text */
+    color: #ffffff !important;
+
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    /* Making it slightly bolder for better legibility */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    /* Ensures text is centered and crisp */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-blue:hover {
-  background-color: #0056b3;
-  color: #ffffff; /* Keeps text white on hover */
-  transform: translateY(-2px);
+    background-color: #0056b3;
+    color: #ffffff;
+    /* Keeps text white on hover */
+    transform: translateY(-2px);
 }
 
 
@@ -2306,9 +2307,10 @@ body::-webkit-scrollbar {
 
 .stats-page-main {
     background:
-        radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.1) 0%, rgba(0,0,0,0) 60%),
+        radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.1) 0%, rgba(0, 0, 0, 0) 60%),
         #000;
-    padding-top: 75px; /* matches navbar height */
+    padding-top: 75px;
+    /* matches navbar height */
     position: relative;
 }
 
@@ -2330,7 +2332,7 @@ body::-webkit-scrollbar {
 
 .stats-hero {
     padding: 48px 0 36px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .stats-hero-row {
@@ -2359,8 +2361,8 @@ body::-webkit-scrollbar {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 14px;
     padding: 8px 8px 8px 18px;
     flex-shrink: 0;
@@ -2370,8 +2372,8 @@ body::-webkit-scrollbar {
 }
 
 .stats-search-form:focus-within {
-    border-color: rgba(41,151,255,0.5);
-    background: rgba(255,255,255,0.06);
+    border-color: rgba(41, 151, 255, 0.5);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .stats-search-form i {
@@ -2432,8 +2434,8 @@ body::-webkit-scrollbar {
 }
 
 .lb-table {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 18px;
     overflow: hidden;
     max-width: 860px;
@@ -2444,7 +2446,7 @@ body::-webkit-scrollbar {
     align-items: center;
     gap: 14px;
     padding: 14px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     cursor: pointer;
     transition: background 0.18s;
 }
@@ -2454,7 +2456,7 @@ body::-webkit-scrollbar {
 }
 
 .lb-row:hover {
-    background: rgba(41,151,255,0.07);
+    background: rgba(41, 151, 255, 0.07);
 }
 
 .lb-num {
@@ -2468,7 +2470,7 @@ body::-webkit-scrollbar {
     width: 36px;
     height: 36px;
     border-radius: 7px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
 }
 
@@ -2493,8 +2495,8 @@ body::-webkit-scrollbar {
     font-size: 13px;
     font-weight: 700;
     color: #ff9f0a;
-    background: rgba(255,159,10,0.1);
-    border: 1px solid rgba(255,159,10,0.2);
+    background: rgba(255, 159, 10, 0.1);
+    border: 1px solid rgba(255, 159, 10, 0.2);
     border-radius: 8px;
     padding: 4px 10px;
     white-space: nowrap;
@@ -2503,20 +2505,27 @@ body::-webkit-scrollbar {
 
 .lb-skeleton {
     height: 64px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     background: linear-gradient(90deg,
-        rgba(255,255,255,0.03) 25%,
-        rgba(255,255,255,0.06) 50%,
-        rgba(255,255,255,0.03) 75%);
+            rgba(255, 255, 255, 0.03) 25%,
+            rgba(255, 255, 255, 0.06) 50%,
+            rgba(255, 255, 255, 0.03) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
 }
 
-.lb-skeleton:last-child { border-bottom: none; }
+.lb-skeleton:last-child {
+    border-bottom: none;
+}
 
 @keyframes shimmer {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .lb-unavailable {
@@ -2543,8 +2552,8 @@ body::-webkit-scrollbar {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #86868b;
     padding: 10px 18px;
     border-radius: 10px;
@@ -2557,14 +2566,14 @@ body::-webkit-scrollbar {
 }
 
 .stats-back-btn:hover {
-    background: rgba(255,255,255,0.09);
+    background: rgba(255, 255, 255, 0.09);
     color: #fff;
-    border-color: rgba(255,255,255,0.18);
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
 .player-card {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 22px;
     padding: 36px;
     max-width: 1000px;
@@ -2576,7 +2585,7 @@ body::-webkit-scrollbar {
     gap: 22px;
     margin-bottom: 32px;
     padding-bottom: 28px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .player-card-avatar {
@@ -2584,7 +2593,7 @@ body::-webkit-scrollbar {
     height: 72px;
     border-radius: 14px;
     overflow: hidden;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
 }
 
@@ -2632,15 +2641,15 @@ body::-webkit-scrollbar {
     display: flex;
     align-items: center;
     gap: 14px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
     padding: 16px 18px;
     transition: background 0.2s, transform 0.2s;
 }
 
 .pstat:hover {
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     transform: translateY(-1px);
 }
 
@@ -2655,17 +2664,60 @@ body::-webkit-scrollbar {
     flex-shrink: 0;
 }
 
-.pstat.deaths .pstat-icon  { background: rgba(255,69,58,.12);   color: #ff453a; }
-.pstat.kills .pstat-icon   { background: rgba(255,159,10,.12);  color: #ff9f0a; }
-.pstat.mobs .pstat-icon    { background: rgba(162,132,94,.12);  color: #a2845e; }
-.pstat.time .pstat-icon    { background: rgba(41,151,255,.12);  color: #2997ff; }
-.pstat.blocks .pstat-icon  { background: rgba(191,90,242,.12);  color: #bf5af2; }
-.pstat.tnt .pstat-icon     { background: rgba(255,92,55,.12);   color: #ff5c37; }
-.pstat.obsidian .pstat-icon{ background: rgba(88,101,242,.12);  color: #5865f2; }
-.pstat.netherite .pstat-icon{ background: rgba(255,0,85,.12);   color: #ff0055; }
-.pstat.elytra .pstat-icon  { background: rgba(48,209,88,.12);   color: #30d158; }
-.pstat.totems .pstat-icon  { background: rgba(255,215,0,.12);   color: #ffd700; }
-.pstat.arrows .pstat-icon  { background: rgba(255,255,255,.08); color: #fff; }
+.pstat.deaths .pstat-icon {
+    background: rgba(255, 69, 58, .12);
+    color: #ff453a;
+}
+
+.pstat.kills .pstat-icon {
+    background: rgba(255, 159, 10, .12);
+    color: #ff9f0a;
+}
+
+.pstat.mobs .pstat-icon {
+    background: rgba(162, 132, 94, .12);
+    color: #a2845e;
+}
+
+.pstat.time .pstat-icon {
+    background: rgba(41, 151, 255, .12);
+    color: #2997ff;
+}
+
+.pstat.blocks .pstat-icon {
+    background: rgba(191, 90, 242, .12);
+    color: #bf5af2;
+}
+
+.pstat.tnt .pstat-icon {
+    background: rgba(255, 92, 55, .12);
+    color: #ff5c37;
+}
+
+.pstat.obsidian .pstat-icon {
+    background: rgba(88, 101, 242, .12);
+    color: #5865f2;
+}
+
+.pstat.netherite .pstat-icon {
+    background: rgba(255, 0, 85, .12);
+    color: #ff0055;
+}
+
+.pstat.elytra .pstat-icon {
+    background: rgba(48, 209, 88, .12);
+    color: #30d158;
+}
+
+.pstat.totems .pstat-icon {
+    background: rgba(255, 215, 0, .12);
+    color: #ffd700;
+}
+
+.pstat.arrows .pstat-icon {
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+}
 
 .pstat-body {
     display: flex;
@@ -2692,8 +2744,8 @@ body::-webkit-scrollbar {
     margin: 0 auto;
     text-align: center;
     padding: 64px 40px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 22px;
 }
 
@@ -2708,7 +2760,7 @@ body::-webkit-scrollbar {
     height: 64px;
     margin: 0 auto 20px;
     border-radius: 50%;
-    background: rgba(255,69,58,.1);
+    background: rgba(255, 69, 58, .1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2726,7 +2778,7 @@ body::-webkit-scrollbar {
 .stats-spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid rgba(255,255,255,0.08);
+    border: 3px solid rgba(255, 255, 255, 0.08);
     border-top-color: #2997ff;
     border-radius: 50%;
     margin: 0 auto 20px;
@@ -2734,7 +2786,9 @@ body::-webkit-scrollbar {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 640px) {
@@ -2763,4 +2817,35 @@ body::-webkit-scrollbar {
     .lb-meta {
         display: none;
     }
+}
+
+
+/* Language Switcher styles */
+
+.language-switcher {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e2e5;
+
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.language-switcher:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.language-switcher:active {
+    transform: scale(0.95);
 }
