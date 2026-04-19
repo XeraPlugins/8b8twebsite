@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8b8t - Anarquía desde 2016</title>
+    <link rel="stylesheet" href="../assets/font_awesome.css">
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="index-page-main">
+        <section class="site-header-content outer">
+            <div class="site-header-bg">
+                <picture>
+                    <source srcset="assets/renders/2025-12-29_03.27.19.avif" type="image/avif">
+                    <img class="site-header-cover" src="assets/renders/2025-12-29_03.27.19.png" alt="8b8t Landscape">
+                </picture>
+                <div class="site-header-overlay"></div>
+            </div>
+
+            <div class="site-header-inner">
+                <div class="hero-brand-area">
+                    <picture>
+                        <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
+                        <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
+                        <img class="site-logo" src="assets/img/8b8tTrans-1.png" alt="8b8t Logo">
+                    </picture>
+                    <span class="hero-badge">SERVIDOR ANARQUÍA MÁS ANTIGUO</span>
+                </div>
+
+                <p class="site-description">Anarquía Minecraft con libertad primero. Establecido 2016. Sin resets. Escala masiva.
+                </p>
+
+                <div class="hero-cta-group">
+                    <button class="gh-head-button primary" onclick="copyToClipboard('8b8t.me')">
+                        <i class="fa-solid fa-cube"></i>
+                        Java: 8b8t.me
+                    </button>
+                    <button class="gh-head-button secondary" onclick="copyToClipboard('br.8b8t.me')">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        Bedrock: br.8b8t.me
+                    </button>
+                </div>
+
+                <div class="live-stats">
+                    <span class="pulse-icon"></span>
+                    <span class="stats-text"><span id="player-count">...</span> jugadores en línea ahora</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section outer" id="features-area">
+            <div class="inner">
+                <div class="section-header">
+                    <h2 class="section-title">¿Por qué jugar en 8b8t?</h2>
+                    <p class="section-subtitle">Una década de historia, cero reglas, e infraestructura personalizada
+                        diseñada para la libertad máxima.</p>
+                </div>
+
+                <div class="feature-container">
+                    <div class="feature-list">
+                        <div class="feature-btn" onclick="manualFeature(0)">
+                            <h4><i class="fa-solid fa-lock"></i> Semilla Segura</h4>
+                            <p>Generación de mundo personalizada que no puede ser descifrada.</p>
+                        </div>
+                        <div class="feature-btn" onclick="manualFeature(1)">
+                            <h4><i class="fa-solid fa-shield-halved"></i> Anti-Cheat Personalizado</h4>
+                            <p>Diseñado específicamente para anarquía, no basura genérica.</p>
+                        </div>
+                        <div class="feature-btn" onclick="manualFeature(2)">
+                            <h4><i class="fa-solid fa-khanda"></i> Meta PvP con Lanza</h4>
+                            <p>Mecánicas de combate únicas con supremacía de lanzas.</p>
+                        </div>
+                        <div class="feature-btn" onclick="manualFeature(3)">
+                            <h4><i class="fa-solid fa-wand-magic-sparkles"></i> 20+ Comandos QoL</h4>
+                            <p>Mejorando drásticamente la vida anárquica.</p>
+                        </div>
+                        <div class="feature-btn" onclick="manualFeature(4)">
+                            <h4><i class="fa-solid fa-rocket"></i> Última Versión</h4>
+                            <p>Siempre actualizado a las versiones más nuevas de Minecraft.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-display">
+                        <picture id="feature-picture">
+                            <source id="feature-avif" srcset="" type="image/avif">
+                            <source id="feature-webp" srcset="" type="image/webp">
+                            <img id="feature-img" src="assets/img/secure_seed.webp" class="feature-display-bg"
+                                alt="Feature Image">
+                        </picture>
+                        <div class="feature-content-overlay">
+                            <span id="feature-tag" class="feature-badge">Generación de Mundo</span>
+                            <h3 id="feature-title" class="feature-display-title">Tecnología de Semilla Segura</h3>
+                            <p id="feature-desc" class="feature-display-desc">El mundo es único y no puede ser descifrado.
+                                Contamos con generación de mundo personalizada para asegurar exploración justa para todos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery-section outer">
+            <div class="inner-wide">
+                <div class="section-header">
+                    <h2 class="section-title">🇰🇵 Propaganda de 8b8t 🇰🇵</h2>
+                    <p class="section-subtitle">Una mirada más allá del wasteland, construcciones e historia de nuestro
+                        mapa de 6 años.</p>
+                </div>
+
+                <div class="gallery-hotswap-container" id="hotswap-grid">
+                </div>
+
+                <div class="gallery-footer">
+                    <div id="pagination" class="pagination">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section-index outer">
+            <div class="inner">
+                <div class="section-header">
+                    <h2 class="section-title">Preguntas Frecuentes</h2>
+                    <p class="section-subtitle">¿Nuevo en el servidor? Esto es lo que necesitas saber.</p>
+                </div>
+
+                <div class="faq-accordion-v3">
+                    <div class="faq-v3-item active">
+                        <div class="faq-v3-header">
+                            <h3>¿Qué es 8b8t?</h3>
+                            <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-v3-content">
+                            <div class="faq-v3-inner">
+                                <p>8b8t es un servidor de 'anarquía' pura. A diferencia de la mayoría de servidores de Minecraft, no tenemos reglas escritas
+                                    contra hackear, griefear o palabrotas. Todo está permitido.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-v3-item">
+                        <div class="faq-v3-header">
+                            <h3>¿Cómo hago dupe?</h3>
+                            <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-v3-content">
+                            <div class="faq-v3-inner">
+                                <p>Contamos con el legendarium Donkey Dupe. Puedes ver el <a
+                                        href="https://www.youtube.com/watch?v=-iSM9Vgw1Ew" target="_blank">tutorial oficial
+                                        aquí</a>. Nota que votar es requerido para mecánica de dupeo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-v3-item">
+                        <div class="faq-v3-header">
+                            <h3>¿Cómo reporto bugs?</h3>
+                            <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-v3-content">
+                            <div class="faq-v3-inner">
+                                <p>Envía reportes de bugs o sugerencias a <a
+                                        href="mailto:contact@8b8t.me">contact@8b8t.me</a>. Generalmente respondemos en
+                                    48-72
+                                    horas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-v3-item">
+                        <div class="faq-v3-header">
+                            <h3>¿Es esto una alternativa a 2b2t?</h3>
+                            <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-v3-content">
+                            <div class="faq-v3-inner">
+                                <p>Somos nuestra propia comunidad. A diferencia del actual 2b2t o Constantiam, adherimos estrictamente a
+                                    principios de anarquía sin imponer restricciones de juego.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-v3-item">
+                        <div class="faq-v3-header">
+                            <h3>¿Es 8b8t P2W (Pago por Victoria)?</h3>
+                            <div class="faq-v3-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-v3-content">
+                            <div class="faq-v3-inner">
+                                <p>Aunque ofrecemos beneficios a los supporters, el juego base está balanceado. Puedes fácilmente
+                                    prosperar
+                                    y competir sin gastar un solo centavo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <div id="footer-placeholder"></div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-close"><i class="fa-solid fa-xmark"></i></div>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <picture id="lb-picture">
+                <source id="lb-avif" srcset="" type="image/avif">
+                <source id="lb-webp" srcset="" type="image/webp">
+                <img id="lb-img" class="lightbox-image" src="" alt="Gallery Image">
+            </picture>
+        </div>
+        <div class="lightbox-info">
+            <div class="lightbox-author">
+                <i class="fa-solid fa-camera"></i>
+                <span id="lb-author"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/components.js"></script>
+    <script src="../assets/script.js"></script>
+    </main>
+</body>
+
+</html>

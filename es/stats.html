@@ -1,21 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats - 8b8t</title>
-    <link rel="stylesheet" href="assets/font_awesome.css">
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/stats.css">
-    <script>
-        (function() {
-            var lang = navigator.language || navigator.userLanguage;
-            if (lang && lang.toLowerCase().startsWith('es')) {
-                var path = window.location.pathname;
-                window.location.href = '/es/' + path.split('/').pop();
-            }
-        })();
-    </script>
+    <title>Estadísticas - 8b8t</title>
+    <link rel="stylesheet" href="../assets/font_awesome.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/stats.css">
 </head>
 <body>
 <div id="header-placeholder"></div>
@@ -26,13 +17,13 @@
         <div class="inner">
             <div class="stats-hero-row">
                 <div class="stats-hero-text">
-                    <h1 class="stats-page-title">Player Stats</h1>
-                    <p class="stats-page-sub">Look up any player on 8b8t</p>
+                    <h1 class="stats-page-title">Estadísticas de Jugadores</h1>
+                    <p class="stats-page-sub">Busca cualquier jugador en 8b8t</p>
                 </div>
                 <form class="stats-search-form" id="search-form">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="player-search" placeholder="Enter a username..." autocomplete="off">
-                    <button type="submit">Search</button>
+                    <input type="text" id="player-search" placeholder="Ingresa un nombre de usuario..." autocomplete="off">
+                    <button type="submit">Buscar</button>
                 </form>
             </div>
         </div>
@@ -40,9 +31,8 @@
 
     <section class="stats-body outer" id="leaderboard-section">
         <div class="inner">
-            <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Leaderboard</p>
+            <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Clasificación</p>
             <div class="lb-cards-grid" id="leaderboard-cards">
-                <!-- Cards injected by JS -->
             </div>
         </div>
     </section>
@@ -50,7 +40,7 @@
     <section class="stats-body outer" id="player-result" style="display:none;">
         <div class="inner">
             <button class="stats-back-btn" onclick="showLeaderboard()">
-                <i class="fa-solid fa-arrow-left"></i> Back
+                <i class="fa-solid fa-arrow-left"></i> Volver
             </button>
 
             <div class="player-card">
@@ -70,11 +60,11 @@
                         <div class="player-meta-row">
                             <div class="player-meta-item join">
                                 <i class="fa-solid fa-calendar-plus"></i>
-                                <span>Joined <span id="join-date"></span></span>
+                                <span>Se unió <span id="join-date"></span></span>
                             </div>
                             <div class="player-meta-item seen">
                                 <i class="fa-solid fa-clock"></i>
-                                <span>Last seen <span id="last-seen"></span></span>
+                                <span>Visto por última vez <span id="last-seen"></span></span>
                             </div>
                             <div class="player-meta-item kd">
                                 <i class="fa-solid fa-divide"></i>
@@ -83,7 +73,7 @@
                         </div>
                         <div class="player-badges" style="margin-top: 14px;">
                             <span class="player-badge kills"><i class="fa-solid fa-khanda"></i> <span id="badge-kills">0</span> kills</span>
-                            <span class="player-badge deaths"><i class="fa-solid fa-skull"></i> <span id="badge-deaths">0</span> deaths</span>
+                            <span class="player-badge deaths"><i class="fa-solid fa-skull"></i> <span id="badge-deaths">0</span> muertes</span>
                             <span class="player-badge ratio"><i class="fa-solid fa-arrow-trend-up"></i> <span id="badge-ratio">0.00</span></span>
                         </div>
                     </div>
@@ -101,77 +91,77 @@
                         <div class="pstat-icon"><i class="fa-solid fa-skull"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-deaths">—</span>
-                            <span class="pstat-label">Deaths</span>
+                            <span class="pstat-label">Muertes</span>
                         </div>
                     </div>
                     <div class="pstat mobs">
                         <div class="pstat-icon"><i class="fa-solid fa-ghost"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-mobs">—</span>
-                            <span class="pstat-label">Mobs Killed</span>
+                            <span class="pstat-label">Criaturas Matadas</span>
                         </div>
                     </div>
                     <div class="pstat time">
                         <div class="pstat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-time">—</span>
-                            <span class="pstat-label">Time Played</span>
+                            <span class="pstat-label">Tiempo Jugado</span>
                         </div>
                     </div>
                     <div class="pstat blocks">
                         <div class="pstat-icon"><i class="fa-solid fa-hammer"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-blocks-broken">—</span>
-                            <span class="pstat-label">Blocks Broken</span>
+                            <span class="pstat-label">Bloques Rotos</span>
                         </div>
                     </div>
                     <div class="pstat tnt">
                         <div class="pstat-icon"><i class="fa-solid fa-bomb"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-tnt">—</span>
-                            <span class="pstat-label">TNT Used</span>
+                            <span class="pstat-label">TNT Usado</span>
                         </div>
                     </div>
                     <div class="pstat obsidian">
                         <div class="pstat-icon"><i class="fa-solid fa-gem"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-obsidian-mined">—</span>
-                            <span class="pstat-label">Obsidian Mined</span>
+                            <span class="pstat-label">Obsidiana Minada</span>
                         </div>
                     </div>
                     <div class="pstat netherite">
                         <div class="pstat-icon"><i class="fa-solid fa-dragon"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-netherite">—</span>
-                            <span class="pstat-label">Netherite</span>
+                            <span class="pstat-label">Netherita</span>
                         </div>
                     </div>
                     <div class="pstat elytra">
                         <div class="pstat-icon"><i class="fa-solid fa-paper-plane"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-elytra">—</span>
-                            <span class="pstat-label">Elytra Used</span>
+                            <span class="pstat-label">Elytras Usadas</span>
                         </div>
                     </div>
                     <div class="pstat totems">
                         <div class="pstat-icon"><i class="fa-solid fa-heart"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-totems">—</span>
-                            <span class="pstat-label">Totems Used</span>
+                            <span class="pstat-label">Totems Usados</span>
                         </div>
                     </div>
                     <div class="pstat arrows">
                         <div class="pstat-icon"><i class="fa-solid fa-crosshairs"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-arrows">—</span>
-                            <span class="pstat-label">Arrows Shot</span>
+                            <span class="pstat-label">Flechas Disparadas</span>
                         </div>
                     </div>
                     <div class="pstat time">
                         <div class="pstat-icon"><i class="fa-solid fa-shoe-prints"></i></div>
                         <div class="pstat-body">
                             <span class="pstat-val" id="stat-distance">—</span>
-                            <span class="pstat-label">Distance</span>
+                            <span class="pstat-label">Distancia</span>
                         </div>
                     </div>
                 </div>
@@ -183,7 +173,7 @@
         <div class="inner">
             <div class="stats-state-box">
                 <div class="stats-spinner"></div>
-                <p>Loading player data...</p>
+                <p>Cargando datos del jugador...</p>
             </div>
         </div>
     </section>
@@ -193,9 +183,9 @@
             <div class="stats-state-box error">
                 <div class="stats-state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <h3 id="error-title">Error</h3>
-                <p id="error-message">Something went wrong.</p>
+                <p id="error-message">Algo salió mal.</p>
                 <button class="stats-back-btn" onclick="showLeaderboard()" style="margin-top:20px;">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Leaderboard
+                    <i class="fa-solid fa-arrow-left"></i> Volver a la Clasificación
                 </button>
             </div>
         </div>
@@ -205,19 +195,19 @@
 
 <div id="footer-placeholder"></div>
 
-<script src="assets/components.js"></script>
+<script src="../assets/components.js"></script>
 <script>
     const API_URL = 'https://api.xera.ca';
 
     const STAT_CATEGORIES = [
         { key: 'kills', label: 'Kills', icon: 'fa-khanda', color: '#ff9f0a', format: formatNumber },
-        { key: 'deaths', label: 'Deaths', icon: 'fa-skull', color: '#ff453a', format: formatNumber },
-        { key: 'mobs_killed', label: 'Mob Kills', icon: 'fa-ghost', color: '#a2845e', format: formatNumber },
-        { key: 'time_played', label: 'Time Played', icon: 'fa-clock', color: '#2997ff', format: formatTime },
-        { key: 'blocks_broken', label: 'Blocks Broken', icon: 'fa-hammer', color: '#bf5af2', format: formatNumber },
-        { key: 'tnt_used', label: 'TNT Used', icon: 'fa-bomb', color: '#ff5c37', format: formatNumber },
-        { key: 'obsidian_mined', label: 'Obsidian Mined', icon: 'fa-gem', color: '#5865f2', format: formatNumber },
-        { key: 'netherite_mined', label: 'Netherite', icon: 'fa-dragon', color: '#ff0055', format: formatNumber },
+        { key: 'deaths', label: 'Muertes', icon: 'fa-skull', color: '#ff453a', format: formatNumber },
+        { key: 'mobs_killed', label: 'Criaturas', icon: 'fa-ghost', color: '#a2845e', format: formatNumber },
+        { key: 'time_played', label: 'Tiempo Jugado', icon: 'fa-clock', color: '#2997ff', format: formatTime },
+        { key: 'blocks_broken', label: 'Bloques Rotos', icon: 'fa-hammer', color: '#bf5af2', format: formatNumber },
+        { key: 'tnt_used', label: 'TNT Usado', icon: 'fa-bomb', color: '#ff5c37', format: formatNumber },
+        { key: 'obsidian_mined', label: 'Obsidiana', icon: 'fa-gem', color: '#5865f2', format: formatNumber },
+        { key: 'netherite_mined', label: 'Netherita', icon: 'fa-dragon', color: '#ff0055', format: formatNumber },
     ];
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -234,10 +224,10 @@
                 if (data.success && data.data) {
                     showPlayer(data.data);
                 } else {
-                    showError('Player Not Found', 'This player has no recorded stats or has never joined 8b8t.');
+                    showError('Jugador No Encontrado', 'Este jugador no tiene estadísticas registradas o nunca se ha unido a 8b8t.');
                 }
             } catch (err) {
-                showError('Connection Error', 'Unable to reach the stats server. Try again in a moment.');
+                showError('Error de Conexión', 'No se puede alcanzar el servidor de estadísticas. Intenta de nuevo en un momento.');
             }
         });
     });
@@ -252,7 +242,7 @@
                     </div>
                     <div>
                         <div class="lb-card-title">${cat.label}</div>
-                        <div class="lb-card-sub">Top 5 players</div>
+                        <div class="lb-card-sub">Top 5 jugadores</div>
                     </div>
                 </div>
                 <div class="lb-card-list">
@@ -290,7 +280,7 @@
                     `;
                 }).join('');
             } else {
-                list.innerHTML = `<div class="lb-card-skeleton" style="height:48px;display:flex;align-items:center;justify-content:center;color:#6e6e73;font-size:13px;">Unavailable</div>`;
+                list.innerHTML = `<div class="lb-card-skeleton" style="height:48px;display:flex;align-items:center;justify-content:center;color:#6e6e73;font-size:13px;">No disponible</div>`;
             }
         });
     }
@@ -387,8 +377,8 @@
     }
 
     function formatDate(ts) {
-        if (!ts) return 'Unknown';
-        return new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        if (!ts) return 'Desconocido';
+        return new Date(ts).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 </script>
 </body>

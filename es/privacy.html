@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - 8b8t Anarquía</title>
+    <link rel="stylesheet" href="../assets/font_awesome.css">
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        .pp-wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pp-meta {
+            font-size: 13px;
+            color: #52525b;
+            margin-bottom: 8px;
+        }
+
+        .pp-card {
+            background: #111113;
+            border: 1px solid #1e1e22;
+            border-radius: 12px;
+            padding: 28px 32px;
+        }
+
+        .pp-card-warn {
+            background: rgba(255, 69, 69, 0.07);
+            border: 1px solid rgba(255, 69, 69, 0.18);
+            border-left: 3px solid #ff4545;
+            border-radius: 12px;
+            padding: 22px 28px;
+        }
+
+        .pp-card-note {
+            background: rgba(89, 125, 216, 0.07);
+            border: 1px solid rgba(71, 108, 255, 0.15);
+            border-left: 3px solid #2cabc7;
+            border-radius: 12px;
+            padding: 22px 28px;
+        }
+
+        .pp-card h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #f4f4f5;
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .pp-card-warn h2 {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #ff4545;
+            margin-bottom: 10px;
+        }
+
+        .pp-card-note h2 {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #2aa3d6;
+            margin-bottom: 10px;
+        }
+
+        .pp-card p,
+        .pp-card-warn p,
+        .pp-card-note p {
+            font-size: 14px;
+            color: #a1a1aa;
+            line-height: 1.75;
+            margin-bottom: 10px;
+        }
+
+        .pp-card p:last-child,
+        .pp-card-warn p:last-child,
+        .pp-card-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        .pp-card-warn p { color: #ffffff; }
+        .pp-card-note p { color: #ffffff; }
+
+        .pp-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pp-list li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 14px;
+            color: #a1a1aa;
+            line-height: 1.7;
+        }
+
+        .pp-list li::before {
+            content: '—';
+            color: #3f3f46;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .pp-list li strong {
+            color: #d4d4d8;
+            font-weight: 500;
+        }
+
+        .pp-divider {
+            height: 1px;
+            background: #1e1e22;
+            margin: 4px 0;
+        }
+
+        .pp-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .pp-contact-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: #0a0a0b;
+            border: 1px solid #1e1e22;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: border-color 0.15s;
+        }
+
+        .pp-contact-row:hover { border-color: #2e2e35; }
+
+        .pp-contact-row .label {
+            font-size: 11px;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            min-width: 180px;
+        }
+
+        .pp-contact-row .addr {
+            font-size: 13px;
+            color: #187a9d;
+            font-family: monospace;
+        }
+
+        .pp-footer-note {
+            font-size: 13px;
+            color: #52525b;
+            text-align: center;
+            padding: 24px 0 0;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="header-placeholder"></div>
+    <main class="about-page-main">
+
+        <section class="about-hero outer">
+            <div class="about-hero-bg">
+                <picture>
+                    <source srcset="../assets/renders/2025-12-29_03.27.19.avif" type="image/avif">
+                    <img src="../assets/renders/2025-12-29_03.27.19.png" alt="8b8t Landscape">
+                </picture>
+                <div class="about-hero-overlay"></div>
+            </div>
+            <div class="inner about-hero-container">
+                <div class="about-hero-content">
+                    <span class="hero-badge">Legal</span>
+                    <h1 class="about-hero-title">Política de Privacidad</h1>
+                    <p class="about-hero-subtitle">Cómo XERA INC. maneja tu información cuando usas los servicios de 8b8t.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="clean-content-section outer" id="more">
+            <div class="inner">
+                <div class="pp-wrap">
+
+                    <p class="pp-meta">Fecha de Vigencia: 21 de Febrero, 2026 · Operador: XERA INC. · Edmonton, Alberta, Canadá</p>
+
+                    <!-- Overview -->
+                    <div class="pp-card">
+                        <h2>Resumen</h2>
+                        <p>8b8t es un servidor de anarquía Minecraft operado y propiedad de XERA INC., una compañía registrada y con sede en Edmonton, Alberta, Canadá.</p>
+                        <p>Esta Política de Privacidad explica cómo manejamos la información cuando te conectas o usas nuestros servicios, incluyendo los servidores Minecraft de 8b8t (Java en <strong>8b8t.me</strong>, Bedrock en <strong>br.8b8t.me</strong>), nuestro sitio web, y características relacionadas como registro de cuenta, compras y autenticación en el juego.</p>
+                    </div>
+
+                    <div class="pp-card-note">
+                        <h2>Nuestro Enfoque</h2>
+                        <p>Estamos comprometidos a proteger tu privacidad en línea con nuestra ética de anarquía — interferencia mínima, libertad máxima — mientras aseguramos los datos limitados que sí recopilamos. No registramos ni almacenamos direcciones IP de jugadores en ninguno de nuestros registros o bases de datos.</p>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- What we collect -->
+                    <div class="pp-card">
+                        <h2>Información que Recopilamos</h2>
+                        <p>Recopilamos solo los datos mínimos necesarios para proporcionar la experiencia del servidor:</p>
+                        <ul class="pp-list" style="margin-top: 14px;">
+                            <li><span><strong>Nombre de Usuario y Contraseña de Minecraft</strong> — Almacenamos tu nombre de usuario y una versión hasheada/encriptada de tu contraseña, usada únicamente para autenticarte en el servidor.</span></li>
+                            <li><span><strong>Dirección de Correo Electrónico</strong> — Solo si se proporciona voluntariamente. Usada exclusivamente para recuperación de 2FA y comunicaciones relacionadas con la cuenta. Nunca usada para marketing ni compartida con terceros.</span></li>
+                            <li><span><strong>Información de Compra/Transacción</strong> — Recopilada a través de CraftingStore, PayPal y/o Stripe cuando compras rangos o beneficios. No almacenamos detalles completos de tarjetas de pago; todo el procesamiento sensible es manejado por estos proveedores.</span></li>
+                            <li><span><strong>Registros en el Juego</strong> — Registros estándar del servidor incluyendo mensajes de chat, comandos, y últimas coordenadas registradas del jugador. Usados para gestión del servidor e investigaciones en casos raros de disputas.</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="pp-card">
+                        <h2>Lo que No Recopilamos</h2>
+                        <ul class="pp-list">
+                            <li>Direcciones IP de jugadores en registros o bases de datos.</li>
+                            <li>Cualquier identificador personal más allá de lo enumerateado arriba.</li>
+                            <li>Datos de geolocalización, historial de navegación, información del dispositivo, o seguimiento analítico no relacionado con la función principal del servidor.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- Children -->
+                    <div class="pp-card">
+                        <h2>Privacidad de Niños (Cumplimiento COPPA)</h2>
+                        <p>No recopilamos conscientemente información personal de niños menores de 13 años. No dirigimos 8b8t ni ningún servicio relacionado hacia niños menores de 13 años, ni animamos a usuarios menores de 13 a unirse o usar el servidor.</p>
+                    </div>
+
+                    <div class="pp-card-warn">
+                        <h2>Restricción de Edad</h2>
+                        <p>El servidor contiene temas maduros y comportamiento de jugadores sin restricciones (incluyendo griefing, PvP y chat). Está dirigido a jugadores de <strong>13 años o más</strong>. Si llegamos a tener conocimiento de que hemos recopilado información personal de un niño menor de 13 años, la eliminaremos inmediatamente.</p>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- How we use -->
+                    <div class="pp-card">
+                        <h2>Cómo Usamos Tu Información</h2>
+                        <p>Tus datos se usan solo para:</p>
+                        <ul class="pp-list" style="margin-top: 14px;">
+                            <li>Autenticar y proporcionar acceso al servidor 8b8t.</li>
+                            <li>Habilitar recuperación de cuenta vía correo electrónico (si se proporciona).</li>
+                            <li>Procesar donaciones y compras de rangos o beneficios.</li>
+                            <li>Mantener registros del servidor para estabilidad operativa, depuración, y (en casos excepcionales) investigar problemas específicos de cuentas.</li>
+                        </ul>
+                        <p style="margin-top: 14px;">No analizamos, perfilamos, vendemos ni compartimos tus datos para publicidad, marketing, o cualquier propósito comercial más allá de operar el servidor.</p>
+                    </div>
+
+                    <!-- Data sharing -->
+                    <div class="pp-card">
+                        <h2>Compartir Datos y Terceros</h2>
+                        <ul class="pp-list">
+                            <li>Los datos de pago son procesados por CraftingStore, PayPal y/o Stripe, quienes tienen sus propias políticas de privacidad y estándares de seguridad.</li>
+                            <li>No compartimos tu nombre de usuario, hash de contraseña, correo electrónico, o registros con ningún otro tercero excepto según lo requiera la ley.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- Law enforcement -->
+                    <div class="pp-card">
+                        <h2>Cumplimiento con Aplicación de la Ley</h2>
+                        <p>Solo divulgaremos datos de usuarios a fuerzas del orden o autoridades gubernamentales en respuesta a una <strong style="color: #d4d4d8;">orden judicial válida firmada por un juez</strong> o una citación correctamente emitida. No cumpliremos con solicitudes informales, órdenes sin supervisión judicial, o demandas de entidades no judiciales.</p>
+                        <p>Respondemos solo a solicitudes legales válidas de <strong style="color: #d4d4d8;">autoridades de Estados Unidos o Canadá</strong>. Las solicitudes de otras jurisdicciones generalmente no serán honradas a menos que vengan acompañadas por procesos MLAT apropiados o compulsión legal internacional equivalente.</p>
+                        <p>Cualquier divulgación se limitará estrictamente a lo legalmente requerido, y solo entregaremos datos si el предполагаемое Breaking the law está substanciado y la solicitud cumple con todos los requisitos de validez legal.</p>
+                    </div>
+
+                    <!-- GDPR -->
+                    <div class="pp-card">
+                        <h2>Tus Derechos y GDPR</h2>
+                        <p>8b8t es operado por una compañía canadiense (XERA INC.) y no específicamente dirigida ni ofrece servicios a individuos en la Unión Europea de una manera que activaría extensas obligaciones de GDPR. No seguimos ni cumplimos con solicitudes de sujetos de datos de GDPR (como demandas de acceso, erasure o portabilidad). Tales solicitudes serán ignoradas.</p>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- Security -->
+                    <div class="pp-card">
+                        <h2>Seguridad</h2>
+                        <p>Tomamos medidas razonables para asegurar los datos limitados que retenemos, incluyendo encriptación y hasheo de contraseñas, prácticas de base de datos seguras, y monitoreo continuo de vulnerabilidades.</p>
+                    </div>
+
+                    <div class="pp-card-warn">
+                        <h2>Sin Garantías</h2>
+                        <p>Ningún sistema es 100% seguro — especialmente en un entorno de anarquía donde los ataques son comunes. Continuamente trabajamos para mejorar protecciones, incluyendo mitigación DDoS y endurecimiento de red.</p>
+                    </div>
+
+                    <div class="pp-divider"></div>
+
+                    <!-- Contact -->
+                    <div class="pp-card">
+                        <h2>Contáctanos</h2>
+                        <p>Si tienes preguntas sobre esta Política de Privacidad o nuestras prácticas de datos:</p>
+                        <div class="pp-contacts">
+                            <div class="pp-contact-row">
+                                <span class="label">Consultas del Servidor 8b8t</span>
+                                <span class="addr"><a href="mailto:contact@8b8t.me">contact@8b8t.me</a></span>
+                            </div>
+                            <div class="pp-contact-row">
+                                <span class="label">Legal y Aplicación de la Ley</span>
+                                <span class="addr"><a href="mailto:legal@8b8t.me">legal@xera.ca</a></span>
+                            </div>
+                            <div class="pp-contact-row">
+                                <span class="label">Asuntos de la Compañía XERA INC.</span>
+                                <span class="addr"><a href="mailto:contact@xera.ca">contact@xera.ca</a></span>
+                            </div>
+                            <p class="pp-footer-note">Al usar 8b8t, reconoces que has leído y entendido esta Política de Privacidad.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="../assets/components.js"></script>
+    <script src="../assets/script.js"></script>
+</body>
+</html>
