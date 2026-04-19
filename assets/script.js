@@ -111,7 +111,7 @@ function updateFeatureUI(index) {
         img.style.opacity = '0';
         setTimeout(() => {
             const filename = f.img.split('/').pop().replace(/\.(webp|avif|png|jpg)$/, '');
-            const optimizedSrc = `assets/img/optimized/${filename}.webp`;
+            const optimizedSrc = `https://www.8b8t.me/assets/img/optimized/${filename}.webp`;
 
             if (avifSource) avifSource.srcset = '';
             if (webpSource) webpSource.srcset = optimizedSrc;
@@ -207,7 +207,7 @@ function createGalleryItem(item, slotIndex) {
     div.setAttribute('data-author', item.author);
     div.setAttribute('data-date', dateStr);
 
-    const thumbSrc = `assets/players/thumbs/${filename}.webp`;
+    const thumbSrc = `https://www.8b8t.me/assets/players/thumbs/${filename}.webp`;
 
     div.innerHTML = `
         <div class="gallery-image-container">
