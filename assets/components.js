@@ -3,9 +3,9 @@ const headerHTML = `
         <div class="nav-container">
             <a class="nav-logo" href="index.html">
                 <picture>
-                    <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
-                    <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
-                    <img src="assets/img/8b8tTrans-1.png" alt="8b8t">
+                    <source srcset="https://www.8b8t.me/assets/img/8b8tTrans-1.avif" type="image/avif">
+                    <source srcset="https://www.8b8t.me/assets/img/8b8tTrans-1.webp" type="image/webp">
+                    <img src="https://www.8b8t.me/assets/img/8b8tTrans-1.png" alt="8b8t">
                 </picture>
             </a>
 
@@ -106,7 +106,7 @@ const footerHTML = `
             </div>
 
             <div class="gh-powered-by" style="margin-top: 20px; text-align: left;">
-                <a href="https://xera.ca" target="_blank">A XERA INC. Brand</a>
+                <a href="https://xera.ca" target="_blank">Operated by XERA INC.</a>
             </div>
         </div>
     </footer>
