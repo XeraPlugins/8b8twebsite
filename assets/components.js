@@ -1,5 +1,80 @@
 var header = {}; //Empty object to store header data
 var footer = {}; //Empty object to store footer data
+
+const defaultMeta = {
+    siteName: "8b8t Network",
+    siteUrl: "https://www.8b8t.me",
+    twitter: "@8b8tme",
+    image: "https://www.8b8t.me/assets/img/og-image.png",
+    imageAlt: "8b8t Minecraft Server"
+};
+
+function getMetaTags(page) {
+    const meta = {
+        home: {
+            title: "8b8t Network - Best Minecraft Server",
+            description: "Join 8b8t Network - the ultimate Minecraft experience. Play on survival, creative, and more game modes. Java and Bedrock supported!"
+        },
+        about: {
+            title: "About - 8b8t Network",
+            description: "Learn about 8b8t Network - one of the longest running Minecraft servers. Established in 2012, we offer quality gameplay for thousands of players."
+        },
+        support: {
+            title: "Support - 8b8t Network",
+            description: "Get help with 8b8t Network. Find answers to common questions, contact our support team, and learn how to join the server."
+        },
+        stats: {
+            title: "Server Stats - 8b8t Network",
+            description: "View real-time player statistics, online counts, and server performance for 8b8t Network Minecraft server."
+        },
+        commands: {
+            title: "Commands - 8b8t Network",
+            description: "Browse all available commands on 8b8t Network. Learn how to use chat, economy, spawn, and more."
+        },
+        lce: {
+            title: "LCE - 8b8t Network",
+            description: "Learn about the Law of Conservation of Energy on 8b8t Network - our unique gameplay feature."
+        },
+        vote: {
+            title: "Vote - 8b8t Network",
+            description: "Vote for 8b8t Network on top Minecraft server lists and earn rewards!"
+        },
+        terms: {
+            title: "Terms of Service - 8b8t Network",
+            description: "8b8t Network Terms of Service - read our rules and guidelines for playing on our server."
+        },
+        privacy: {
+            title: "Privacy Policy - 8b8t Network",
+            description: "8b8t Network Privacy Policy - understand how we handle and protect your data."
+        }
+    };
+
+    const pageMeta = meta[page] || meta.home;
+    const image = pageMeta.image || defaultMeta.image;
+
+    return `
+        <meta property="og:site_name" content="${defaultMeta.siteName}">
+        <meta property="og:title" content="${pageMeta.title}">
+        <meta property="og:description" content="${pageMeta.description}">
+        <meta property="og:url" content="${defaultMeta.siteUrl}${window.location.pathname}">
+        <meta property="og:image" content="${image}">
+        <meta property="og:image:alt" content="${defaultMeta.imageAlt}">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="${pageMeta.title}">
+        <meta name="twitter:description" content="${pageMeta.description}">
+        <meta name="twitter:image" content="${image}">
+        <meta name="twitter:site" content="${defaultMeta.twitter}">
+        <meta name="twitter:creator" content="${defaultMeta.twitter}">
+        <meta name="description" content="${pageMeta.description}">
+    `;
+}
+
+function setMetaTags(page) {
+    const metaTags = getMetaTags(page);
+    document.head.insertAdjacentHTML('beforeend', metaTags);
+}
+
 switch (localStorage.getItem("preferredLanguage")) {
     case "es":
         header = {
@@ -56,6 +131,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             server: "Server",
             howToJoin: "How to Join",
             track: "Track Site",
+            status: "Server Status",
             shop: "Shop",
             legalSupport: "Legal & Support",
             helpCenter: "Help Center",
@@ -142,6 +218,7 @@ const footerHTML = `
                     <ul class="footer-links">
                         <li><a href="https://www.8b8t.me/how-to-join/">${footer.howToJoin}</a></li>
                         <li><a href="https://track.8b8t.me/">${footer.track}</a></li>
+                        <li><a href="https://status.xera.ca">${footer.status}</a></li>
                         <li><a href="https://shop.8b8t.me/">${footer.shop}</a></li>
                     </ul>
                 </div>
