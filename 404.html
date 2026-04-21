@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | 8b8t Network</title>
+    <link rel="stylesheet" href="assets/font_awesome.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .error-page-main {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .error-container {
+            max-width: 500px;
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: 700;
+            color: #2997ff;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+        .error-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .error-message {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+        .btn-error {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #2997ff;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .btn-error:hover {
+            background: #0a84ff;
+        }
+    </style>
+    <script>
+        setMetaTags('home');
+    </script>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="error-page-main">
+        <div class="error-container">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Page Not Found</h2>
+            <p class="error-message">The page you're looking for doesn't exist or has been moved.</p>
+            <a href="index.html" class="btn-error">Go Home</a>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/components.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+
+</html>

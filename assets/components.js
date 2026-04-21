@@ -87,6 +87,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             track: "Sitio de Seguimiento",
             shop: "Tienda",
             vote: "Votar",
+            blog: "Blog",
             terms: "Términos",
             switchLanguage: "Switch Language"
         };
@@ -120,6 +121,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             track: "Track Site",
             shop: "Shop",
             vote: "Vote",
+            blog: "Blog",
             terms: "Terms",
             switchLanguage: "Cambiar Idioma"
         };
@@ -130,6 +132,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             voteForServer: "Vote for Server",
             server: "Server",
             howToJoin: "How to Join",
+            blog: "Blog",
             track: "Track Site",
             status: "Server Status",
             shop: "Shop",
@@ -164,7 +167,9 @@ const headerHTML = `
                 <li><a href="https://track.8b8t.me/">${header.track}</a></li>
                 <li><a href="https://shop.8b8t.me/">${header.shop}</a></li>
                 <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
+                <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
                 <li><a href="terms.html">${header.terms}</a></li>
+                
                 <li><button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button></li>
             </ul>
 
@@ -194,6 +199,7 @@ const headerHTML = `
                 <li><a href="https://track.8b8t.me/">${header.track}</a></li>
                 <li><a href="https://shop.8b8t.me/">${header.shop}</a></li>
                 <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
+                <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
                 <li><a href="terms.html">${header.terms}</a></li>
             </ul>
         </div>
@@ -210,6 +216,7 @@ const footerHTML = `
                         <li><a href="https://telegram.8b8t.me">${footer.telegram}</a></li>
                         <li><a href="https://videos.8b8t.me/">${footer.videos}</a></li>
                         <li><a href="https://votefor.8b8t.me/">${footer.voteForServer}</a></li>
+                        <li><a href="https://blog.8b8t.me/">${footer.blog}</a></li>
                     </ul>
                 </div>
 
