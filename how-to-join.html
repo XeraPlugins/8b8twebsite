@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Join - 8b8t Anarchy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/font_awesome.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .lce-page { background: #000; min-height: 100vh; }
+
+        .lce-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 420px;
+            overflow: hidden;
+            padding-top: 64px;
+        }
+        .lce-hero-bg {
+            position: absolute;
+            inset: -20px;
+            background-image: url('assets/renders/2025-12-29_04.47.35.png');
+            background-size: cover;
+            background-position: center 30%;
+            filter: blur(6px) brightness(0.35);
+            transform: scale(1.04);
+        }
+        .lce-hero-fade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 75%, #000 100%);
+        }
+        .lce-hero-body {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            max-width: 75rem;
+            margin: 0 auto;
+        }
+        .lce-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #2997ff;
+            margin-bottom: 0.5rem;
+        }
+        .lce-eyebrow::before {
+            content: '';
+            display: block;
+            width: 1.125rem;
+            height: 1px;
+            background: #2997ff;
+        }
+        .lce-hero-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            color: #fff;
+            margin: 0 0 0.625rem;
+        }
+        .lce-hero-desc {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            max-width: 25rem;
+            margin: 0 0 1rem;
+        }
+        .lce-hero-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .lce-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5625rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.625rem 1.125rem;
+            border-radius: 0.5625rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            align-self: flex-start;
+            text-decoration: none;
+        }
+        .lce-hero-cta:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(255,255,255,0.28);
+        }
+        .lce-hero-cta.primary {
+            background: rgba(41,151,255,0.15);
+            border-color: rgba(41,151,255,0.3);
+        }
+        .lce-hero-cta.primary:hover {
+            background: rgba(41,151,255,0.25);
+        }
+        .lce-hero-cta i { color: #2997ff; font-size: 0.6875rem; }
+
+        .lce-layout {
+            width: 100%;
+            max-width: 62.5rem;
+            margin: 0 auto;
+            padding: 0 5% 6.25rem;
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            gap: 0 60px;
+            align-items: start;
+        }
+        .lce-sidebar {
+            position: sticky;
+            top: 88px;
+            padding-top: 44px;
+        }
+        .lce-toc-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.28);
+            margin-bottom: 0.75rem;
+        }
+        .lce-toc {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .lce-toc a {
+            display: block;
+            font-size: 0.8125rem;
+            color: rgba(255,255,255,0.38);
+            text-decoration: none;
+            padding: 0.3125rem 0 0.3125rem 0.875rem;
+            border-left: 1px solid rgba(255,255,255,0.08);
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .lce-toc a:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+        .lce-article { min-width: 0; }
+
+        .lce-section {
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .lce-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .lce-section-heading {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin: 0 0 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .lce-lead {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.375rem;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #fff;
+            margin: 0 0 0.875rem;
+        }
+        .lce-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.65);
+            margin: 0 0 0.625rem;
+        }
+        .lce-body:last-child { margin-bottom: 0; }
+        .lce-body a { color: #2997ff; text-decoration: none; font-weight: 500; }
+        .lce-body a:hover { text-decoration: underline; }
+
+        .lce-ip-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .lce-ip-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .lce-ip-item:hover {
+            border-color: #2997ff;
+            background: rgba(41,151,255,0.05);
+        }
+        .lce-ip-icon {
+            width: 2.5rem; height: 2.5rem;
+            border-radius: 0.625rem;
+            background: rgba(41,151,255,0.1);
+            color: #2997ff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .lce-ip-icon.bedrock {
+            background: rgba(76,175,80,0.1);
+            color: #4caf50;
+        }
+        .lce-ip-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 0.125rem;
+        }
+        .lce-ip-value {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #fff;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        .lce-ip-badge {
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(41,151,255,0.15);
+            color: #2997ff;
+            margin-left: auto;
+        }
+        .lce-ip-badge.recommended {
+            background: rgba(76,175,80,0.15);
+            color: #4caf50;
+        }
+
+        .lce-versions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.02);
+            margin-top: 1rem;
+        }
+        .lce-versions-icon {
+            width: 2.5rem; height: 2.5rem;
+            border-radius: 0.625rem;
+            background: rgba(41,151,255,0.1);
+            color: #2997ff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .lce-versions-text {
+            flex: 1;
+        }
+        .lce-versions-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 0.125rem;
+        }
+        .lce-versions-value {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .lce-versions-note {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 0.25rem;
+        }
+
+        .lce-step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .lce-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 0.75rem;
+            background: rgba(255,255,255,0.02);
+        }
+        .lce-step-num {
+            width: 2rem; height: 2rem;
+            border-radius: 50%;
+            background: rgba(41,151,255,0.15);
+            color: #2997ff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .lce-step-content {
+            flex: 1;
+        }
+        .lce-step-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        .lce-step-desc {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+
+        .lce-alert {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255,193,7,0.3);
+            border-radius: 0.75rem;
+            background: rgba(255,193,7,0.05);
+            margin-top: 1.5rem;
+        }
+        .lce-alert i {
+            color: #ffc107;
+            font-size: 1.125rem;
+        }
+        .lce-alert-text {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+        .lce-alert-text strong { color: #fff; }
+
+        .lce-tip {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(76,175,80,0.3);
+            border-radius: 0.75rem;
+            background: rgba(76,175,80,0.05);
+            margin-top: 1.5rem;
+        }
+        .lce-tip i {
+            color: #4caf50;
+            font-size: 1.125rem;
+        }
+        .lce-tip-text {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+        .lce-tip-text strong { color: #fff; }
+
+        .lce-copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(41,151,255,0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 9999;
+        }
+        .lce-copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .lce-layout { grid-template-columns: 1fr; }
+            .lce-sidebar { display: none; }
+            .lce-ip-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="lce-page">
+        <section class="lce-hero">
+            <div class="lce-hero-bg"></div>
+            <div class="lce-hero-fade"></div>
+            <div class="lce-hero-body">
+                <div class="lce-eyebrow">Join the Wasteland</div>
+                <h1 class="lce-hero-title">How to Join 8b8t</h1>
+                <p class="lce-hero-desc">Connect to the oldest non-vanilla anarchy server. Enter the wasteland where freedom is absolute.</p>
+                <div class="lce-hero-actions">
+                    <a href="index.html" class="lce-hero-cta primary"><i class="fa-solid fa-play"></i> Play Now</a>
+                    <a href="#java" class="lce-hero-cta"><i class="fa-solid fa-chevron-down"></i> Java Guide</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="lce-layout">
+            <aside class="lce-sidebar">
+                <div class="lce-toc-label">On this page</div>
+                <ul class="lce-toc">
+                    <li><a href="#java">Java Edition</a></li>
+                    <li><a href="#bedrock">Bedrock Edition</a></li>
+                    <li><a href="#versions">Version Support</a></li>
+                    <li><a href="#tips">Pro Tips</a></li>
+                </ul>
+            </aside>
+
+            <article class="lce-article">
+                <section class="lce-section" id="java">
+                    <div class="lce-section-heading">Java Edition</div>
+                    <p class="lce-lead">Join using Minecraft Java Edition on versions 1.8 to 1.21.1.</p>
+
+                    <div class="lce-ip-grid">
+                        <div class="lce-ip-item" onclick="copyToClipboard('8b8t.me', 'Main IP copied!')">
+                            <div class="lce-ip-icon"><i class="fa-solid fa-server"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Main IP</div>
+                                <div class="lce-ip-value">8b8t.me</div>
+                            </div>
+                            <span class="lce-ip-badge recommended">Recommended</span>
+                        </div>
+                        <div class="lce-ip-item" onclick="copyToClipboard('alt.8b8t.me', 'Alt IP copied!')">
+                            <div class="lce-ip-icon"><i class="fa-solid fa-server"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Alt IP</div>
+                                <div class="lce-ip-value">alt.8b8t.me</div>
+                            </div>
+                        </div>
+                        <div class="lce-ip-item" onclick="copyToClipboard('alt2.8b8t.me', 'Alt2 IP copied!')">
+                            <div class="lce-ip-icon"><i class="fa-solid fa-server"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Alt IP 2</div>
+                                <div class="lce-ip-value">alt2.8b8t.me</div>
+                            </div>
+                        </div>
+                        <div class="lce-ip-item" onclick="copyToClipboard('alt3.8b8t.me', 'Alt3 IP copied!')">
+                            <div class="lce-ip-icon"><i class="fa-solid fa-server"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Alt IP 3</div>
+                                <div class="lce-ip-value">alt3.8b8t.me</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lce-step-list">
+                        <div class="lce-step">
+                            <div class="lce-step-num">1</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Open Minecraft Java Edition</div>
+                                <div class="lce-step-desc">Launch Minecraft and log in to your account. Make sure you're on a supported version (1.8 to 1.21.1, with 1.21.1 recommended).</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">2</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Go to Multiplayer</div>
+                                <div class="lce-step-desc">Click "Multiplayer" from the main menu, then click "Add Server" or "Direct Connect".</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">3</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Enter Server Address</div>
+                                <div class="lce-step-desc">Type <strong>8b8t.me</strong> into the server address field. Click "Done" or "Join Server".</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">4</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">You're In</div>
+                                <div class="lce-step-desc">You should spawn in the wasteland. Welcome to 8b8t.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lce-alert">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="lce-alert-text">
+                            <strong>Note:</strong> 8b8t is a cracked server. You can join with any Minecraft username without owning the game.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lce-section" id="bedrock">
+                    <div class="lce-section-heading">Bedrock Edition</div>
+                    <p class="lce-lead">Join using Minecraft Bedrock Edition on the latest version.</p>
+
+                    <div class="lce-ip-grid">
+                        <div class="lce-ip-item" onclick="copyToClipboard('br.8b8t.me', 'Bedrock IP copied!')">
+                            <div class="lce-ip-icon bedrock"><i class="fa-solid fa-mobile-screen"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Bedrock IP</div>
+                                <div class="lce-ip-value">br.8b8t.me</div>
+                            </div>
+                        </div>
+                        <div class="lce-ip-item">
+                            <div class="lce-ip-icon bedrock"><i class="fa-solid fa-plug"></i></div>
+                            <div>
+                                <div class="lce-ip-label">Port</div>
+                                <div class="lce-ip-value">19132</div>
+                            </div>
+                            <span class="lce-ip-badge recommended">Required</span>
+                        </div>
+                    </div>
+
+                    <div class="lce-step-list">
+                        <div class="lce-step">
+                            <div class="lce-step-num">1</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Open Minecraft Bedrock Edition</div>
+                                <div class="lce-step-desc">Launch Minecraft Bedrock Edition (Windows 10/11, iOS, Android, Xbox, PlayStation, Switch).</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">2</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Go to Play</div>
+                                <div class="lce-step-desc">Click "Play", then "Servers". Click "Add Server".</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">3</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Enter Server Details</div>
+                                <div class="lce-step-desc">Enter <strong>br.8b8t.me</strong> for the IP address and <strong>19132</strong> for the port. Name your server and click "Save".</div>
+                            </div>
+                        </div>
+                        <div class="lce-step">
+                            <div class="lce-step-num">4</div>
+                            <div class="lce-step-content">
+                                <div class="lce-step-title">Join the Server</div>
+                                <div class="lce-step-desc">Click on the 8b8t server and select "Join". You're in!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lce-tip">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <div class="lce-tip-text">
+                            <strong>Tip:</strong> Bedrock support is available on the latest Minecraft version. Make sure your game is updated.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="lce-section" id="versions">
+                    <div class="lce-section-heading">Version Support</div>
+                    <p class="lce-lead">8b8t supports Minecraft versions 1.8 to 1.21.1.</p>
+
+                    <div class="lce-versions">
+                        <div class="lce-versions-icon"><i class="fa-solid fa-cube"></i></div>
+                        <div class="lce-versions-text">
+                            <div class="lce-versions-label">Supported Versions</div>
+                            <div class="lce-versions-value">1.8 — 1.21.1</div>
+                            <div class="lce-versions-note">We recommend version 1.21.1 for the best experience. This is the stable version the server is currently running on.</div>
+                        </div>
+                    </div>
+
+                    <div class="lce-body" style="margin-top: 1.5rem;">
+                        <p>The server runs on a highly optimized Folia fork that supports cross-version compatibility. Lower versions (1.8-1.12) can connect using protocol bridges or via <a href="https://minecraft.net" target="_blank">ViaVersion</a> plugins on supported launchers. Higher versions (1.13+) connect natively.</p>
+                    </div>
+                </section>
+
+                <section class="lce-section" id="tips">
+                    <div class="lce-section-heading">Pro Tips</div>
+
+                    <div class="lce-tip">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div class="lce-tip-text">
+                            <strong>Use 8b8t.me</strong> as your primary IP. This is the best optimized server address with the lowest latency for most players.
+                        </div>
+                    </div>
+
+                    <div class="lce-tip" style="margin-top: 0.75rem;">
+                        <i class="fa-solid fa-wifi"></i>
+                        <div class="lce-tip-text">
+                            <strong>Alternative IPs</strong> (alt.8b8t.me, alt2.8b8t.me, alt3.8b8t.me) can help if you're experiencing higher latency or connection issues. Use them as a fallback.
+                        </div>
+                    </div>
+
+                    <div class="lce-tip" style="margin-top: 0.75rem;">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="lce-tip-text">
+                            <strong>VPN Usage</strong> is allowed and recommended on 8b8t. We respect your privacy and do not log IPs without consent.
+                        </div>
+                    </div>
+
+                    <div class="lce-tip" style="margin-top: 0.75rem;">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <div class="lce-tip-text">
+                            <strong>Cracked Players</strong> welcome. 8b8t accepts non-Mojang accounts. Use any username you like—no ownership required.
+                        </div>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div class="lce-copy-toast" id="copy-toast">Copied to clipboard!</div>
+
+    <script src="assets/components.js"></script>
+    <script src="assets/script.js"></script>
+    <script>
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('copy-toast');
+                toast.textContent = message || text + ' copied!';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                const toast = document.getElementById('copy-toast');
+                toast.textContent = message || text + ' copied!';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
