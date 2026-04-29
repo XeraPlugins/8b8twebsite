@@ -46,6 +46,10 @@ function getMetaTags(page) {
         privacy: {
             title: "Privacy Policy - 8b8t Network",
             description: "8b8t Network Privacy Policy - understand how we handle and protect your data."
+        },
+        shop: {
+            title: "Shop - 8b8t Network",
+            description: "Purchase ranks and perks on 8b8t Network. Support the server and unlock premium features."
         }
     };
 
@@ -80,6 +84,7 @@ switch (localStorage.getItem("preferredLanguage")) {
         header = {
             home: "Inicio",
             about: "Acerca de",
+            howtojoin: "Como Jugar",
             support: "Soporte",
             stats: "Estadísticas",
             commands: "Comandos",
@@ -114,6 +119,7 @@ switch (localStorage.getItem("preferredLanguage")) {
         header = {
             home: "Home",
             about: "About",
+            howtojoin: "How To Join",
             support: "Support",
             stats: "Stats",
             commands: "Commands",
@@ -160,6 +166,7 @@ const headerHTML = `
             <ul class="nav-links">
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
+                <li><a href="how-to-join.html">${header.howtojoin}</a></li>
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
@@ -191,6 +198,7 @@ const headerHTML = `
             <button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button>
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
+                <li><a href="how-to-join.html">${header.howtojoin}</a></li>
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
@@ -221,7 +229,7 @@ const footerHTML = `
                 <div class="footer-column">
                     <h4>${footer.server}</h4>
                     <ul class="footer-links">
-                        <li><a href="https://www.8b8t.me/how-to-join/">${footer.howToJoin}</a></li>
+                        <li><a href="https://www.8b8t.me/how-to-join">${footer.howToJoin}</a></li>
                         <li><a href="lce.html">${footer.lce}</a></li>
                         <li><a href="https://track.8b8t.me/">${footer.track}</a></li>
                         <li><a href="https://status.xera.ca">${footer.status}</a></li>
