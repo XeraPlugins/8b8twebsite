@@ -171,15 +171,15 @@ const headerHTML = `
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
                 <li><a href="lce.html">${header.lce}</a></li>
-                <li><a href="https://shop.8b8t.me/">${header.shop}</a></li>
-                <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
-                <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
-                <li><a href="terms.html">${header.terms}</a></li>
-                
-                <li><button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button></li>
-            </ul>
-
-            <button class="hamburger" aria-label="Toggle menu">
+                <li><a href="shop.html">${header.shop}</a></li>
+                 <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
+                 <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
+                 <li><a href="terms.html">${header.terms}</a></li>
+                 
+                 <li><button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button></li>
+             </ul>
+ 
+             <button class="hamburger" aria-label="Toggle menu">
                 <svg class="hamburger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="4" y1="6" x2="20" y2="6"></line>
                     <line x1="4" y1="12" x2="20" y2="12"></line>
@@ -203,13 +203,13 @@ const headerHTML = `
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
                 <li><a href="lce.html">${header.lce}</a></li>
-                <li><a href="https://shop.8b8t.me/">${header.shop}</a></li>
-                <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
-                <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
-                <li><a href="terms.html">${header.terms}</a></li>
-            </ul>
-        </div>
-    </nav>
+                <li><a href="shop.html">${header.shop}</a></li>
+                 <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
+                 <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
+                 <li><a href="terms.html">${header.terms}</a></li>
+             </ul>
+         </div>
+     </nav>
 `;
 
 const footerHTML = `
@@ -233,12 +233,12 @@ const footerHTML = `
                         <li><a href="lce.html">${footer.lce}</a></li>
                         <li><a href="https://track.8b8t.me/">${footer.track}</a></li>
                         <li><a href="https://status.xera.ca">${footer.status}</a></li>
-                        <li><a href="https://shop.8b8t.me/">${footer.shop}</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>${footer.legalSupport}</h4>
+                        <li><a href="shop.html">${footer.shop}</a></li>
+                     </ul>
+                 </div>
+ 
+                 <div class="footer-column">
+                     <h4>${footer.legalSupport}</h4>
                     <ul class="footer-links">
                         <li><a href="https://www.8b8t.me/support">${footer.helpCenter}</a></li>
                         <li><a href="terms.html">${footer.termsOfService}</a></li>

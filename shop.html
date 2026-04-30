@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - 8b8t</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/font_awesome.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .shop-page {
+            background: #000;
+            min-height: 100vh;
+        }
+
+        .shop-hero {
+            position: relative;
+            padding: 140px 0 60px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .shop-hero-bg {
+            position: absolute;
+            inset: -20px;
+            background-image: url('assets/renders/2026-04-18_22.16.23.png');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.3);
+            transform: scale(1.05);
+        }
+
+        .shop-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
+        }
+
+        .shop-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .shop-hero-content .hero-badge {
+            margin-bottom: 20px;
+        }
+
+        .shop-hero-content h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+            background: linear-gradient(to bottom, #fff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .shop-hero-content p {
+            font-size: 18px;
+            color: #d2d2d7;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .shop-section {
+            padding: 60px 0 100px;
+            background: #000;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .rank-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rank-card:hover {
+            border-color: rgba(41, 151, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .rank-card.featured {
+            border-color: rgba(41, 151, 255, 0.3);
+            background: rgba(41, 151, 255, 0.05);
+        }
+
+        .popular-badge {
+            display: inline-block;
+            background: #2997ff;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            align-self: flex-start;
+        }
+
+        .rank-header {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .rank-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .rank-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #2997ff;
+            line-height: 1;
+        }
+
+        .rank-price span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #86868b;
+        }
+
+        .rank-features {
+            flex: 1;
+            list-style: none;
+            margin: 0 0 28px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rank-features li {
+            font-size: 14px;
+            color: #d2d2d7;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+
+        .rank-features li i {
+            color: #2997ff;
+            font-size: 12px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .purchase-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(41, 151, 255, 0.15);
+            border: 1px solid rgba(41, 151, 255, 0.3);
+            color: #2997ff;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .purchase-btn:hover {
+            background: #2997ff;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(41, 151, 255, 0.3);
+        }
+
+        .purchase-btn i {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .purchase-btn:hover i {
+            transform: translateX(4px);
+        }
+
+        .rank-card.featured .purchase-btn {
+            background: #2997ff;
+            color: #fff;
+            border-color: #2997ff;
+        }
+
+        .rank-card.featured .purchase-btn:hover {
+            background: #0a84ff;
+            box-shadow: 0 10px 30px rgba(41, 151, 255, 0.4);
+        }
+
+        .shop-notice {
+            max-width: 800px;
+            margin: 60px auto 0;
+            padding: 24px 32px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .shop-notice p {
+            font-size: 14px;
+            color: #86868b;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .shop-notice a {
+            color: #2997ff;
+            text-decoration: none;
+        }
+
+        .shop-notice a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .shop-hero {
+                padding: 120px 0 40px;
+            }
+        }
+    </style>
+</head>
+
+<body class="shop-page">
+    <div id="header-placeholder"></div>
+
+    <main>
+        <section class="shop-hero">
+            <div class="shop-hero-bg"></div>
+            <div class="shop-hero-overlay"></div>
+            <div class="shop-hero-content">
+                <span class="hero-badge">Official 8b8t Shop</span>
+                <h1>Upgrade Your Experience</h1>
+                <p>Support 8b8t and unlock premium features. All purchases help keep the server running and grant you exclusive perks.</p>
+            </div>
+        </section>
+
+        <section class="shop-section">
+            <div class="shop-grid">
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Basic</h3>
+                        <div class="rank-price">$5.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 20 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest</li>
+                        <li><i class="fa-solid fa-check"></i> 9 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 10,000 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> Basic prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/700012" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">SE</h3>
+                        <div class="rank-price">$7.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 25 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest</li>
+                        <li><i class="fa-solid fa-check"></i> 11 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 8,000 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> SE prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/700015" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Mini</h3>
+                        <div class="rank-price">$10.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 35 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest</li>
+                        <li><i class="fa-solid fa-check"></i> 13 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 6,000 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> Mini prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/733232" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Pro</h3>
+                        <div class="rank-price">$13.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 50 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest</li>
+                        <li><i class="fa-solid fa-check"></i> 15 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 4,000 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> Pro prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/733237" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card featured">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="rank-header">
+                        <h3 class="rank-name">Pro+</h3>
+                        <div class="rank-price">$17.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 100 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest, /rename</li>
+                        <li><i class="fa-solid fa-check"></i> 17 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 2,000 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> Pro+ prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/1056997" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Ultra</h3>
+                        <div class="rank-price">$22.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> 150 homes</li>
+                        <li><i class="fa-solid fa-check"></i> Priority queue</li>
+                        <li><i class="fa-solid fa-check"></i> /ic, /nick, /echest, /rename</li>
+                        <li><i class="fa-solid fa-check"></i> 19 render distance</li>
+                        <li><i class="fa-solid fa-check"></i> 0 block /tpa and /home radius</li>
+                        <li><i class="fa-solid fa-check"></i> Ultra prefix in tab and chat</li>
+                        <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
+                        <li><i class="fa-solid fa-check"></i> Discord Membership</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/1376511" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Rank Upgrade</h3>
+                        <div class="rank-price">$2.50 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> Upgrade from lower rank to higher</li>
+                        <li><i class="fa-solid fa-check"></i> No rank resets required</li>
+                        <li><i class="fa-solid fa-check"></i> After Ultra, no higher rank available</li>
+                        <li><i class="fa-solid fa-check"></i> Contact support after purchasing</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/1255299" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">1 Week Frame Dupe Event</h3>
+                        <div class="rank-price">$34.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> Enable frame dupe server-wide</li>
+                        <li><i class="fa-solid fa-check"></i> Active for 7 days</li>
+                        <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> after purchasing</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/1216559" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">1 Week Illegal Item Event</h3>
+                        <div class="rank-price">$45.99 <span>USD</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> Enables all illegal items server-wide</li>
+                        <li><i class="fa-solid fa-check"></i> Bedrock, 32k's, barriers, and more</li>
+                        <li><i class="fa-solid fa-check"></i> Active for 7 days</li>
+                        <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> after purchasing</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/1180500" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3 class="rank-name">Custom Amount</h3>
+                        <div class="rank-price">$1.50 <span>min</span></div>
+                    </div>
+                    <ul class="rank-features">
+                        <li><i class="fa-solid fa-check"></i> Donate any amount you want</li>
+                        <li><i class="fa-solid fa-check"></i> $30+ gets custom rank with custom prefix</li>
+                        <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> for custom rank setup</li>
+                    </ul>
+                    <a href="https://shop.8b8t.me/package/700021" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+            </div>
+
+            <div class="shop-notice">
+                <p>By purchasing, you agree to the <a href="https://www.8b8t.me/terms" target="_blank">8b8t Terms of Service</a>. <b>All sales are final. No refunds.</b> Purchases are linked to your Minecraft account - enter your username exactly as it appears in-game. Need help? Visit <a href="https://www.8b8t.me/support" target="_blank">8b8t Support</a>.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/components.js"></script>
+</body>
+
+</html>
