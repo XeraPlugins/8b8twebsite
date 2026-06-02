@@ -31,10 +31,6 @@ function getMetaTags(page) {
             title: "Commands - 8b8t Network",
             description: "Browse all available commands on 8b8t Network. Learn how to use chat, economy, spawn, and more."
         },
-        lce: {
-            title: "LCE - 8b8t Network",
-            description: "Learn about the Law of Conservation of Energy on 8b8t Network - our unique gameplay feature."
-        },
         vote: {
             title: "Vote - 8b8t Network",
             description: "Vote for 8b8t Network on top Minecraft server lists and earn rewards!"
@@ -88,7 +84,6 @@ switch (localStorage.getItem("preferredLanguage")) {
             support: "Soporte",
             stats: "Estadísticas",
             commands: "Comandos",
-            lce: "LCE",
             track: "Sitio de Seguimiento",
             shop: "Tienda",
             vote: "Votar",
@@ -108,7 +103,6 @@ switch (localStorage.getItem("preferredLanguage")) {
             legalSupport: "Legal y Soporte",
             helpCenter: "Centro de ayuda",
             termsOfService: "Términos de servicio",
-            lce: "LCE",
             privacyPolicy: "Política de privacidad",
             contactUs: "Contáctenos",
             operatedByXERA: "Operado por XERA INC"
@@ -123,7 +117,6 @@ switch (localStorage.getItem("preferredLanguage")) {
             support: "Support",
             stats: "Stats",
             commands: "Commands",
-            lce: "LCE",
             track: "Track Site",
             shop: "Shop",
             vote: "Vote",
@@ -145,7 +138,6 @@ switch (localStorage.getItem("preferredLanguage")) {
             legalSupport: "Legal & Support",
             helpCenter: "Help Center",
             termsOfService: "Terms of Service",
-            lce: "LCE",
             privacyPolicy: "Privacy Policy",
             contactUs: "Contact Us",
             operatedByXERA: "Operated by XERA INC"
@@ -170,7 +162,6 @@ const headerHTML = `
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
-                <li><a href="lce.html">${header.lce}</a></li>
                 <li><a href="shop.html">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
                  <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
@@ -202,7 +193,6 @@ const headerHTML = `
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
-                <li><a href="lce.html">${header.lce}</a></li>
                 <li><a href="shop.html">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
                  <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
@@ -230,7 +220,6 @@ const footerHTML = `
                     <h4>${footer.server}</h4>
                     <ul class="footer-links">
                         <li><a href="https://www.8b8t.me/how-to-join">${footer.howToJoin}</a></li>
-                        <li><a href="lce.html">${footer.lce}</a></li>
                         <li><a href="https://track.8b8t.me/">${footer.track}</a></li>
                         <li><a href="https://status.xera.ca">${footer.status}</a></li>
                         <li><a href="shop.html">${footer.shop}</a></li>
