@@ -7,7 +7,7 @@
     <title>Chat Bridge - 8b8t</title>
     <link rel="stylesheet" href="/assets/font_awesome.css">
     <link rel="stylesheet" href="/assets/style.css">
-    <link rel="stylesheet" href="/assets/stats.css">
+    <link rel="stylesheet" href="/assets/stats.css?v=2">
     <link rel="stylesheet" href="/assets/chat.css?v=4">
 </head>
 
@@ -22,10 +22,19 @@
                     <h1 class="stats-page-title">Chat Bridge</h1>
                     <p class="stats-page-sub">Link your Minecraft account in-game with <code>/chatbridge</code>, then sign in here with your username and password.</p>
                 </div>
-                <div class="chat-command-card">
-                    <span><i class="fa-solid fa-plug"></i> Account setup</span>
-                    <code>/chatbridge</code>
-                    <code>/chatbridge reset</code>
+                <div class="stats-hero-actions">
+                    <div class="server-online-card" id="server-online-card">
+                        <span class="server-online-dot" id="server-online-dot"></span>
+                        <div>
+                            <span class="server-online-count" id="server-online-count">—</span>
+                            <span class="server-online-label" id="server-online-label">players online</span>
+                        </div>
+                    </div>
+                    <div class="chat-command-card">
+                        <span><i class="fa-solid fa-plug"></i> Account setup</span>
+                        <code>/chatbridge</code>
+                        <code>/chatbridge reset</code>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,6 +124,6 @@
 <div id="footer-placeholder"></div>
 
 <script src="/assets/components.js?v=3"></script>
-<script src="/assets/chat.js?v=4"></script>
+<script src="/assets/chat.js?v=5"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 const CHAT_API_URL = "https://chat-api.8b8t.me";
 const CHAT_TOKEN_KEY = "b8chatbridge.session";
+const SERVER_STATUS_URL = "https://api.mcstatus.io/v2/status/java/8b8t.me";
 
 let currentUser = null;
 let chatSocket = null;
@@ -9,6 +10,7 @@ let captchaWidgetId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   bindForms();
+  loadServerStatus();
   bootChatPage();
 });
 
@@ -17,6 +19,37 @@ function bindForms() {
   document.getElementById("login-form").addEventListener("submit", handleLoginSubmit);
   document.getElementById("message-form").addEventListener("submit", handleMessageSubmit);
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
+}
+
+async function loadServerStatus() {
+  const count = document.getElementById("server-online-count");
+  const label = document.getElementById("server-online-label");
+  const dot = document.getElementById("server-online-dot");
+  if (!count || !label || !dot) return;
+
+  try {
+    const res = await fetch(SERVER_STATUS_URL);
+    const data = await res.json();
+    const online = data.online === true;
+    const players = data.players?.online ?? 0;
+    const max = data.players?.max;
+
+    count.textContent = online ? compactNumber(players) : "0";
+    label.textContent = online && max ? `of ${compactNumber(max)} players online` : "players online";
+    dot.classList.toggle("online", online);
+    dot.classList.toggle("offline", !online);
+  } catch (error) {
+    count.textContent = "—";
+    label.textContent = "status unavailable";
+    dot.classList.add("offline");
+  }
+}
+
+function compactNumber(value) {
+  if (!value) return "0";
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+  if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+  return value.toString();
 }
 
 async function bootChatPage() {
