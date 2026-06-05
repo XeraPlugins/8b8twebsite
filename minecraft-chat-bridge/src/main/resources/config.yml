@@ -1,6 +1,7 @@
 api-base-url: "https://chat-api.8b8t.me"
 plugin-secret: "change-this-secret"
 permission-node: "8b8t.chatbridge.access"
-web-message-format: "[Web] %username%: %message%"
+# Supports Minecraft & color codes. Placeholders: %username%, %message%
+web-message-format: "&d[Web] &f%username%&7: &f%message%"
 forward-minecraft-chat: true
 reconnect-delay-seconds: 10

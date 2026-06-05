@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Bridge - 8b8t</title>
-    <link rel="stylesheet" href="assets/font_awesome.css">
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/stats.css">
-    <link rel="stylesheet" href="assets/chat.css">
+    <link rel="stylesheet" href="/assets/font_awesome.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/stats.css">
+    <link rel="stylesheet" href="/assets/chat.css?v=3">
 </head>
 
 <body>
@@ -79,6 +79,19 @@
                 <div class="chat-status" id="login-status" hidden></div>
             </div>
 
+            <div class="chat-auth-card" id="captcha-card" hidden>
+                <div class="chat-card-heading">
+                    <span class="chat-card-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                    <div>
+                        <h2>Verify Access</h2>
+                        <p>Complete hCaptcha once before opening the website chat.</p>
+                    </div>
+                </div>
+                <div class="chat-captcha-wrap" id="captcha-container"></div>
+                <p class="chat-muted">This protects the Minecraft chat bridge from bots and spam.</p>
+                <div class="chat-status" id="captcha-status" hidden></div>
+            </div>
+
             <div class="chat-panel" id="chat-panel" hidden>
                 <div class="chat-panel-header">
                     <div>
@@ -100,7 +113,7 @@
 
 <div id="footer-placeholder"></div>
 
-<script src="assets/components.js"></script>
-<script src="assets/chat.js"></script>
+<script src="/assets/components.js?v=3"></script>
+<script src="/assets/chat.js?v=3"></script>
 </body>
 </html>

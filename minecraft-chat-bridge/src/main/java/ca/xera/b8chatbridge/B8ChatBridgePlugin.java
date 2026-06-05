@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -36,7 +37,7 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
         String apiBaseUrl = getConfig().getString("api-base-url", "https://chat-api.8b8t.me");
         String pluginSecret = getConfig().getString("plugin-secret", "");
         permissionNode = getConfig().getString("permission-node", "8b8t.chatbridge.access");
-        webMessageFormat = getConfig().getString("web-message-format", "[Web] %username%: %message%");
+        webMessageFormat = getConfig().getString("web-message-format", "&d[Web] &f%username%&7: &f%message%");
         forwardMinecraftChat = getConfig().getBoolean("forward-minecraft-chat", true);
         reconnectDelaySeconds = Math.max(1, getConfig().getLong("reconnect-delay-seconds", 10));
 
@@ -171,10 +172,14 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
 
     private void broadcastWebsiteMessage(ChatMessage chatMessage) {
         String line = webMessageFormat
-                .replace("%username%", chatMessage.username == null ? "Website" : chatMessage.username)
-                .replace("%message%", chatMessage.message == null ? "" : chatMessage.message);
+                .replace("%username%", sanitizePlaceholder(chatMessage.username == null ? "Website" : chatMessage.username))
+                .replace("%message%", sanitizePlaceholder(chatMessage.message == null ? "" : chatMessage.message));
 
-        Component component = Component.text(line, NamedTextColor.LIGHT_PURPLE);
+        Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(line);
         Bukkit.getGlobalRegionScheduler().run(this, task -> Bukkit.broadcast(component));
+    }
+
+    private String sanitizePlaceholder(String value) {
+        return value.replaceAll("(?i)[&§][0-9A-FK-ORX]", "");
     }
 }

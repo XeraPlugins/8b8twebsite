@@ -4,6 +4,8 @@ const CHAT_TOKEN_KEY = "b8chatbridge.session";
 let currentUser = null;
 let chatSocket = null;
 let reconnectTimer = null;
+let captchaConfig = null;
+let captchaWidgetId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   bindForms();
@@ -34,7 +36,7 @@ async function bootChatPage() {
   try {
     const data = await apiFetch("/auth/me", { token });
     currentUser = data.user || data;
-    await showChat();
+    await showCaptchaOrChat();
   } catch (error) {
     clearToken();
     showOnly("login-card");
@@ -72,7 +74,7 @@ async function handleSetupSubmit(event) {
     setToken(data.token);
     currentUser = data.user;
     history.replaceState(null, "", "/chat");
-    await showChat();
+    await showCaptchaOrChat();
   } catch (error) {
     showStatus(status, error.message || "Could not set your password.", "error");
   } finally {
@@ -117,7 +119,7 @@ async function handleLoginSubmit(event) {
     });
     setToken(data.token);
     currentUser = data.user;
-    await showChat();
+    await showCaptchaOrChat();
   } catch (error) {
     showStatus(status, error.message || "Invalid username or password.", "error");
   } finally {
@@ -130,6 +132,85 @@ async function showChat() {
   document.getElementById("signed-in-label").textContent = `Signed in as ${currentUser.username}`;
   await loadHistory();
   connectChatSocket();
+}
+
+async function showCaptchaOrChat() {
+  const config = await loadCaptchaConfig();
+  if (!config.enabled) {
+    await showChat();
+    return;
+  }
+
+  showOnly("captcha-card");
+  document.getElementById("captcha-status").hidden = true;
+  await renderCaptcha(config.site_key);
+}
+
+async function loadCaptchaConfig() {
+  if (!captchaConfig) {
+    captchaConfig = await apiFetch("/captcha/config");
+  }
+  return captchaConfig;
+}
+
+function loadCaptchaScript() {
+  if (window.hcaptcha) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[src^="https://js.hcaptcha.com/1/api.js"]');
+    if (existing) {
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", reject, { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.append(script);
+  });
+}
+
+async function renderCaptcha(siteKey) {
+  const status = document.getElementById("captcha-status");
+  const container = document.getElementById("captcha-container");
+  container.textContent = "";
+  captchaWidgetId = null;
+
+  try {
+    await loadCaptchaScript();
+    captchaWidgetId = window.hcaptcha.render(container, {
+      sitekey: siteKey,
+      callback: verifyCaptcha,
+      "expired-callback": () => showStatus(status, "hCaptcha expired. Please solve it again.", "error"),
+      "error-callback": () => showStatus(status, "hCaptcha failed to load. Please try again.", "error"),
+    });
+  } catch (error) {
+    showStatus(status, "Could not load hCaptcha. Refresh and try again.", "error");
+  }
+}
+
+async function verifyCaptcha(response) {
+  const status = document.getElementById("captcha-status");
+  showStatus(status, "Verifying hCaptcha...", "");
+  try {
+    await apiFetch("/captcha/verify", {
+      method: "POST",
+      token: getToken(),
+      body: { response },
+    });
+    await showChat();
+  } catch (error) {
+    showStatus(status, error.message || "hCaptcha verification failed.", "error");
+    if (window.hcaptcha && captchaWidgetId !== null) {
+      window.hcaptcha.reset(captchaWidgetId);
+    }
+  }
 }
 
 async function loadHistory() {
@@ -275,7 +356,7 @@ function appendMessage(message) {
 }
 
 function showOnly(id) {
-  ["setup-card", "login-card", "chat-panel"].forEach((item) => {
+  ["setup-card", "login-card", "captcha-card", "chat-panel"].forEach((item) => {
     document.getElementById(item).hidden = item !== id;
   });
 }

@@ -14,6 +14,7 @@ use axum::{
 };
 use futures_util::{SinkExt, StreamExt};
 use rand::{Rng, distributions::Alphanumeric};
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, SqlitePool, sqlite::SqliteConnectOptions};
 use std::{
@@ -35,7 +36,25 @@ struct AppState {
     db: SqlitePool,
     plugin_secret: Arc<String>,
     website_url: Arc<String>,
+    config: Arc<AppConfig>,
+    http_client: Client,
     chat_tx: broadcast::Sender<ChatMessage>,
+}
+
+#[derive(Clone)]
+struct AppConfig {
+    hcaptcha_enabled: bool,
+    hcaptcha_site_key: String,
+    hcaptcha_secret: String,
+    rate_limit_enabled: bool,
+    rate_window_seconds: i64,
+    rate_max_messages: i64,
+    rate_short_limit_seconds: i64,
+    rate_long_limit_seconds: i64,
+    rate_long_after_violations: i64,
+    rate_violation_reset_seconds: i64,
+    allow_links: bool,
+    blocked_link_patterns: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -62,6 +81,10 @@ impl ApiError {
 
     fn forbidden(message: impl Into<String>) -> Self {
         Self::new(StatusCode::FORBIDDEN, message)
+    }
+
+    fn too_many_requests(message: impl Into<String>) -> Self {
+        Self::new(StatusCode::TOO_MANY_REQUESTS, message)
     }
 
     fn internal(message: impl Into<String>) -> Self {
@@ -191,6 +214,72 @@ fn plugin_authorized(headers: &HeaderMap, state: &AppState) -> bool {
         .unwrap_or(false)
 }
 
+fn env_bool(name: &str, default: bool) -> bool {
+    std::env::var(name)
+        .ok()
+        .map(|value| {
+            matches!(
+                value.to_ascii_lowercase().as_str(),
+                "1" | "true" | "yes" | "on"
+            )
+        })
+        .unwrap_or(default)
+}
+
+fn env_i64(name: &str, default: i64) -> i64 {
+    std::env::var(name)
+        .ok()
+        .and_then(|value| value.parse::<i64>().ok())
+        .filter(|value| *value > 0)
+        .unwrap_or(default)
+}
+
+fn load_config() -> AppConfig {
+    let hcaptcha_enabled = env_bool("HCAPTCHA_ENABLED", false);
+    let hcaptcha_site_key = std::env::var("HCAPTCHA_SITE_KEY").unwrap_or_default();
+    let hcaptcha_secret = std::env::var("HCAPTCHA_SECRET").unwrap_or_default();
+
+    if hcaptcha_enabled && (hcaptcha_site_key.is_empty() || hcaptcha_secret.is_empty()) {
+        panic!("HCAPTCHA_SITE_KEY and HCAPTCHA_SECRET must be set when HCAPTCHA_ENABLED=true");
+    }
+
+    let blocked_link_patterns = std::env::var("CHAT_BLOCKED_LINK_PATTERNS")
+        .unwrap_or_else(|_| {
+            "http://,https://,www.,discord.gg,.com,.net,.org,.me,.gg,.io".to_string()
+        })
+        .split(',')
+        .map(|value| value.trim().to_ascii_lowercase())
+        .filter(|value| !value.is_empty())
+        .collect();
+
+    AppConfig {
+        hcaptcha_enabled,
+        hcaptcha_site_key,
+        hcaptcha_secret,
+        rate_limit_enabled: env_bool("CHAT_RATE_LIMIT_ENABLED", true),
+        rate_window_seconds: env_i64("CHAT_RATE_WINDOW_SECONDS", 10),
+        rate_max_messages: env_i64("CHAT_RATE_MAX_MESSAGES", 5),
+        rate_short_limit_seconds: env_i64("CHAT_RATE_SHORT_LIMIT_SECONDS", 60),
+        rate_long_limit_seconds: env_i64("CHAT_RATE_LONG_LIMIT_SECONDS", 600),
+        rate_long_after_violations: env_i64("CHAT_RATE_LONG_AFTER_VIOLATIONS", 2),
+        rate_violation_reset_seconds: env_i64("CHAT_RATE_VIOLATION_RESET_SECONDS", 3600),
+        allow_links: env_bool("CHAT_ALLOW_LINKS", false),
+        blocked_link_patterns,
+    }
+}
+
+fn contains_blocked_link(config: &AppConfig, message: &str) -> bool {
+    if config.allow_links {
+        return false;
+    }
+
+    let normalized = message.to_ascii_lowercase();
+    config
+        .blocked_link_patterns
+        .iter()
+        .any(|pattern| normalized.contains(pattern))
+}
+
 #[derive(FromRow, Serialize, Clone)]
 struct User {
     uuid: String,
@@ -226,6 +315,26 @@ async fn auth_user_from_headers(
     Ok((user, token))
 }
 
+async fn require_captcha_verified(state: &AppState, token: &str) -> Result<(), ApiError> {
+    if !state.config.hcaptcha_enabled {
+        return Ok(());
+    }
+
+    let verified_at: Option<(Option<i64>,)> = sqlx::query_as(
+        "SELECT captcha_verified_at FROM sessions WHERE token_hash = ? AND expires_at > ?",
+    )
+    .bind(hash_secret(token))
+    .bind(now())
+    .fetch_optional(&state.db)
+    .await
+    .map_err(|_| ApiError::internal("Database error"))?;
+
+    match verified_at {
+        Some((Some(_),)) => Ok(()),
+        _ => Err(ApiError::forbidden("hCaptcha verification required")),
+    }
+}
+
 async fn create_session(state: &AppState, uuid: &str) -> Result<String, ApiError> {
     let token = random_token(64);
     let token_hash = hash_secret(&token);
@@ -233,7 +342,7 @@ async fn create_session(state: &AppState, uuid: &str) -> Result<String, ApiError
     let expires_at = created_at + SESSION_TTL_SECONDS;
 
     sqlx::query(
-        "INSERT INTO sessions (token_hash, uuid, expires_at, created_at) VALUES (?, ?, ?, ?)",
+        "INSERT INTO sessions (token_hash, uuid, expires_at, created_at, captcha_verified_at) VALUES (?, ?, ?, ?, NULL)",
     )
     .bind(token_hash)
     .bind(uuid)
@@ -542,6 +651,76 @@ async fn auth_me(
     }))
 }
 
+#[derive(Serialize)]
+struct CaptchaConfigResponse {
+    enabled: bool,
+    site_key: String,
+}
+
+async fn captcha_config(State(state): State<AppState>) -> Json<ApiResponse<CaptchaConfigResponse>> {
+    ok(CaptchaConfigResponse {
+        enabled: state.config.hcaptcha_enabled,
+        site_key: if state.config.hcaptcha_enabled {
+            state.config.hcaptcha_site_key.clone()
+        } else {
+            String::new()
+        },
+    })
+}
+
+#[derive(Deserialize)]
+struct CaptchaVerifyRequest {
+    response: String,
+}
+
+#[derive(Deserialize)]
+struct HcaptchaVerifyResponse {
+    success: bool,
+}
+
+async fn captcha_verify(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Json(req): Json<CaptchaVerifyRequest>,
+) -> Result<Json<ApiResponse<serde_json::Value>>, ApiError> {
+    let (_, token) = auth_user_from_headers(&state, &headers).await?;
+
+    if state.config.hcaptcha_enabled {
+        if req.response.trim().is_empty() {
+            return Err(ApiError::bad_request("Missing hCaptcha response"));
+        }
+
+        let response = state
+            .http_client
+            .post("https://hcaptcha.com/siteverify")
+            .form(&[
+                ("secret", state.config.hcaptcha_secret.as_str()),
+                ("response", req.response.as_str()),
+            ])
+            .send()
+            .await
+            .map_err(|_| ApiError::internal("Failed to verify hCaptcha"))?;
+
+        let verification: HcaptchaVerifyResponse = response
+            .json()
+            .await
+            .map_err(|_| ApiError::internal("Invalid hCaptcha verification response"))?;
+
+        if !verification.success {
+            return Err(ApiError::forbidden("hCaptcha verification failed"));
+        }
+    }
+
+    sqlx::query("UPDATE sessions SET captcha_verified_at = ? WHERE token_hash = ?")
+        .bind(now())
+        .bind(hash_secret(&token))
+        .execute(&state.db)
+        .await
+        .map_err(|_| ApiError::internal("Failed to save hCaptcha verification"))?;
+
+    Ok(ok(serde_json::json!({ "verified": true })))
+}
+
 #[derive(FromRow, Serialize, Clone)]
 struct ChatMessage {
     id: i64,
@@ -587,7 +766,8 @@ async fn chat_history(
     headers: HeaderMap,
     Query(params): Query<HashMap<String, String>>,
 ) -> Result<Json<ApiResponse<Vec<ChatMessage>>>, ApiError> {
-    auth_user_from_headers(&state, &headers).await?;
+    let (_, token) = auth_user_from_headers(&state, &headers).await?;
+    require_captcha_verified(&state, &token).await?;
     let limit = params
         .get("limit")
         .and_then(|v| v.parse::<i64>().ok())
@@ -617,14 +797,148 @@ struct WebsiteMessageRequest {
     message: String,
 }
 
+#[derive(FromRow)]
+struct RateLimitRow {
+    window_start: i64,
+    message_count: i64,
+    violations: i64,
+    limited_until: i64,
+    updated_at: i64,
+}
+
+async fn enforce_chat_policy(state: &AppState, user: &User, message: &str) -> Result<(), ApiError> {
+    if contains_blocked_link(&state.config, message) {
+        return Err(ApiError::bad_request(
+            "Links are not allowed in website chat",
+        ));
+    }
+
+    if !state.config.rate_limit_enabled {
+        return Ok(());
+    }
+
+    let timestamp = now();
+    let row = sqlx::query_as::<_, RateLimitRow>(
+        "SELECT window_start, message_count, violations, limited_until, updated_at
+         FROM rate_limits WHERE uuid = ?",
+    )
+    .bind(&user.uuid)
+    .fetch_optional(&state.db)
+    .await
+    .map_err(|_| ApiError::internal("Database error"))?;
+
+    let Some(row) = row else {
+        sqlx::query(
+            "INSERT INTO rate_limits (uuid, window_start, message_count, violations, limited_until, updated_at)
+             VALUES (?, ?, 1, 0, 0, ?)",
+        )
+        .bind(&user.uuid)
+        .bind(timestamp)
+        .bind(timestamp)
+        .execute(&state.db)
+        .await
+        .map_err(|_| ApiError::internal("Failed to update rate limit"))?;
+        return Ok(());
+    };
+
+    let mut violations = if timestamp - row.updated_at > state.config.rate_violation_reset_seconds {
+        0
+    } else {
+        row.violations
+    };
+
+    if row.limited_until > timestamp {
+        violations += 1;
+        let duration = if violations >= state.config.rate_long_after_violations {
+            state.config.rate_long_limit_seconds
+        } else {
+            row.limited_until - timestamp
+        };
+        let limited_until = timestamp + duration;
+
+        sqlx::query(
+            "UPDATE rate_limits SET violations = ?, limited_until = ?, updated_at = ? WHERE uuid = ?",
+        )
+        .bind(violations)
+        .bind(limited_until)
+        .bind(timestamp)
+        .bind(&user.uuid)
+        .execute(&state.db)
+        .await
+        .map_err(|_| ApiError::internal("Failed to update rate limit"))?;
+
+        return Err(ApiError::too_many_requests(format!(
+            "You are rate limited for {} more seconds",
+            (limited_until - timestamp).max(1)
+        )));
+    }
+
+    if timestamp - row.window_start > state.config.rate_window_seconds {
+        sqlx::query(
+            "UPDATE rate_limits SET window_start = ?, message_count = 1, violations = ?, limited_until = 0, updated_at = ? WHERE uuid = ?",
+        )
+        .bind(timestamp)
+        .bind(violations)
+        .bind(timestamp)
+        .bind(&user.uuid)
+        .execute(&state.db)
+        .await
+        .map_err(|_| ApiError::internal("Failed to update rate limit"))?;
+        return Ok(());
+    }
+
+    let next_count = row.message_count + 1;
+    if next_count > state.config.rate_max_messages {
+        violations += 1;
+        let duration = if violations >= state.config.rate_long_after_violations {
+            state.config.rate_long_limit_seconds
+        } else {
+            state.config.rate_short_limit_seconds
+        };
+        let limited_until = timestamp + duration;
+
+        sqlx::query(
+            "UPDATE rate_limits SET message_count = ?, violations = ?, limited_until = ?, updated_at = ? WHERE uuid = ?",
+        )
+        .bind(next_count)
+        .bind(violations)
+        .bind(limited_until)
+        .bind(timestamp)
+        .bind(&user.uuid)
+        .execute(&state.db)
+        .await
+        .map_err(|_| ApiError::internal("Failed to update rate limit"))?;
+
+        return Err(ApiError::too_many_requests(format!(
+            "Too many messages too fast. You are rate limited for {} seconds",
+            duration
+        )));
+    }
+
+    sqlx::query(
+        "UPDATE rate_limits SET message_count = ?, violations = ?, updated_at = ? WHERE uuid = ?",
+    )
+    .bind(next_count)
+    .bind(violations)
+    .bind(timestamp)
+    .bind(&user.uuid)
+    .execute(&state.db)
+    .await
+    .map_err(|_| ApiError::internal("Failed to update rate limit"))?;
+
+    Ok(())
+}
+
 async fn chat_message(
     State(state): State<AppState>,
     headers: HeaderMap,
     Json(req): Json<WebsiteMessageRequest>,
 ) -> Result<Json<ApiResponse<ChatMessage>>, ApiError> {
-    let (user, _) = auth_user_from_headers(&state, &headers).await?;
+    let (user, token) = auth_user_from_headers(&state, &headers).await?;
+    require_captcha_verified(&state, &token).await?;
     let message =
         clean_message(&req.message).ok_or_else(|| ApiError::bad_request("Message is empty"))?;
+    enforce_chat_policy(&state, &user, &message).await?;
     let chat = insert_message(&state, "website", &user.uuid, &user.username, &message).await?;
     let _ = state.chat_tx.send(chat.clone());
     Ok(ok(chat))
@@ -639,6 +953,7 @@ async fn chat_ws(
         .get("token")
         .ok_or_else(|| ApiError::unauthorized("Missing session token"))?;
     auth_user(&state, token).await?;
+    require_captcha_verified(&state, token).await?;
     Ok(ws.on_upgrade(move |socket| website_socket(socket, state.chat_tx.subscribe())))
 }
 
@@ -763,11 +1078,16 @@ async fn migrate(db: &SqlitePool) -> Result<(), sqlx::Error> {
             token_hash TEXT PRIMARY KEY,
             uuid TEXT NOT NULL,
             expires_at INTEGER NOT NULL,
-            created_at INTEGER NOT NULL
+            created_at INTEGER NOT NULL,
+            captcha_verified_at INTEGER
         )",
     )
     .execute(db)
     .await?;
+
+    let _ = sqlx::query("ALTER TABLE sessions ADD COLUMN captcha_verified_at INTEGER")
+        .execute(db)
+        .await;
 
     sqlx::query("CREATE INDEX IF NOT EXISTS idx_sessions_uuid ON sessions(uuid)")
         .execute(db)
@@ -790,6 +1110,19 @@ async fn migrate(db: &SqlitePool) -> Result<(), sqlx::Error> {
         .execute(db)
         .await?;
 
+    sqlx::query(
+        "CREATE TABLE IF NOT EXISTS rate_limits (
+            uuid TEXT PRIMARY KEY,
+            window_start INTEGER NOT NULL,
+            message_count INTEGER NOT NULL,
+            violations INTEGER NOT NULL,
+            limited_until INTEGER NOT NULL,
+            updated_at INTEGER NOT NULL
+        )",
+    )
+    .execute(db)
+    .await?;
+
     Ok(())
 }
 
@@ -801,6 +1134,7 @@ async fn main() {
     let database_url =
         std::env::var("DATABASE_URL").unwrap_or_else(|_| "sqlite://chat.db".to_string());
     let bind_addr = std::env::var("BIND_ADDR").unwrap_or_else(|_| "0.0.0.0:5400".to_string());
+    let config = load_config();
 
     let options = SqliteConnectOptions::from_str(&database_url)
         .expect("Invalid DATABASE_URL")
@@ -815,6 +1149,8 @@ async fn main() {
         db,
         plugin_secret: Arc::new(plugin_secret),
         website_url: Arc::new(website_url),
+        config: Arc::new(config),
+        http_client: Client::new(),
         chat_tx,
     };
 
@@ -832,6 +1168,8 @@ async fn main() {
         .route("/auth/login", post(auth_login))
         .route("/auth/logout", post(auth_logout))
         .route("/auth/me", get(auth_me))
+        .route("/captcha/config", get(captcha_config))
+        .route("/captcha/verify", post(captcha_verify))
         .route("/chat/history", get(chat_history))
         .route("/chat/message", post(chat_message))
         .route("/chat/ws", get(chat_ws))
