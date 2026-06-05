@@ -18,7 +18,7 @@ function bindForms() {
 }
 
 async function bootChatPage() {
-  const setupToken = new URLSearchParams(window.location.search).get("setup");
+  const setupToken = getSetupTokenFromUrl();
   if (setupToken) {
     showOnly("setup-card");
     await loadSetupInfo(setupToken);
@@ -71,13 +71,34 @@ async function handleSetupSubmit(event) {
     });
     setToken(data.token);
     currentUser = data.user;
-    history.replaceState(null, "", "chat.html");
+    history.replaceState(null, "", "/chat");
     await showChat();
   } catch (error) {
     showStatus(status, error.message || "Could not set your password.", "error");
   } finally {
     button.disabled = false;
   }
+}
+
+function getSetupTokenFromUrl() {
+  const paramsToken = new URLSearchParams(window.location.search).get("setup");
+  if (paramsToken) {
+    return paramsToken;
+  }
+
+  const path = window.location.pathname.replace(/\/+$/, "");
+  const parts = path.split("/").filter(Boolean);
+  const last = parts[parts.length - 1] || "";
+
+  if (parts.length >= 2 && parts[parts.length - 2] === "chat" && last !== "chat") {
+    return last;
+  }
+
+  if (last.startsWith("chat") && last.length > "chat".length) {
+    return last.slice("chat".length);
+  }
+
+  return null;
 }
 
 async function handleLoginSubmit(event) {

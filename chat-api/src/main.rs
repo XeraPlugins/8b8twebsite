@@ -313,11 +313,7 @@ async fn plugin_setup_link(
     .map_err(|_| ApiError::internal("Failed to create setup token"))?;
 
     Ok(ok(PluginSetupLinkResponse {
-        setup_url: format!(
-            "{}/chat.html?setup={}",
-            state.website_url.trim_end_matches('/'),
-            token
-        ),
+        setup_url: format!("{}/chat{}", state.website_url.trim_end_matches('/'), token),
         expires_at,
     }))
 }
