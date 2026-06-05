@@ -186,6 +186,16 @@
     margin-top: 18px;
 }
 
+.chat-muted a {
+    color: #2997ff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.chat-muted a:hover {
+    text-decoration: underline;
+}
+
 .chat-captcha-wrap {
     min-height: 78px;
     display: flex;
@@ -242,11 +252,28 @@
 
 .chat-message {
     display: grid;
-    gap: 5px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    align-items: flex-start;
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 14px;
     padding: 12px 14px;
+}
+
+.chat-message-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.08);
+    image-rendering: pixelated;
+    flex-shrink: 0;
+}
+
+.chat-message-body {
+    min-width: 0;
+    display: grid;
+    gap: 5px;
 }
 
 .chat-message.website {

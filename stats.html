@@ -6,7 +6,7 @@
     <title>Stats - 8b8t</title>
     <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/stats.css">
+    <link rel="stylesheet" href="assets/stats.css?v=2">
 </head>
 <body>
 <div id="header-placeholder"></div>
@@ -20,11 +20,20 @@
                     <h1 class="stats-page-title">Player Stats</h1>
                     <p class="stats-page-sub">Look up any player on 8b8t</p>
                 </div>
-                <form class="stats-search-form" id="search-form">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="player-search" placeholder="Enter a username..." autocomplete="off">
-                    <button type="submit">Search</button>
-                </form>
+                <div class="stats-hero-actions">
+                    <div class="server-online-card" id="server-online-card">
+                        <span class="server-online-dot" id="server-online-dot"></span>
+                        <div>
+                            <span class="server-online-count" id="server-online-count">—</span>
+                            <span class="server-online-label" id="server-online-label">players online</span>
+                        </div>
+                    </div>
+                    <form class="stats-search-form" id="search-form">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="player-search" placeholder="Enter a username..." autocomplete="off">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -199,6 +208,7 @@
 <script src="assets/components.js"></script>
 <script>
     const API_URL = 'https://api.xera.ca';
+    const SERVER_STATUS_URL = 'https://api.mcstatus.io/v2/status/java/8b8t.me';
 
     const STAT_CATEGORIES = [
         { key: 'kills', label: 'Kills', icon: 'fa-khanda', color: '#ff9f0a', format: formatNumber },
@@ -212,6 +222,7 @@
     ];
 
     document.addEventListener('DOMContentLoaded', () => {
+        loadServerStatus();
         loadAllLeaderboards();
 
         document.getElementById('search-form').addEventListener('submit', async (e) => {
@@ -232,6 +243,29 @@
             }
         });
     });
+
+    async function loadServerStatus() {
+        const count = document.getElementById('server-online-count');
+        const label = document.getElementById('server-online-label');
+        const dot = document.getElementById('server-online-dot');
+
+        try {
+            const res = await fetch(SERVER_STATUS_URL);
+            const data = await res.json();
+            const online = data.online === true;
+            const players = data.players?.online ?? 0;
+            const max = data.players?.max;
+
+            count.textContent = online ? formatNumber(players) : '0';
+            label.textContent = online && max ? `of ${formatNumber(max)} players online` : 'players online';
+            dot.classList.toggle('online', online);
+            dot.classList.toggle('offline', !online);
+        } catch (err) {
+            count.textContent = '—';
+            label.textContent = 'status unavailable';
+            dot.classList.add('offline');
+        }
+    }
 
     async function loadAllLeaderboards() {
         const container = document.getElementById('leaderboard-cards');

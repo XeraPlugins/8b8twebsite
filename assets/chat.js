@@ -332,6 +332,19 @@ function appendMessage(message) {
   row.className = `chat-message ${message.source === "website" ? "website" : "minecraft"}`;
   row.dataset.messageId = message.id;
 
+  const avatar = document.createElement("img");
+  avatar.className = "chat-message-avatar";
+  avatar.src = getPlayerHeadUrl(message.username);
+  avatar.alt = `${message.username || "Player"} head`;
+  avatar.loading = "lazy";
+  avatar.onerror = () => {
+    avatar.onerror = null;
+    avatar.src = getPlayerHeadUrl("Steve");
+  };
+
+  const body = document.createElement("div");
+  body.className = "chat-message-body";
+
   const meta = document.createElement("div");
   meta.className = "chat-message-meta";
 
@@ -351,8 +364,13 @@ function appendMessage(message) {
   text.textContent = message.message || "";
 
   meta.append(name, source, time);
-  row.append(meta, text);
+  body.append(meta, text);
+  row.append(avatar, body);
   historyEl.append(row);
+}
+
+function getPlayerHeadUrl(username) {
+  return `https://mc-heads.net/avatar/${encodeURIComponent(username || "Steve")}`;
 }
 
 function showOnly(id) {
