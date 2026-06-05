@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +28,8 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
     private String permissionNode;
     private String webMessageFormat;
     private boolean forwardMinecraftChat;
+    private boolean respectCancelledChat;
+    private List<String> blockedMessagePatterns;
     private long reconnectDelaySeconds;
     private volatile boolean shuttingDown;
 
@@ -39,6 +42,11 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
         permissionNode = getConfig().getString("permission-node", "8b8t.chatbridge.access");
         webMessageFormat = getConfig().getString("web-message-format", "&d[Web] &f%username%&7: &f%message%");
         forwardMinecraftChat = getConfig().getBoolean("forward-minecraft-chat", true);
+        respectCancelledChat = getConfig().getBoolean("respect-cancelled-chat", false);
+        blockedMessagePatterns = getConfig().getStringList("blocked-message-patterns").stream()
+                .map(pattern -> pattern.toLowerCase(Locale.ROOT).trim())
+                .filter(pattern -> !pattern.isEmpty())
+                .toList();
         reconnectDelaySeconds = Math.max(1, getConfig().getLong("reconnect-delay-seconds", 10));
 
         if (pluginSecret.isBlank() || pluginSecret.equals("change-this-secret")) {
@@ -64,7 +72,7 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncChat(AsyncChatEvent event) {
         if (!forwardMinecraftChat || apiClient == null) {
             return;
@@ -72,6 +80,10 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
 
         Player player = event.getPlayer();
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
+        if ((event.isCancelled() && respectCancelledChat) || isBlockedMessage(message)) {
+            return;
+        }
+
         apiClient.sendMinecraftMessage(player.getUniqueId(), player.getName(), message)
                 .exceptionally(error -> {
                     getLogger().fine("Failed to forward Minecraft chat: " + error.getMessage());
@@ -181,5 +193,10 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
 
     private String sanitizePlaceholder(String value) {
         return value.replaceAll("(?i)[&§][0-9A-FK-ORX]", "");
+    }
+
+    private boolean isBlockedMessage(String message) {
+        String normalized = message.toLowerCase(Locale.ROOT);
+        return blockedMessagePatterns.stream().anyMatch(normalized::contains);
     }
 }

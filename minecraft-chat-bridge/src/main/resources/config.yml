@@ -4,4 +4,9 @@ permission-node: "8b8t.chatbridge.access"
 # Supports Minecraft & color codes. Placeholders: %username%, %message%
 web-message-format: "&d[Web] &f%username%&7: &f%message%"
 forward-minecraft-chat: true
+# Keep false if your chat formatting/plugin cancels all chat events after broadcasting them.
+# Set true only if your filter plugin cancels blocked messages and normal messages are not cancelled.
+respect-cancelled-chat: false
+# Case-insensitive contains checks. Use this to block filtered words from reaching the website.
+blocked-message-patterns: []
 reconnect-delay-seconds: 10
