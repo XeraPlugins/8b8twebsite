@@ -1,0 +1,19 @@
+name: b8chatbridge
+version: 0.1.0
+main: ca.xera.b8chatbridge.B8ChatBridgePlugin
+api-version: '1.21'
+folia-supported: true
+author: XERA
+description: Website chat bridge for 8b8t.
+commands:
+  chatbridge:
+    description: Create or reset website chat bridge access.
+    usage: /chatbridge [reset|status]
+    aliases: [webchat]
+permissions:
+  8b8t.chatbridge.access:
+    description: Allows creating website chat bridge access.
+    default: op
+  8b8t.chatbridge.admin:
+    description: Allows chat bridge administrative actions.
+    default: op

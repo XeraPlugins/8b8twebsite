@@ -1,0 +1,6 @@
+api-base-url: "https://chat-api.8b8t.me"
+plugin-secret: "change-this-secret"
+permission-node: "8b8t.chatbridge.access"
+web-message-format: "[Web] %username%: %message%"
+forward-minecraft-chat: true
+reconnect-delay-seconds: 10

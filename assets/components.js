@@ -27,6 +27,10 @@ function getMetaTags(page) {
             title: "Server Stats - 8b8t Network",
             description: "View real-time player statistics, online counts, and server performance for 8b8t Network Minecraft server."
         },
+        chat: {
+            title: "Chat Bridge - 8b8t Network",
+            description: "Access the 8b8t Minecraft server chat from the website with an in-game linked account."
+        },
         commands: {
             title: "Commands - 8b8t Network",
             description: "Browse all available commands on 8b8t Network. Learn how to use chat, economy, spawn, and more."
@@ -83,6 +87,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             howtojoin: "Como Jugar",
             support: "Soporte",
             stats: "Estadísticas",
+            chat: "Chat",
             commands: "Comandos",
             track: "Sitio de Seguimiento",
             shop: "Tienda",
@@ -116,6 +121,7 @@ switch (localStorage.getItem("preferredLanguage")) {
             howtojoin: "How To Join",
             support: "Support",
             stats: "Stats",
+            chat: "Chat",
             commands: "Commands",
             track: "Track Site",
             shop: "Shop",
@@ -161,6 +167,7 @@ const headerHTML = `
                 <li><a href="how-to-join.html">${header.howtojoin}</a></li>
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
+                <li><a href="chat.html">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
                 <li><a href="shop.html">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
@@ -192,6 +199,7 @@ const headerHTML = `
                 <li><a href="how-to-join.html">${header.howtojoin}</a></li>
                 <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
+                <li><a href="chat.html">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
                 <li><a href="shop.html">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>

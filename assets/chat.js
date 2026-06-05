@@ -1,0 +1,291 @@
+const CHAT_API_URL = "https://chat-api.8b8t.me";
+const CHAT_TOKEN_KEY = "b8chatbridge.session";
+
+let currentUser = null;
+let chatSocket = null;
+let reconnectTimer = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindForms();
+  bootChatPage();
+});
+
+function bindForms() {
+  document.getElementById("setup-form").addEventListener("submit", handleSetupSubmit);
+  document.getElementById("login-form").addEventListener("submit", handleLoginSubmit);
+  document.getElementById("message-form").addEventListener("submit", handleMessageSubmit);
+  document.getElementById("logout-btn").addEventListener("click", handleLogout);
+}
+
+async function bootChatPage() {
+  const setupToken = new URLSearchParams(window.location.search).get("setup");
+  if (setupToken) {
+    showOnly("setup-card");
+    await loadSetupInfo(setupToken);
+    return;
+  }
+
+  const token = getToken();
+  if (!token) {
+    showOnly("login-card");
+    return;
+  }
+
+  try {
+    const data = await apiFetch("/auth/me", { token });
+    currentUser = data.user || data;
+    await showChat();
+  } catch (error) {
+    clearToken();
+    showOnly("login-card");
+  }
+}
+
+async function loadSetupInfo(setupToken) {
+  const status = document.getElementById("setup-status");
+  try {
+    const data = await apiFetch(`/auth/setup/${encodeURIComponent(setupToken)}`);
+    document.getElementById("setup-username").value = data.username;
+    document.getElementById("setup-form").dataset.token = setupToken;
+    status.hidden = true;
+  } catch (error) {
+    showStatus(status, error.message || "This setup link is invalid or expired.", "error");
+    document.getElementById("setup-form").querySelector("button").disabled = true;
+  }
+}
+
+async function handleSetupSubmit(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const status = document.getElementById("setup-status");
+  const button = form.querySelector("button");
+  button.disabled = true;
+
+  try {
+    const data = await apiFetch("/auth/setup", {
+      method: "POST",
+      body: {
+        token: form.dataset.token,
+        password: document.getElementById("setup-password").value,
+      },
+    });
+    setToken(data.token);
+    currentUser = data.user;
+    history.replaceState(null, "", "chat.html");
+    await showChat();
+  } catch (error) {
+    showStatus(status, error.message || "Could not set your password.", "error");
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+  const status = document.getElementById("login-status");
+  const button = event.currentTarget.querySelector("button");
+  button.disabled = true;
+
+  try {
+    const data = await apiFetch("/auth/login", {
+      method: "POST",
+      body: {
+        username: document.getElementById("login-username").value.trim(),
+        password: document.getElementById("login-password").value,
+      },
+    });
+    setToken(data.token);
+    currentUser = data.user;
+    await showChat();
+  } catch (error) {
+    showStatus(status, error.message || "Invalid username or password.", "error");
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function showChat() {
+  showOnly("chat-panel");
+  document.getElementById("signed-in-label").textContent = `Signed in as ${currentUser.username}`;
+  await loadHistory();
+  connectChatSocket();
+}
+
+async function loadHistory() {
+  const historyEl = document.getElementById("chat-history");
+  historyEl.textContent = "";
+  try {
+    const messages = await apiFetch("/chat/history?limit=100", { token: getToken() });
+    messages.forEach(appendMessage);
+    scrollHistoryToBottom();
+  } catch (error) {
+    showStatus(document.getElementById("chat-status"), "Could not load chat history.", "error");
+  }
+}
+
+function connectChatSocket() {
+  if (chatSocket) {
+    chatSocket.close();
+  }
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+  }
+
+  const wsUrl = `${CHAT_API_URL.replace(/^https:/, "wss:").replace(/^http:/, "ws:")}/chat/ws?token=${encodeURIComponent(getToken())}`;
+  chatSocket = new WebSocket(wsUrl);
+
+  chatSocket.addEventListener("message", (event) => {
+    try {
+      appendMessage(JSON.parse(event.data));
+      scrollHistoryToBottom();
+    } catch (error) {
+      // Ignore malformed messages.
+    }
+  });
+
+  chatSocket.addEventListener("close", () => {
+    reconnectTimer = setTimeout(() => {
+      if (getToken() && !document.getElementById("chat-panel").hidden) {
+        connectChatSocket();
+      }
+    }, 5000);
+  });
+}
+
+async function handleMessageSubmit(event) {
+  event.preventDefault();
+  const input = document.getElementById("message-input");
+  const button = event.currentTarget.querySelector("button");
+  const message = input.value.trim();
+  if (!message) return;
+
+  button.disabled = true;
+  try {
+    const sentMessage = await apiFetch("/chat/message", {
+      method: "POST",
+      token: getToken(),
+      body: { message },
+    });
+    appendMessage(sentMessage);
+    scrollHistoryToBottom();
+    input.value = "";
+  } catch (error) {
+    showStatus(document.getElementById("chat-status"), error.message || "Could not send message.", "error");
+  } finally {
+    button.disabled = false;
+    input.focus();
+  }
+}
+
+async function handleLogout() {
+  try {
+    await apiFetch("/auth/logout", { method: "POST", token: getToken() });
+  } catch (error) {
+    // Local logout still happens if the API is unavailable.
+  }
+  if (chatSocket) {
+    chatSocket.close();
+    chatSocket = null;
+  }
+  currentUser = null;
+  clearToken();
+  showOnly("login-card");
+}
+
+async function apiFetch(path, options = {}) {
+  const headers = { Accept: "application/json" };
+  if (options.body) {
+    headers["Content-Type"] = "application/json";
+  }
+  if (options.token) {
+    headers.Authorization = `Bearer ${options.token}`;
+  }
+
+  const response = await fetch(`${CHAT_API_URL}${path}`, {
+    method: options.method || "GET",
+    headers,
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
+
+  let payload = null;
+  try {
+    payload = await response.json();
+  } catch (error) {
+    throw new Error("Chat API returned an invalid response.");
+  }
+
+  if (!response.ok || !payload.success) {
+    throw new Error(payload.error || "Chat API request failed.");
+  }
+  return payload.data;
+}
+
+function appendMessage(message) {
+  const historyEl = document.getElementById("chat-history");
+  if (historyEl.querySelector(`[data-message-id="${message.id}"]`)) {
+    return;
+  }
+
+  const row = document.createElement("article");
+  row.className = `chat-message ${message.source === "website" ? "website" : "minecraft"}`;
+  row.dataset.messageId = message.id;
+
+  const meta = document.createElement("div");
+  meta.className = "chat-message-meta";
+
+  const name = document.createElement("span");
+  name.className = "chat-message-name";
+  name.textContent = message.username || "Unknown";
+
+  const source = document.createElement("span");
+  source.className = "chat-message-source";
+  source.textContent = message.source || "chat";
+
+  const time = document.createElement("time");
+  time.textContent = formatMessageTime(message.created_at);
+
+  const text = document.createElement("div");
+  text.className = "chat-message-text";
+  text.textContent = message.message || "";
+
+  meta.append(name, source, time);
+  row.append(meta, text);
+  historyEl.append(row);
+}
+
+function showOnly(id) {
+  ["setup-card", "login-card", "chat-panel"].forEach((item) => {
+    document.getElementById(item).hidden = item !== id;
+  });
+}
+
+function showStatus(element, message, type) {
+  element.textContent = message;
+  element.className = `chat-status ${type || ""}`.trim();
+  if (element.id === "chat-status") {
+    element.classList.add("compact");
+  }
+  element.hidden = false;
+}
+
+function scrollHistoryToBottom() {
+  const historyEl = document.getElementById("chat-history");
+  historyEl.scrollTop = historyEl.scrollHeight;
+}
+
+function formatMessageTime(timestamp) {
+  if (!timestamp) return "";
+  return new Date(timestamp * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function getToken() {
+  return localStorage.getItem(CHAT_TOKEN_KEY);
+}
+
+function setToken(token) {
+  localStorage.setItem(CHAT_TOKEN_KEY, token);
+}
+
+function clearToken() {
+  localStorage.removeItem(CHAT_TOKEN_KEY);
+}

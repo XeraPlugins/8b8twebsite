@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Bridge - 8b8t</title>
+    <link rel="stylesheet" href="assets/font_awesome.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/stats.css">
+    <link rel="stylesheet" href="assets/chat.css">
+</head>
+
+<body>
+<div id="header-placeholder"></div>
+
+<main class="stats-page-main chat-page-main">
+    <section class="stats-hero outer">
+        <div class="inner">
+            <div class="stats-hero-row">
+                <div class="stats-hero-text">
+                    <h1 class="stats-page-title">Chat Bridge</h1>
+                    <p class="stats-page-sub">Link your Minecraft account in-game with <code>/chatbridge</code>, then sign in here with your username and password.</p>
+                </div>
+                <div class="chat-command-card">
+                    <span><i class="fa-solid fa-plug"></i> Account setup</span>
+                    <code>/chatbridge</code>
+                    <code>/chatbridge reset</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-body outer">
+        <div class="inner chat-shell">
+            <div class="chat-auth-card" id="setup-card" hidden>
+                <div class="chat-card-heading">
+                    <span class="chat-card-icon"><i class="fa-solid fa-lock"></i></span>
+                    <div>
+                        <h2>Set Your Password</h2>
+                        <p id="setup-description">Finish creating your website chat account.</p>
+                    </div>
+                </div>
+                <form id="setup-form" class="chat-form">
+                    <label>
+                        Username
+                        <input type="text" id="setup-username" readonly>
+                    </label>
+                    <label>
+                        New password
+                        <input type="password" id="setup-password" minlength="8" maxlength="128" autocomplete="new-password" required>
+                    </label>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p class="chat-muted">Setup links are single-use and expire shortly after <code>/chatbridge</code> or <code>/chatbridge reset</code>.</p>
+                <div class="chat-status" id="setup-status" hidden></div>
+            </div>
+
+            <div class="chat-auth-card" id="login-card" hidden>
+                <div class="chat-card-heading">
+                    <span class="chat-card-icon"><i class="fa-solid fa-right-to-bracket"></i></span>
+                    <div>
+                        <h2>Sign In</h2>
+                        <p>Use the Minecraft username linked through <code>/chatbridge</code>.</p>
+                    </div>
+                </div>
+                <form id="login-form" class="chat-form">
+                    <label>
+                        Username
+                        <input type="text" id="login-username" autocomplete="username" required>
+                    </label>
+                    <label>
+                        Password
+                        <input type="password" id="login-password" autocomplete="current-password" required>
+                    </label>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p class="chat-muted">Need access or a reset? Join the server and run <code>/chatbridge</code> or <code>/chatbridge reset</code>.</p>
+                <div class="chat-status" id="login-status" hidden></div>
+            </div>
+
+            <div class="chat-panel" id="chat-panel" hidden>
+                <div class="chat-panel-header">
+                    <div>
+                        <h2>Public Chat</h2>
+                        <p id="signed-in-label">Connected</p>
+                    </div>
+                    <button class="chat-secondary-btn" id="logout-btn" type="button">Logout</button>
+                </div>
+                <div class="chat-history" id="chat-history" aria-live="polite"></div>
+                <form id="message-form" class="message-form">
+                    <input type="text" id="message-input" maxlength="256" autocomplete="off" placeholder="Send a message to Minecraft chat..." required>
+                    <button type="submit">Send</button>
+                </form>
+                <div class="chat-status compact" id="chat-status" hidden></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="footer-placeholder"></div>
+
+<script src="assets/components.js"></script>
+<script src="assets/chat.js"></script>
+</body>
+</html>
