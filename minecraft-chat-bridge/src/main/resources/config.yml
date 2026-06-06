@@ -3,6 +3,8 @@ plugin-secret: "change-this-secret"
 permission-node: "8b8t.chatbridge.access"
 # Supports Minecraft & color codes. Placeholders: %username%, %message%
 web-message-format: "&d[Web] &f%username%&7: &f%message%"
+# Color applied to website messages that start with >
+greentext-color-code: "&a"
 forward-minecraft-chat: true
 # Keep false if your chat formatting/plugin cancels all chat events after broadcasting them.
 # Set true only if your filter plugin cancels blocked messages and normal messages are not cancelled.

@@ -27,6 +27,7 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
     private ChatBridgeApiClient apiClient;
     private String permissionNode;
     private String webMessageFormat;
+    private String greentextColorCode;
     private boolean forwardMinecraftChat;
     private boolean respectCancelledChat;
     private List<String> blockedMessagePatterns;
@@ -41,6 +42,7 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
         String pluginSecret = getConfig().getString("plugin-secret", "");
         permissionNode = getConfig().getString("permission-node", "8b8t.chatbridge.access");
         webMessageFormat = getConfig().getString("web-message-format", "&d[Web] &f%username%&7: &f%message%");
+        greentextColorCode = getConfig().getString("greentext-color-code", "&a");
         forwardMinecraftChat = getConfig().getBoolean("forward-minecraft-chat", true);
         respectCancelledChat = getConfig().getBoolean("respect-cancelled-chat", false);
         blockedMessagePatterns = getConfig().getStringList("blocked-message-patterns").stream()
@@ -183,9 +185,14 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
     }
 
     private void broadcastWebsiteMessage(ChatMessage chatMessage) {
+        String message = sanitizePlaceholder(chatMessage.message == null ? "" : chatMessage.message);
+        if (isGreentextMessage(message)) {
+            message = greentextColorCode + message;
+        }
+
         String line = webMessageFormat
                 .replace("%username%", sanitizePlaceholder(chatMessage.username == null ? "Website" : chatMessage.username))
-                .replace("%message%", sanitizePlaceholder(chatMessage.message == null ? "" : chatMessage.message));
+                .replace("%message%", message);
 
         Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(line);
         Bukkit.getGlobalRegionScheduler().run(this, task -> Bukkit.broadcast(component));
@@ -198,5 +205,9 @@ public final class B8ChatBridgePlugin extends JavaPlugin implements Listener, Co
     private boolean isBlockedMessage(String message) {
         String normalized = message.toLowerCase(Locale.ROOT);
         return blockedMessagePatterns.stream().anyMatch(normalized::contains);
+    }
+
+    private boolean isGreentextMessage(String message) {
+        return message.stripLeading().startsWith(">");
     }
 }

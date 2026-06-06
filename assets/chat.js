@@ -364,6 +364,9 @@ function appendMessage(message) {
   const row = document.createElement("article");
   row.className = `chat-message ${message.source === "website" ? "website" : "minecraft"}`;
   row.dataset.messageId = message.id;
+  if (isGreentextMessage(message.message)) {
+    row.classList.add("greentext");
+  }
 
   const avatar = document.createElement("img");
   avatar.className = "chat-message-avatar";
@@ -404,6 +407,10 @@ function appendMessage(message) {
 
 function getPlayerHeadUrl(username) {
   return `https://mc-heads.net/avatar/${encodeURIComponent(username || "Steve")}`;
+}
+
+function isGreentextMessage(message) {
+  return (message || "").trimStart().startsWith(">");
 }
 
 function showOnly(id) {

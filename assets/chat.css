@@ -318,6 +318,11 @@
     white-space: pre-wrap;
 }
 
+.chat-message.greentext .chat-message-text {
+    color: #00ff66;
+    text-shadow: 0 0 10px rgba(0,255,102,0.18);
+}
+
 .message-form {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
