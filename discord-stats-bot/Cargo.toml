@@ -1,0 +1,17 @@
+[package]
+name = "discord-stats-bot"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serenity = { version = "0.12", default-features = false, features = ["client", "gateway", "model", "http", "rustls_backend"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+toml = "0.8"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1

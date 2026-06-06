@@ -1,0 +1,24 @@
+# Copy this file to config.toml and fill in your values.
+
+# Discord bot token from the Discord Developer Portal.
+discord_token = "YOUR_DISCORD_BOT_TOKEN"
+
+# Optional. If set, slash commands are registered instantly in this guild.
+# If omitted, commands are registered globally and may take time to appear.
+guild_id = 0
+
+# Existing Tensor stats API only. Do not point this at the chat bridge API.
+tensor_api_url = "https://api.xera.ca"
+
+[promo]
+enabled = true
+interval_hours = 6
+shop_url = "https://shop.8b8t.me"
+message = "Support 8b8t and unlock rank perks at https://shop.8b8t.me"
+
+# Channels where the scheduled promo should be sent.
+# Put your normal channel ID and advertising channel ID here.
+channel_ids = [
+  0,
+  0
+]
