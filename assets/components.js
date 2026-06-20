@@ -79,7 +79,15 @@ function setMetaTags(page) {
     document.head.insertAdjacentHTML('beforeend', metaTags);
 }
 
-switch (localStorage.getItem("preferredLanguage")) {
+let preferredLanguage = null;
+
+try {
+    preferredLanguage = localStorage.getItem("preferredLanguage");
+} catch (error) {
+    preferredLanguage = null;
+}
+
+switch (preferredLanguage) {
     case "es":
         header = {
             home: "Inicio",
