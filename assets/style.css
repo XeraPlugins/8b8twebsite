@@ -1398,6 +1398,25 @@ body::-webkit-scrollbar {
     height: 100% !important;
 }
 
+.maintenance-banner {
+    width: 100% !important;
+    background: #d60000 !important;
+    color: #fff !important;
+    padding: 12px 22px !important;
+    text-align: center !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    position: relative !important;
+    z-index: 10000 !important;
+}
+
+.maintenance-banner a {
+    color: #fff !important;
+    text-decoration: underline !important;
+    text-underline-offset: 2px !important;
+}
+
 .site-nav {
     position: sticky !important;
     top: 0 !important;
