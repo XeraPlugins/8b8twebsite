@@ -7,419 +7,605 @@
     <title>About - 8b8t Anarchy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css?v=20260704">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .lce-page { background: #000; min-height: 100vh; }
-
-        .lce-hero {
-            position: relative;
-            height: 70vh;
-            min-height: 420px;
-            overflow: hidden;
-            padding-top: 64px;
+        .about-page {
+            background: #000;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
-        .lce-hero-bg {
+
+        .about-hero {
+            position: relative;
+            padding: 200px 0 140px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .about-hero-bg {
             position: absolute;
             inset: -20px;
             background-image: url('assets/renders/2025-12-29_04.47.35.png');
             background-size: cover;
             background-position: center 30%;
-            filter: blur(6px) brightness(0.35);
-            transform: scale(1.04);
+            filter: blur(8px) brightness(0.3);
+            transform: scale(1.05);
         }
-        .lce-hero-fade {
+
+        .about-hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 75%, #000 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
         }
-        .lce-hero-body {
+
+        .about-hero-content {
             position: relative;
             z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 5%;
-            max-width: 75rem;
+            max-width: 800px;
             margin: 0 auto;
+            padding: 0 20px;
         }
-        .lce-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.625rem;
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #2997ff;
-            margin-bottom: 0.5rem;
+
+        .about-hero-content .hero-badge {
+            margin-bottom: 20px;
         }
-        .lce-eyebrow::before {
-            content: '';
-            display: block;
-            width: 1.125rem;
-            height: 1px;
-            background: #2997ff;
-        }
-        .lce-hero-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.05;
+
+        .about-hero-content h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
             color: #fff;
-            margin: 0 0 0.625rem;
+            margin-bottom: 16px;
+            background: linear-gradient(to bottom, #fff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .lce-hero-desc {
-            font-size: 0.875rem;
-            color: rgba(255,255,255,0.6);
+
+        .about-hero-content p {
+            font-size: 18px;
+            color: #d2d2d7;
             line-height: 1.6;
-            max-width: 25rem;
-            margin: 0 0 1rem;
+            margin: 0;
         }
-        .lce-hero-actions {
+
+        .about-section {
+            padding: 80px 0 0;
+            background: #000;
+        }
+
+        .about-section:last-of-type {
+            padding-bottom: 120px;
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .about-section-heading {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .about-section-heading h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 10px;
+        }
+
+        .about-section-heading p {
+            font-size: 17px;
+            color: #86868b;
+            margin: 0;
+        }
+
+        /* Stats strip */
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .about-stat {
+            padding: 28px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-stat:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(41, 151, 255, 0.3);
+        }
+
+        .about-stat-value {
+            font-size: 30px;
+            font-weight: 800;
+            color: #2997ff;
+            line-height: 1.2;
+        }
+
+        .about-stat-label {
+            font-size: 13px;
+            color: #86868b;
+            margin-top: 6px;
+        }
+
+        /* Philosophy */
+        .about-lead {
+            max-width: 780px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-lead .big {
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 700;
+            line-height: 1.4;
+            color: #fff;
+            margin: 0 0 24px;
+        }
+
+        .about-lead .big span {
+            color: #2997ff;
+        }
+
+        .about-lead p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #a1a1a6;
+            margin: 0 0 16px;
+        }
+
+        .about-lead p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Timeline */
+        .about-timeline {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .about-tl-item {
+            position: relative;
             display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
+            gap: 28px;
+            padding-bottom: 40px;
         }
-        .lce-hero-cta {
+
+        .about-tl-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .about-tl-item::before {
+            content: '';
+            position: absolute;
+            left: 60px;
+            top: 34px;
+            bottom: 6px;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .about-tl-item:last-child::before {
+            display: none;
+        }
+
+        .about-tl-year {
+            width: 52px;
+            flex-shrink: 0;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            color: #2997ff;
+            font-family: 'SF Mono', Monaco, monospace;
+            padding-top: 3px;
+        }
+
+        .about-tl-dot {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 1px solid rgba(41, 151, 255, 0.5);
+            background: rgba(41, 151, 255, 0.12);
+            flex-shrink: 0;
+            margin-top: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-tl-item.now .about-tl-dot {
+            background: #2997ff;
+            box-shadow: 0 0 16px rgba(41, 151, 255, 0.6);
+        }
+
+        .about-tl-content h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 6px;
+        }
+
+        .about-tl-content p {
+            font-size: 14px;
+            color: #86868b;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Under the hood */
+        .about-tech-note {
+            max-width: 780px;
+            margin: 0 auto 36px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #a1a1a6;
+        }
+
+        .about-tech-note strong {
+            color: #fff;
+        }
+
+        .about-hw-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .about-hw-item {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-hw-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(41, 151, 255, 0.3);
+        }
+
+        .about-hw-icon {
             display: inline-flex;
             align-items: center;
-            gap: 0.5625rem;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.16);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.625rem 1.125rem;
-            border-radius: 0.5625rem;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            align-self: flex-start;
-            text-decoration: none;
-        }
-        .lce-hero-cta:hover {
-            background: rgba(255,255,255,0.13);
-            border-color: rgba(255,255,255,0.28);
-        }
-        .lce-hero-cta.primary {
-            background: rgba(41,151,255,0.15);
-            border-color: rgba(41,151,255,0.3);
-        }
-        .lce-hero-cta.primary:hover {
-            background: rgba(41,151,255,0.25);
-        }
-        .lce-hero-cta i { color: #2997ff; font-size: 0.6875rem; }
-
-        .lce-layout {
-            width: 100%;
-            max-width: 62.5rem;
-            margin: 0 auto;
-            padding: 0 5% 6.25rem;
-            display: grid;
-            grid-template-columns: 190px 1fr;
-            gap: 0 60px;
-            align-items: start;
-        }
-        .lce-sidebar {
-            position: sticky;
-            top: 88px;
-            padding-top: 44px;
-        }
-        .lce-toc-label {
-            font-size: 0.625rem;
-            font-weight: 700;
-            letter-spacing: 0.13em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.28);
-            margin-bottom: 0.75rem;
-        }
-        .lce-toc {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-        .lce-toc a {
-            display: block;
-            font-size: 0.8125rem;
-            color: rgba(255,255,255,0.38);
-            text-decoration: none;
-            padding: 0.3125rem 0 0.3125rem 0.875rem;
-            border-left: 1px solid rgba(255,255,255,0.08);
-            transition: color 0.15s, border-color 0.15s;
-        }
-        .lce-toc a:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
-
-        .lce-article { min-width: 0; }
-
-        .lce-section {
-            margin-bottom: 3rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        .lce-section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .lce-section-heading {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-            margin: 0 0 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .lce-lead {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.375rem;
-            font-weight: 600;
-            line-height: 1.5;
-            color: #fff;
-            margin: 0 0 0.875rem;
-        }
-        .lce-body {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.65);
-            margin: 0 0 0.625rem;
-        }
-        .lce-body:last-child { margin-bottom: 0; }
-        .lce-body a { color: #2997ff; text-decoration: none; font-weight: 500; }
-        .lce-body a:hover { text-decoration: underline; }
-
-        /* Hardware */
-        .lce-hw-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-        .lce-hw-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.25rem;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 0.75rem;
-            background: rgba(255,255,255,0.02);
-        }
-        .lce-hw-icon {
-            width: 2.5rem; height: 2.5rem;
-            border-radius: 0.625rem;
-            background: rgba(41,151,255,0.1);
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(41, 151, 255, 0.12);
             color: #2997ff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
+            font-size: 17px;
+            margin-bottom: 14px;
         }
-        .lce-hw-label {
-            font-size: 0.6875rem;
+
+        .about-hw-label {
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-            margin-bottom: 0.125rem;
+            color: #6e6e73;
+            margin-bottom: 4px;
         }
-        .lce-hw-value {
-            font-size: 0.9375rem;
+
+        .about-hw-value {
+            font-size: 14px;
             font-weight: 600;
             color: #fff;
+            line-height: 1.4;
         }
 
         /* FAQ */
-        .lce-faq {
+        .about-faq {
+            max-width: 780px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 10px;
         }
-        .lce-faq-item {
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 0.75rem;
+
+        .about-faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
             overflow: hidden;
             transition: border-color 0.2s;
         }
-        .lce-faq-item.active { border-color: #2997ff; }
-        .lce-faq-q {
+
+        .about-faq-item.active {
+            border-color: rgba(41, 151, 255, 0.4);
+        }
+
+        .about-faq-q {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 1.25rem;
+            gap: 16px;
+            padding: 18px 22px;
             cursor: pointer;
-            font-size: 0.9375rem;
+            font-size: 15px;
             font-weight: 600;
             color: #fff;
-            transition: color 0.15s;
         }
-        .lce-faq-q i { color: rgba(255,255,255,0.2); transition: transform 0.2s; font-size: 0.75rem; }
-        .lce-faq-item.active .lce-faq-q i { transform: rotate(180deg); color: #2997ff; }
-        .lce-faq-a { overflow: hidden; transition: max-height 0.3s ease; max-height: 0; }
-        .lce-faq-item.active .lce-faq-a { max-height: 12.5rem; }
-        .lce-faq-a-inner {
-            padding: 0 1.25rem 1rem;
-            font-size: 0.875rem;
+
+        .about-faq-q i {
+            color: #6e6e73;
+            font-size: 12px;
+            transition: transform 0.25s;
+            flex-shrink: 0;
+        }
+
+        .about-faq-item.active .about-faq-q i {
+            transform: rotate(180deg);
+            color: #2997ff;
+        }
+
+        .about-faq-a {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+
+        .about-faq-item.active .about-faq-a {
+            max-height: 220px;
+        }
+
+        .about-faq-a-inner {
+            padding: 0 22px 18px;
+            font-size: 14px;
             line-height: 1.7;
-            color: rgba(255,255,255,0.6);
+            color: #86868b;
         }
-        .lce-faq-a-inner a { color: #2997ff; text-decoration: none; font-weight: 500; }
-        .lce-faq-a-inner a:hover { text-decoration: underline; }
+
+        .about-faq-a-inner a {
+            color: #2997ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .about-faq-a-inner a:hover {
+            text-decoration: underline;
+        }
+
+        .about-faq-a-inner strong {
+            color: #d2d2d7;
+        }
 
         /* Contact */
-        .lce-contact {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 1rem; flex-wrap: wrap;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            margin-top: 3rem;
+        .about-contact {
+            max-width: 1100px;
+            margin: 100px auto 0;
+            padding: 48px 22px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
         }
-        .lce-contact p { font-size: 0.8125rem; color: rgba(255,255,255,0.4); }
-        .lce-contact a { color: #2997ff; text-decoration: none; font-size: 0.8125rem; font-weight: 500; }
-        .lce-contact a:hover { text-decoration: underline; }
+
+        .about-contact p {
+            font-size: 14px;
+            color: #86868b;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .about-contact a {
+            color: #2997ff;
+            text-decoration: none;
+        }
+
+        .about-contact a:hover {
+            text-decoration: underline;
+        }
 
         @media (max-width: 900px) {
-            .lce-layout { grid-template-columns: 1fr; }
-            .lce-sidebar { display: none; }
-            .lce-hw-grid { grid-template-columns: 1fr; }
+            .about-stats,
+            .about-hw-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .about-hero {
+                padding: 140px 0 80px;
+            }
+
+            .about-stats,
+            .about-hw-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-tl-item {
+                gap: 16px;
+            }
+
+            .about-tl-item::before {
+                left: 48px;
+            }
+
+            .about-tl-year {
+                width: 40px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 
-<body>
+<body class="about-page">
     <div id="header-placeholder"></div>
 
-    <main class="lce-page">
-        <section class="lce-hero">
-            <div class="lce-hero-bg"></div>
-            <div class="lce-hero-fade"></div>
-            <div class="lce-hero-body">
-                <div class="lce-eyebrow">Since 2016</div>
-                <h1 class="lce-hero-title">About 8b8t</h1>
-                <p class="lce-hero-desc">We remain true to the core values of anarchy. No rules, no resets, brutality. Experience our history and our technological innovation.</p>
-                <div class="lce-hero-actions">
-                    <a href="how-to-join.html" class="lce-hero-cta primary"><i class="fa-solid fa-play"></i> Play Now</a>
-                    <a href="#more" class="lce-hero-cta"><i class="fa-solid fa-chevron-down"></i> Learn More</a>
+    <main>
+        <section class="about-hero">
+            <div class="about-hero-bg"></div>
+            <div class="about-hero-overlay"></div>
+            <div class="about-hero-content">
+                <span class="hero-badge">Since 2016</span>
+                <h1>About 8b8t</h1>
+                <p>The oldest non-vanilla anarchy server. No rules, no resets, no admin intervention — a world written entirely by its players.</p>
+            </div>
+        </section>
+
+        <section class="about-section" id="overview">
+            <div class="about-container">
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <div class="about-stat-value">2016</div>
+                        <div class="about-stat-label">Online since</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-value">Aug 2020</div>
+                        <div class="about-stat-label">Current map, untouched</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-value">0</div>
+                        <div class="about-stat-label">In-game rules</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-value">24/7</div>
+                        <div class="about-stat-label">Uptime, cracked &amp; free</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <div class="lce-layout" id="more">
-            <aside class="lce-sidebar">
-                <div class="lce-toc-label">On this page</div>
-                <ul class="lce-toc">
-                    <li><a href="#overview">Overview</a></li>
-                    <li><a href="#hardware">Hardware info</a></li>
-                    <li><a href="#history">Where it started</a></li>
-                    <li><a href="#tech">Technologies</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </aside>
-
-            <article class="lce-article">
-                <section class="lce-section" id="overview">
-                    <div class="lce-section-heading">Overview</div>
-                    <p class="lce-lead">8b8t has been online since 2016, evolving through multiple eras while staying true to its core identity. What began as 0b0t, later became 6b6t, and is now known as 8b8t. While there have been a few map resets throughout its long history, the current world has remained unchanged since August 2020, standing as a testament to persistence and player history.</p>
-                    <p class="lce-body">Our philosophy is simple: <b>true freedom for players.</b> 8b8t operates with little to no admin intervention, allowing the world to develop naturally through the actions of its players. There are no artificial restrictions shaping gameplay—what happens here is entirely driven by the community.</p>
-                    <p class="lce-body">Unlike many so-called “anarchy” servers that have introduced rules to comply with Mojang’s EULA enforcement, 8b8t has remained consistent. The core codebase and fundamental principles that defined the server in 2016 are still intact today. We don’t redefine freedom—we preserve it.</p>
-                    <p class="lce-body">8b8t is more than just a server. It’s a long-running experiment in unrestricted gameplay, where history is written by those who choose to survive it.</p>
-                </section>
-
-                <section class="lce-section" id="hardware">
-                    <div class="lce-section-heading">Hardware info</div>
-                    <div class="lce-hw-grid">
-                        <div class="lce-hw-item">
-                            <div class="lce-hw-icon"><i class="fa-solid fa-microchip"></i></div>
-                            <div>
-                                <div class="lce-hw-label">Processor</div>
-                                <div class="lce-hw-value">2x Intel Xeon-E5-2682</div>
-                            </div>
-                        </div>
-                        <div class="lce-hw-item">
-                            <div class="lce-hw-icon"><i class="fa-solid fa-memory"></i></div>
-                            <div>
-                                <div class="lce-hw-label">Memory</div>
-                                <div class="lce-hw-value">256GB DDR4</div>
-                            </div>
-                        </div>
-                        <div class="lce-hw-item">
-                            <div class="lce-hw-icon"><i class="fa-solid fa-hard-drive"></i></div>
-                            <div>
-                                <div class="lce-hw-label">Storage</div>
-                                <div class="lce-hw-value">10 TB Enterprise SSDs</div>
-                            </div>
-                        </div>
-                        <div class="lce-hw-item">
-                            <div class="lce-hw-icon"><i class="fa-solid fa-location-dot"></i></div>
-                            <div>
-                                <div class="lce-hw-label">Location</div>
-                                <div class="lce-hw-value">Edmonton, Alberta, Canada</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="lce-section" id="history">
-                    <div class="lce-section-heading">Where it started</div>
-                    <p class="lce-body">8b8t originally started in late 2016 under the name 0b0t as a non-vanilla anarchy server created by Leee as an alternative to the server 2b2t due to the long queue times. The server was then rebranded to 6b6t sometime in 2019 due to losing the domain.</p>
-                    <p class="lce-body">6b6t's current map began on March 3, 2019 and stayed online until April 2020 when there was a hardware issue and this former map was thought to be lost. A new map began sometime in January 2021 and the server became what is now known as 8b8t.</p>
-                    <p class="lce-body">The current world is 6 years old and was created on August 18, 2020.</p>
-                </section>
-
-                <section class="lce-section" id="tech">
-                    <div class="lce-section-heading">Technologies &amp; Mechanics</div>
-                    <p class="lce-body">8b8t runs on a highly customized <strong style="color:#fff;">Folia fork</strong>, allowing for multi-threaded performance that traditional servers cannot match. Our core plugin, <strong style="color:#fff;">8b8tCore</strong>, is the most advanced anti-illegal system ever made, protecting the server at the bitstream level.</p>
-                </section>
-
-                <section class="lce-section" id="faq">
-                    <div class="lce-section-heading">Frequently Asked Questions</div>
-                    <div class="lce-faq">
-                        <div class="lce-faq-item active">
-                            <div class="lce-faq-q">Is hacking allowed on 8b8t.me? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Yes. 8b8t is an anarchy server with no in-game rules.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">Why is 8b8t a cracked server? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">8b8t is a cracked server because of Mojangs EULA. We believe in player freedom, privacy and choice.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">Why do illegal events exist? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Illegal events are a way to make money from the server. We do not profit off our server and our anti-illegal system allows us to revert items after the illegal event.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">Why is there /homes, /tpa, etc.? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Being the very first non-vanilla anarchy server, we streamlined most of the tedious tasks. The majority of our playerbase prefers such commands as it makes it easier to make massive builds with less players.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">What is the seed of 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">The seed is hashed with the Blake3 Digest algorithm — a one-way function to protect against world terrain exploitation such as block rotations, bedrock, and terrain. We keep the salt private.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">Can I join 8b8t on Bedrock? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">Yes, we have Bedrock Edition support using the IP Address <strong>br.8b8t.me</strong> with the Port <strong>19132</strong>.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">How do I dupe? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">The primary method is the <a href="https://www.youtube.com/watch?v=-iSM9Vgw1Ew" target="_blank">"8b8t donkey dupe"</a>.</div></div>
-                        </div>
-                        <div class="lce-faq-item">
-                            <div class="lce-faq-q">Who owns 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
-                            <div class="lce-faq-a"><div class="lce-faq-a-inner">8b8t is owned and operated by a small team at <strong>XERA INC</strong>. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a>.</div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="lce-contact" id="contact">
-                    <p>The server is operated & owned by XERA INC. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a> or join the <a href="http://telegram.8b8t.me/">Telegram server</a>.</p>
+        <section class="about-section" id="philosophy">
+            <div class="about-container">
+                <div class="about-lead">
+                    <p class="big">Our philosophy is simple: <span>true freedom for players.</span></p>
+                    <p>8b8t operates with little to no admin intervention, allowing the world to develop naturally through the actions of its players. There are no artificial restrictions shaping gameplay — what happens here is entirely driven by the community.</p>
+                    <p>Unlike many so-called "anarchy" servers that introduced rules to comply with Mojang's EULA enforcement, 8b8t has remained consistent. The core codebase and principles that defined the server in 2016 are still intact today. We don't redefine freedom — we preserve it.</p>
                 </div>
-            </article>
-        </div>
+            </div>
+        </section>
+
+        <section class="about-section" id="history">
+            <div class="about-container">
+                <div class="about-section-heading">
+                    <h2>Where It Started</h2>
+                    <p>A decade of anarchy, three names, one identity.</p>
+                </div>
+
+                <div class="about-timeline">
+                    <div class="about-tl-item">
+                        <div class="about-tl-year">2016</div>
+                        <div class="about-tl-dot"></div>
+                        <div class="about-tl-content">
+                            <h4>Born as 0b0t</h4>
+                            <p>Created by Leee as a non-vanilla anarchy alternative to 2b2t and its endless queue times.</p>
+                        </div>
+                    </div>
+                    <div class="about-tl-item">
+                        <div class="about-tl-year">2019</div>
+                        <div class="about-tl-dot"></div>
+                        <div class="about-tl-content">
+                            <h4>Rebranded to 6b6t</h4>
+                            <p>After losing the original domain, the server took a new name. Its map ran from March 3, 2019 until April 2020.</p>
+                        </div>
+                    </div>
+                    <div class="about-tl-item">
+                        <div class="about-tl-year">2020</div>
+                        <div class="about-tl-dot"></div>
+                        <div class="about-tl-content">
+                            <h4>A New World</h4>
+                            <p>A hardware failure took the old map offline. The current world was created on August 18, 2020 — and hasn't been reset since.</p>
+                        </div>
+                    </div>
+                    <div class="about-tl-item now">
+                        <div class="about-tl-year">2021</div>
+                        <div class="about-tl-dot"></div>
+                        <div class="about-tl-content">
+                            <h4>8b8t Today</h4>
+                            <p>Reborn as 8b8t, the server carries the same world forward — six years of player history and counting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section" id="tech">
+            <div class="about-container">
+                <div class="about-section-heading">
+                    <h2>Under the Hood</h2>
+                </div>
+
+                <p class="about-tech-note">8b8t runs on a highly customized <strong>Folia fork</strong> for multi-threaded performance traditional servers can't match. Our core plugin, <strong>8b8tCore</strong>, is the most advanced anti-illegal system ever made — protecting the server at the bitstream level.</p>
+
+                <div class="about-hw-grid">
+                    <div class="about-hw-item">
+                        <div class="about-hw-icon"><i class="fa-solid fa-microchip"></i></div>
+                        <div class="about-hw-label">Processor</div>
+                        <div class="about-hw-value">2× Intel Xeon E5-2682</div>
+                    </div>
+                    <div class="about-hw-item">
+                        <div class="about-hw-icon"><i class="fa-solid fa-memory"></i></div>
+                        <div class="about-hw-label">Memory</div>
+                        <div class="about-hw-value">256GB DDR4</div>
+                    </div>
+                    <div class="about-hw-item">
+                        <div class="about-hw-icon"><i class="fa-solid fa-hard-drive"></i></div>
+                        <div class="about-hw-label">Storage</div>
+                        <div class="about-hw-value">10 TB Enterprise SSDs</div>
+                    </div>
+                    <div class="about-hw-item">
+                        <div class="about-hw-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="about-hw-label">Location</div>
+                        <div class="about-hw-value">Edmonton, Alberta, Canada</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section" id="faq">
+            <div class="about-container">
+                <div class="about-section-heading">
+                    <h2>Frequently Asked Questions</h2>
+                </div>
+
+                <div class="about-faq">
+                    <div class="about-faq-item active">
+                        <div class="about-faq-q">Is hacking allowed on 8b8t.me? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">Yes. 8b8t is an anarchy server with no in-game rules.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">Why is 8b8t a cracked server? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">8b8t is a cracked server because of Mojang's EULA. We believe in player freedom, privacy and choice.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">Why do illegal events exist? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">Illegal events are a way to make money from the server. We do not profit off our server and our anti-illegal system allows us to revert items after the illegal event.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">Why is there /homes, /tpa, etc.? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">Being the very first non-vanilla anarchy server, we streamlined most of the tedious tasks. The majority of our playerbase prefers such commands as it makes it easier to make massive builds with less players.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">What is the seed of 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">The seed is hashed with the Blake3 Digest algorithm — a one-way function to protect against world terrain exploitation such as block rotations, bedrock, and terrain. We keep the salt private.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">Can I join 8b8t on Bedrock? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">Yes, we have Bedrock Edition support using the IP Address <strong>br.8b8t.me</strong> with the Port <strong>19132</strong>.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">How do I dupe? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">The primary method is the <a href="https://www.youtube.com/watch?v=-iSM9Vgw1Ew" target="_blank">"8b8t donkey dupe"</a>.</div></div>
+                    </div>
+                    <div class="about-faq-item">
+                        <div class="about-faq-q">Who owns 8b8t? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="about-faq-a"><div class="about-faq-a-inner">8b8t is owned and operated by a small team at <strong>XERA INC</strong>. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a>.</div></div>
+                    </div>
+                </div>
+
+                <div class="about-contact" id="contact">
+                    <p>The server is operated &amp; owned by XERA INC. Contact us at <a href="mailto:contact@8b8t.me">contact@8b8t.me</a> or join the <a href="http://telegram.8b8t.me/">Telegram server</a>.</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="footer-placeholder"></div>
@@ -427,7 +613,7 @@
     <script src="assets/components.js?v=20260704"></script>
     <script src="assets/script.js"></script>
     <script>
-        document.querySelectorAll('.lce-faq-q').forEach(q => {
+        document.querySelectorAll('.about-faq-q').forEach(q => {
             q.addEventListener('click', () => {
                 q.parentElement.classList.toggle('active');
             });

@@ -585,31 +585,27 @@ function initSmoothScroll() {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  if (preffedLanguage) {
-    if (preffedLanguage === "en") {
-        target = "/" + path.split("/").pop();
-        if (path !== target){
-            window.location.href = target;
-        }
-    } else if (preffedLanguage === "es") {
-        target = "/es/" + path.split("/").pop();
-        if (path !== target){
-            window.location.href = target;
-        }
-    } else {
-      // If the stored preference is invalid, remove it
-      localStorage.removeItem("preferredLanguage");
+  if (preffedLanguage === "en" || preffedLanguage === "es") {
+    if (window.location.protocol !== "file:") {
+      const onSpanishPage = path.includes("/es/");
+      const page = path.split("/").pop() || "index.html";
+      const spanishPages = ["about.html", "commands.html", "index.html", "lce.html", "privacy.html", "stats.html", "support.html", "terms.html", "vote.html"];
+
+      if (preffedLanguage === "es" && !onSpanishPage && spanishPages.includes(page)) {
+        window.location.href = "/es/" + page;
+      } else if (preffedLanguage === "en" && onSpanishPage) {
+        window.location.href = "/" + page;
+      }
     }
+  } else if (preffedLanguage) {
+    localStorage.removeItem("preferredLanguage");
   } else {
-    // If no preference is stored,set default language to English
     localStorage.setItem("preferredLanguage", "en");
   }
   initCommunitySwitcher();
   initFAQV3();
   initSmoothScroll();
 });
-
-// Languaje Switcher Logic - SrGokuto April 18 2026
 
 const preffedLanguage = localStorage.getItem("preferredLanguage");
 var path = window.location.pathname;

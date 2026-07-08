@@ -144,20 +144,16 @@ body::-webkit-scrollbar {
 
 .btn-blue {
     background-color: #007bff;
-    /* Direct white text */
     color: #ffffff !important;
 
     border: none;
     border-radius: 8px;
     padding: 12px 24px;
     font-size: 16px;
-    /* Making it slightly bolder for better legibility */
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    /* Ensures text is centered and crisp */
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -166,7 +162,6 @@ body::-webkit-scrollbar {
 .btn-blue:hover {
     background-color: #0056b3;
     color: #ffffff;
-    /* Keeps text white on hover */
     transform: translateY(-2px);
 }
 
@@ -1417,6 +1412,10 @@ body::-webkit-scrollbar {
     text-underline-offset: 2px !important;
 }
 
+#header-placeholder {
+    display: contents;
+}
+
 .site-nav {
     position: sticky !important;
     top: 0 !important;
@@ -1735,9 +1734,6 @@ body::-webkit-scrollbar {
     text-transform: uppercase;
     font-weight: 600;
 }
-
-
-
 
 .about-hero-content {
     animation: fadeInUp 0.8s ease-out forwards;
@@ -2975,9 +2971,6 @@ body::-webkit-scrollbar {
         display: none;
     }
 }
-
-
-/* Language Switcher styles */
 
 .language-switcher {
     background: rgba(255, 255, 255, 0.05);

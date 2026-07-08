@@ -171,30 +171,63 @@
             flex-shrink: 0;
         }
 
+        .rank-features li a,
+        .rank-features li a:visited {
+            color: #2997ff;
+            text-decoration: none;
+        }
+
+        .rank-features li a:hover {
+            text-decoration: underline;
+        }
+
+        .rank-card.event.gold .rank-features li a,
+        .rank-card.event.gold .rank-features li a:visited {
+            color: #ffb340;
+        }
+
         .purchase-btn {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             width: 100%;
-            padding: 16px;
+            padding: 15px 16px;
             border-radius: 12px;
-            background: rgba(41, 151, 255, 0.15);
-            border: 1px solid rgba(41, 151, 255, 0.3);
-            color: #2997ff;
+            background: linear-gradient(180deg, #3ba2ff 0%, #0a84ff 100%);
+            border: none;
+            color: #fff;
             font-size: 15px;
             font-weight: 700;
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             font-family: inherit;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 16px rgba(10, 132, 255, 0.25);
+            overflow: hidden;
+        }
+
+        .purchase-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.25) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
 
         .purchase-btn:hover {
-            background: #2997ff;
-            color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(41, 151, 255, 0.3);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 30px rgba(10, 132, 255, 0.45);
+        }
+
+        .purchase-btn:hover::after {
+            transform: translateX(100%);
+        }
+
+        .purchase-btn:active {
+            transform: translateY(0);
         }
 
         .purchase-btn i {
@@ -206,46 +239,174 @@
             transform: translateX(4px);
         }
 
-        .rank-card.featured .purchase-btn {
-            background: #2997ff;
+        .rank-card.event .purchase-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #f5f5f7;
+            box-shadow: none;
+        }
+
+        .rank-card.event .purchase-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .rank-card.event.gold .purchase-btn:hover {
+            border-color: rgba(255, 159, 10, 0.5);
+            color: #ffb340;
+        }
+
+        .shop-section-heading {
+            max-width: 1300px;
+            margin: 0 auto 28px;
+            padding: 0 22px;
+        }
+
+        .shop-section-heading h2 {
+            font-size: 28px;
+            font-weight: 700;
             color: #fff;
-            border-color: #2997ff;
+            margin: 0 0 6px;
         }
 
-        .rank-card.featured .purchase-btn:hover {
-            background: #0a84ff;
-            box-shadow: 0 10px 30px rgba(41, 151, 255, 0.4);
+        .shop-section-heading p {
+            font-size: 15px;
+            color: #86868b;
+            margin: 0;
         }
 
-        .shop-notice {
-            max-width: 800px;
-            margin: 60px auto 0;
-            padding: 24px 32px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
+        .shop-grid + .shop-section-heading {
+            margin-top: 72px;
+        }
+
+        .card-tag {
+            display: inline-block;
+            align-self: flex-start;
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #a1a1a6;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .rank-card.event.gold .card-tag {
+            background: rgba(255, 159, 10, 0.12);
+            color: #ffb340;
+            border-color: rgba(255, 159, 10, 0.3);
+        }
+
+        .rank-card.event.gold:hover {
+            border-color: rgba(255, 159, 10, 0.4);
+        }
+
+        .rank-card.event.gold .rank-price {
+            color: #ffb340;
+        }
+
+        .rank-card.event.gold .rank-features li i {
+            color: #ffb340;
+        }
+
+        .shop-info {
+            max-width: 1100px;
+            margin: 90px auto 0;
+            padding: 48px 22px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .shop-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            margin-bottom: 48px;
+        }
+
+        .shop-info-item {
             text-align: center;
+            padding: 8px 32px;
         }
 
-        .shop-notice p {
-            font-size: 14px;
+        .shop-info-item + .shop-info-item {
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .shop-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(41, 151, 255, 0.25), rgba(41, 151, 255, 0.08));
+            border: 1px solid rgba(41, 151, 255, 0.25);
+            color: #2997ff;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .shop-info-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 8px;
+        }
+
+        .shop-info-item p {
+            font-size: 13px;
             color: #86868b;
             line-height: 1.6;
             margin: 0;
         }
 
-        .shop-notice a {
+        .shop-info-item a {
             color: #2997ff;
             text-decoration: none;
         }
 
-        .shop-notice a:hover {
+        .shop-info-item a:hover {
             text-decoration: underline;
+        }
+
+        .shop-legal {
+            text-align: center;
+        }
+
+        .shop-legal p {
+            font-size: 13px;
+            color: #6e6e73;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .shop-legal a {
+            color: #86868b;
+            text-decoration: underline;
+            text-decoration-color: rgba(255, 255, 255, 0.2);
+            text-underline-offset: 3px;
+        }
+
+        .shop-legal a:hover {
+            color: #2997ff;
         }
 
         @media (max-width: 768px) {
             .shop-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .shop-info-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .shop-info-item + .shop-info-item {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                padding-top: 40px;
             }
 
             .shop-hero {
@@ -270,6 +431,10 @@
         </section>
 
         <section class="shop-section">
+            <div class="shop-section-heading">
+                <h2>Ranks</h2>
+                <p>Permanent perks for your account. Higher ranks include more homes, better render distance, and closer teleports.</p>
+            </div>
             <div class="shop-grid">
 
                 <div class="rank-card">
@@ -286,7 +451,7 @@
                         <li><i class="fa-solid fa-check"></i> Basic prefix in tab and chat</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/700012" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/700012" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
                 <div class="rank-card">
@@ -303,7 +468,7 @@
                         <li><i class="fa-solid fa-check"></i> SE prefix in tab and chat</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/700015" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/700015" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
                 <div class="rank-card">
@@ -320,7 +485,7 @@
                         <li><i class="fa-solid fa-check"></i> Mini prefix in tab and chat</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/733232" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/733232" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
                 <div class="rank-card">
@@ -338,7 +503,7 @@
                         <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/733237" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/733237" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
                 <div class="rank-card featured">
@@ -357,7 +522,7 @@
                         <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/1056997" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/1056997" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
                 <div class="rank-card">
@@ -375,10 +540,18 @@
                         <li><i class="fa-solid fa-check"></i> Create visible hotspot with /hotspot</li>
                         <li><i class="fa-solid fa-check"></i> Discord Membership</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/1376511" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/1376511" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
+            </div>
 
-                <div class="rank-card">
+            <div class="shop-section-heading">
+                <h2>Upgrades &amp; Events</h2>
+                <p>Upgrade your existing rank, or unleash a server-wide event for everyone to enjoy.</p>
+            </div>
+            <div class="shop-grid">
+
+                <div class="rank-card event">
+                    <div class="card-tag">UPGRADE</div>
                     <div class="rank-header">
                         <h3 class="rank-name">Rank Upgrade</h3>
                         <div class="rank-price">$3.99 <span>USD</span></div>
@@ -389,10 +562,11 @@
                         <li><i class="fa-solid fa-check"></i> After Ultra, no higher rank available</li>
                         <li><i class="fa-solid fa-check"></i> Contact support after purchasing</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/1255299" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/1255299" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
-                <div class="rank-card">
+                <div class="rank-card event gold">
+                    <div class="card-tag">SERVER-WIDE EVENT</div>
                     <div class="rank-header">
                         <h3 class="rank-name">1 Week Frame Dupe Event</h3>
                         <div class="rank-price">$44.99 <span>USD</span></div>
@@ -402,10 +576,11 @@
                         <li><i class="fa-solid fa-check"></i> Active for 7 days</li>
                         <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> after purchasing</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/1216559" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/1216559" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 
-                <div class="rank-card">
+                <div class="rank-card event gold">
+                    <div class="card-tag">SERVER-WIDE EVENT</div>
                     <div class="rank-header">
                         <h3 class="rank-name">1 Week Illegal Item Event</h3>
                         <div class="rank-price">$59.99 <span>USD</span></div>
@@ -416,7 +591,7 @@
                         <li><i class="fa-solid fa-check"></i> Active for 7 days</li>
                         <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> after purchasing</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/1180500" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/1180500" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
       <!-- 
                 <div class="rank-card">
@@ -429,13 +604,38 @@
                         <li><i class="fa-solid fa-check"></i> $30+ gets custom rank with custom prefix</li>
                         <li><i class="fa-solid fa-check"></i> Contact <a href="https://www.8b8t.me/support" target="_blank">support</a> for custom rank setup</li>
                     </ul>
-                    <a href="https://shop.8b8t.me/package/700021" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="https://shop.8b8t.me/package/700021" class="purchase-btn" target="_blank">Purchase <i class="fa-solid fa-chevron-right"></i></a>
                 </div>
 ---->
             </div>
 
-            <div class="shop-notice">
-                <p>By purchasing, you agree to the <a href="https://www.8b8t.me/terms" target="_blank">8b8t Terms of Service</a>. <b>All sales are final. No refunds.</b> Purchases are linked to your Minecraft account - enter your username exactly as it appears in-game. Need help? Visit <a href="https://www.8b8t.me/support" target="_blank">8b8t Support</a>.</p>
+            <div class="shop-info">
+                <div class="shop-info-grid">
+                    <div class="shop-info-item">
+                        <div class="shop-info-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div>
+                            <h4>Instant Delivery</h4>
+                            <p>Ranks and perks are applied to your account automatically within minutes of purchase.</p>
+                        </div>
+                    </div>
+                    <div class="shop-info-item">
+                        <div class="shop-info-icon"><i class="fa-solid fa-lock"></i></div>
+                        <div>
+                            <h4>Linked to Your Account</h4>
+                            <p>Purchases are tied to your Minecraft account — enter your username exactly as it appears in-game.</p>
+                        </div>
+                    </div>
+                    <div class="shop-info-item">
+                        <div class="shop-info-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                        <div>
+                            <h4>Need Help?</h4>
+                            <p>Something not right with your order? Reach out at <a href="https://www.8b8t.me/support" target="_blank">8b8t Support</a> and we'll sort it out.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-legal">
+                    <p>By purchasing, you agree to the <a href="https://www.8b8t.me/terms" target="_blank">8b8t Terms of Service</a>. All sales are final. No refunds.</p>
+                </div>
             </div>
         </section>
     </main>
@@ -443,6 +643,7 @@
     <div id="footer-placeholder"></div>
 
     <script src="assets/components.js?v=20260704"></script>
+    <script src="assets/script.js"></script>
 </body>
 
 </html>
