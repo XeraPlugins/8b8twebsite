@@ -160,7 +160,7 @@ switch (preferredLanguage) {
 }
 const headerHTML = `
     <div class="maintenance-banner" role="status">
-        8b8t is back online! Join 8b8t.me today illegals and item frame dupe enabled for 1 month!
+        8b8t is back online! Join 8b8t.me today. Illegals and the item frame dupe are enabled for 1 month!
     </div>
     <nav class="site-nav">
         <div class="nav-container">
