@@ -160,7 +160,7 @@ switch (preferredLanguage) {
 }
 const headerHTML = `
     <div class="maintenance-banner" role="status">
-        8b8t is currently on a temporary map for maintenance. <a href="https://blog.8b8t.me/important-announcement-server-rollback-temporary-shutdown/" target="_blank" rel="noopener noreferrer">Read the announcement</a>
+        8b8t is back online! Join 8b8t.me today illegals and item frame dupe enabled for 1 month!
     </div>
     <nav class="site-nav">
         <div class="nav-container">
