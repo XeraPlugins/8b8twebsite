@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>8b8t - Anarchy Since 2016</title>
     <link rel="stylesheet" href="assets/font_awesome.css">
-    <link rel="stylesheet" href="assets/style.css?v=20260712">
+    <link rel="stylesheet" href="assets/style.css?v=20260719-newsfix2">
     <script>
         // Legacy Language Switcher
         //(function() {
@@ -116,17 +116,29 @@
             </div>
         </section>
 
-        <main class="site-main outer">
+        <section class="site-main news-section outer" aria-labelledby="latest-news-title">
             <div class="inner posts">
-                <div class="section-header" style="text-align: left; margin-bottom: 40px;">
-                    <h2 class="section-title" style="font-size: 32px;">Latest News</h2>
+                <div class="news-section-header">
+                    <div class="section-header">
+                        <span class="news-section-eyebrow">From the 8b8t blog</span>
+                        <h2 class="section-title" id="latest-news-title">Latest News</h2>
+                        <p class="section-subtitle">Server updates, community highlights, and development notes.</p>
+                    </div>
+
+                    <a class="news-view-all" href="https://blog.8b8t.me/" target="_blank" rel="noopener noreferrer">
+                        View all news
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    </a>
                 </div>
 
-                <div class="post-feed" id="blog-posts">
-                    <!-- Blog posts loaded dynamically from blog.8b8t.me -->
+                <div class="post-feed" id="blog-posts" aria-live="polite" aria-busy="true">
+                    <div class="news-loading" role="status">
+                        <span class="news-loading-dot" aria-hidden="true"></span>
+                        Loading latest news…
+                    </div>
                 </div>
             </div>
-        </main>
+        </section>
 
         <section class="gallery-section outer">
             <div class="inner-wide">
@@ -224,6 +236,7 @@
                 </div>
             </div>
         </section>
+    </main>
 
     <div id="footer-placeholder"></div>
 
@@ -245,8 +258,7 @@
     </div>
 
     <script src="assets/components.js?v=20260712"></script>
-    <script src="assets/script.js"></script>
-    </main>
+    <script src="assets/script.js?v=20260719-newsfix2"></script>
 </body>
 
 </html>
