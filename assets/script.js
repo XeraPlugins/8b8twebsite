@@ -491,6 +491,73 @@ if (hotswapGrid) {
   });
 }
 
+function loadBlogPosts() {
+  const container = document.getElementById('blog-posts');
+  if (!container) return;
+
+  fetch('https://api.rss2json.com/v1/api.json?rss_url=https://blog.8b8t.me/rss/')
+    .then(res => res.json())
+    .then(data => {
+      if (!data.items || data.items.length === 0) {
+        container.innerHTML = '<p style="color: #86868b;">No blog posts available.</p>';
+        return;
+      }
+
+      container.innerHTML = data.items.slice(0, 4).map((item, i) => {
+        const title = item.title;
+        const link = item.link;
+        const pubDate = new Date(item.pubDate);
+        const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        const author = item.author || '8builders8tools';
+        const imageUrl = item.enclosure && item.enclosure.link ? item.enclosure.link : null;
+        const excerpt = item.description
+          .replace(/<[^>]+>/g, '')
+          .replace(/&amp;/g, '&')
+          .replace(/&apos;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .trim()
+          .substring(0, 200)
+          .replace(/\s+\S*$/, '') + '...';
+
+        const wordCount = item.content ? item.content.split(/\s+/).length : 0;
+        const readTime = Math.max(1, Math.round(wordCount / 200));
+
+        const isFirst = i === 0;
+
+        let imageHtml = '';
+        if (imageUrl) {
+          imageHtml = `<a class="post-card-image-link" href="${link}" target="_blank" rel="noopener">
+            <picture>
+              <img class="post-card-image" src="${imageUrl}" alt="${title.replace(/"/g, '&quot;')}" loading="lazy">
+            </picture>
+          </a>`;
+        }
+
+        return `<article class="post-card post${!imageUrl ? ' no-image' : ''}${isFirst ? ' featured' : ''}">
+          ${imageHtml}
+          <div class="post-card-content">
+            <a class="post-card-content-link" href="${link}" target="_blank" rel="noopener">
+              <header class="post-card-header">
+                ${isFirst ? '<div class="post-card-featured"><i class="fa-solid fa-star"></i> Featured</div>' : ''}
+                <h2 class="post-card-title">${title}</h2>
+              </header>
+              <div class="post-card-excerpt">${excerpt}</div>
+            </a>
+            <footer class="post-card-meta">
+              <time>${dateStr}</time>
+              <span>• ${readTime} min read</span>
+            </footer>
+          </div>
+        </article>`;
+      }).join('');
+    })
+    .catch(() => {
+      container.innerHTML = '<p style="color: #86868b;">Unable to load blog posts.</p>';
+    });
+}
+
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
   alert("Copied IP: " + text);
@@ -605,6 +672,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCommunitySwitcher();
   initFAQV3();
   initSmoothScroll();
+  loadBlogPosts();
 });
 
 const preffedLanguage = localStorage.getItem("preferredLanguage");
