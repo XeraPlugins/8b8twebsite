@@ -17,8 +17,9 @@
         <div class="inner">
             <div class="stats-hero-row">
                 <div class="stats-hero-text">
+                    <span class="stats-kicker">8b8t / server index</span>
                     <h1 class="stats-page-title">Player Stats</h1>
-                    <p class="stats-page-sub">Look up any player on 8b8t</p>
+                    <p class="stats-page-sub">A running record of the people who leave a mark.</p>
                 </div>
                 <div class="stats-hero-actions">
                     <div class="server-online-card" id="server-online-card">
@@ -40,7 +41,13 @@
 
     <section class="stats-body outer" id="leaderboard-section">
         <div class="inner">
-            <p class="stats-section-label"><i class="fa-solid fa-trophy"></i> Leaderboard</p>
+            <div class="stats-section-heading">
+                <div>
+                    <p class="stats-section-label">Current leaders</p>
+                    <h2>By the numbers.</h2>
+                </div>
+                <p>Top five players in each category, updated from the live server record.</p>
+            </div>
             <div class="lb-cards-grid" id="leaderboard-cards">
                 <!-- Cards injected by JS -->
             </div>
@@ -257,7 +264,7 @@
             const max = data.players?.max;
 
             count.textContent = online ? formatNumber(players) : '0';
-            label.textContent = online && max ? `of ${formatNumber(max)} players online` : 'players online';
+            label.textContent = online && max ? `/ ${formatNumber(max)} players` : 'players online';
             dot.classList.toggle('online', online);
             dot.classList.toggle('offline', !online);
         } catch (err) {
