@@ -5,493 +5,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How to Join - 8b8t Anarchy</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css?v=20260712">
-    <style>
-        .join-page {
-            background: #000;
-            min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .join-hero {
-            position: relative;
-            padding: 200px 0 140px;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .join-hero-bg {
-            position: absolute;
-            inset: -20px;
-            background-image: url('assets/renders/2025-12-29_04.47.35.png');
-            background-size: cover;
-            background-position: center 30%;
-            filter: blur(8px) brightness(0.3);
-            transform: scale(1.05);
-        }
-
-        .join-hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
-        }
-
-        .join-hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .join-hero-content .hero-badge {
-            margin-bottom: 20px;
-        }
-
-        .join-hero-content h1 {
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 16px;
-            background: linear-gradient(to bottom, #fff, #a1a1a6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .join-hero-content p {
-            font-size: 18px;
-            color: #d2d2d7;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
-
-        .join-section {
-            padding: 80px 0 0;
-            background: #000;
-        }
-
-        .join-section:last-of-type {
-            padding-top: 120px;
-            padding-bottom: 120px;
-        }
-
-        .join-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 22px;
-        }
-
-        .join-section-heading {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .join-section-heading h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0 0 10px;
-        }
-
-        .join-section-heading p {
-            font-size: 17px;
-            color: #86868b;
-            margin: 0;
-        }
-
-        /* Minecraft-style server list */
-        .mc-list {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 22px;
-            padding: 12px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-        }
-
-        .mc-row {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 22px 26px;
-            border-radius: 16px;
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .mc-row:hover {
-            border-color: rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .mc-row:hover .mc-copy {
-            color: #fff;
-        }
-
-        .mc-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 10px;
-            background: #101012;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .mc-icon img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .mc-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mc-name {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .mc-badge {
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            padding: 3px 9px;
-            border-radius: 980px;
-            background: rgba(41, 151, 255, 0.12);
-            color: #2997ff;
-            border: 1px solid rgba(41, 151, 255, 0.3);
-        }
-
-        .mc-badge.green {
-            background: rgba(48, 209, 88, 0.12);
-            color: #30d158;
-            border-color: rgba(48, 209, 88, 0.3);
-        }
-
-        .mc-motd {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 14px;
-            color: #4ade80;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mc-motd span {
-            color: #6e6e73;
-        }
-
-        .mc-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
-            flex-shrink: 0;
-        }
-
-        .mc-ping {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 14px;
-        }
-
-        .mc-ping span {
-            width: 3px;
-            background: #30d158;
-            border-radius: 1px;
-        }
-
-        .mc-ping span:nth-child(1) { height: 4px; }
-        .mc-ping span:nth-child(2) { height: 7px; }
-        .mc-ping span:nth-child(3) { height: 10px; }
-        .mc-ping span:nth-child(4) { height: 12px; }
-        .mc-ping span:nth-child(5) { height: 14px; }
-
-        .mc-copy {
-            font-size: 11px;
-            font-weight: 600;
-            color: #6e6e73;
-            transition: color 0.2s;
-        }
-
-        .mc-copy i {
-            font-size: 10px;
-            margin-right: 4px;
-        }
-
-        .mc-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.07);
-            margin: 4px 16px;
-        }
-
-        .join-backups {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 32px;
-        }
-
-        .join-backups-label {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #6e6e73;
-        }
-
-        .join-alt-chip {
-            padding: 8px 16px;
-            border-radius: 980px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 13px;
-            color: #d2d2d7;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .join-alt-chip:hover {
-            border-color: rgba(41, 151, 255, 0.5);
-            color: #fff;
-            background: rgba(41, 151, 255, 0.08);
-        }
-
-        .join-tips-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-
-        .join-tip {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .join-tip:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(41, 151, 255, 0.3);
-        }
-
-        .join-tip-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: rgba(41, 151, 255, 0.12);
-            color: #2997ff;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        .join-tip h4 {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            margin: 0 0 4px;
-        }
-
-        .join-tip p {
-            font-size: 13px;
-            color: #86868b;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .join-copy-toast {
-            position: fixed;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(20, 20, 22, 0.95);
-            border: 1px solid rgba(41, 151, 255, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 12px 22px;
-            border-radius: 12px;
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .join-copy-toast i {
-            color: #30d158;
-        }
-
-        .join-copy-toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        @media (max-width: 640px) {
-            .join-hero {
-                padding: 120px 0 40px;
-            }
-
-            .mc-motd {
-                white-space: normal;
-            }
-
-            .mc-right {
-                display: none;
-            }
-
-            .join-tips-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/info-pages.css?v=20260719">
 </head>
 
-<body class="join-page">
+<body>
     <div id="header-placeholder"></div>
 
-    <main>
-        <section class="join-hero">
-            <div class="join-hero-bg"></div>
-            <div class="join-hero-overlay"></div>
-            <div class="join-hero-content">
-                <span class="hero-badge">Getting Started</span>
-                <h1>How to Join 8b8t</h1>
-                <p>Add the server, hit join, and you're in the wasteland. That's it.</p>
+    <main class="info-page join-page">
+        <section class="info-hero">
+            <div class="info-hero-bg">
+                <picture>
+                    <source srcset="assets/renders/2025-12-29_04.47.35.avif" type="image/avif">
+                    <img src="assets/renders/2025-12-29_04.47.35.png" alt="8b8t Landscape">
+                </picture>
+                <div class="info-hero-overlay"></div>
+            </div>
+            <div class="info-container info-hero-content">
+                <span class="info-kicker">Getting started</span>
+                <h1>How to Join</h1>
+                <p>Add the server, hit join, and enter the wasteland. Java and Bedrock connect to the same world.</p>
             </div>
         </section>
 
-        <section class="join-section" id="connect">
-            <div class="join-container">
-                <div class="join-section-heading">
-                    <h2>Add the Server</h2>
-                    <p>Click a server to copy its address.</p>
-                </div>
-
-                <div class="mc-list">
-                    <div class="mc-row" onclick="copyToClipboard('8b8t.me', '8b8t.me copied!')">
-                        <div class="mc-icon">
-                            <picture>
-                                <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
-                                <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
-                                <img src="assets/img/8b8tTrans-1.png" alt="8b8t">
-                            </picture>
-                        </div>
-                        <div class="mc-info">
-                            <div class="mc-name">8b8t <span class="mc-badge">JAVA · 1.8 – 1.21.1</span></div>
-                            <div class="mc-motd">8b8t.me <span>— The oldest non-vanilla survival server</span></div>
-                        </div>
-                        <div class="mc-right">
-                            <div class="mc-ping"><span></span><span></span><span></span><span></span><span></span></div>
-                            <div class="mc-copy"><i class="fa-solid fa-copy"></i>Copy IP</div>
-                        </div>
+        <section class="info-body join-body" id="connect">
+            <div class="info-container">
+                <section class="join-section">
+                    <div class="join-section-heading">
+                        <h2>Add the server.</h2>
+                        <p>Select an edition to copy its address.</p>
                     </div>
 
-                    <div class="mc-divider"></div>
+                    <div class="mc-list">
+                        <button class="mc-row" type="button" onclick="copyToClipboard('8b8t.me', '8b8t.me copied!')">
+                            <span class="mc-icon">
+                                <picture>
+                                    <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
+                                    <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
+                                    <img src="assets/img/8b8tTrans-1.png" alt="">
+                                </picture>
+                            </span>
+                            <span class="mc-info">
+                                <span class="mc-name">8b8t <span class="mc-badge">Java · 1.8–1.21.1</span></span>
+                                <span class="mc-motd">8b8t.me <span>— The oldest non-vanilla survival server</span></span>
+                            </span>
+                            <span class="mc-right">
+                                <span class="mc-ping" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                                <span class="mc-copy"><i class="fa-solid fa-copy"></i>Copy IP</span>
+                            </span>
+                        </button>
 
-                    <div class="mc-row" onclick="copyToClipboard('br.8b8t.me', 'br.8b8t.me copied!')">
-                        <div class="mc-icon">
-                            <picture>
-                                <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
-                                <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
-                                <img src="assets/img/8b8tTrans-1.png" alt="8b8t Bedrock">
-                            </picture>
-                        </div>
-                        <div class="mc-info">
-                            <div class="mc-name">8b8t Bedrock <span class="mc-badge green">BEDROCK · PORT 19132</span></div>
-                            <div class="mc-motd">br.8b8t.me <span>— Phone, console, or Windows. Same wasteland</span></div>
-                        </div>
-                        <div class="mc-right">
-                            <div class="mc-ping"><span></span><span></span><span></span><span></span><span></span></div>
-                            <div class="mc-copy"><i class="fa-solid fa-copy"></i>Copy IP</div>
-                        </div>
+                        <button class="mc-row" type="button" onclick="copyToClipboard('br.8b8t.me', 'br.8b8t.me copied!')">
+                            <span class="mc-icon">
+                                <picture>
+                                    <source srcset="assets/img/8b8tTrans-1.avif" type="image/avif">
+                                    <source srcset="assets/img/8b8tTrans-1.webp" type="image/webp">
+                                    <img src="assets/img/8b8tTrans-1.png" alt="">
+                                </picture>
+                            </span>
+                            <span class="mc-info">
+                                <span class="mc-name">8b8t Bedrock <span class="mc-badge green">Bedrock · Port 19132</span></span>
+                                <span class="mc-motd">br.8b8t.me <span>— Phone, console, or Windows. Same wasteland</span></span>
+                            </span>
+                            <span class="mc-right">
+                                <span class="mc-ping" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
+                                <span class="mc-copy"><i class="fa-solid fa-copy"></i>Copy IP</span>
+                            </span>
+                        </button>
                     </div>
-                </div>
 
-                <div class="join-backups">
-                    <span class="join-backups-label">Backups</span>
-                    <button class="join-alt-chip" onclick="copyToClipboard('alt.8b8t.me', 'alt.8b8t.me copied!')">alt.8b8t.me</button>
-                    <button class="join-alt-chip" onclick="copyToClipboard('alt2.8b8t.me', 'alt2.8b8t.me copied!')">alt2.8b8t.me</button>
-                    <button class="join-alt-chip" onclick="copyToClipboard('alt3.8b8t.me', 'alt3.8b8t.me copied!')">alt3.8b8t.me</button>
-                </div>
-            </div>
-        </section>
+                    <div class="join-backups">
+                        <span class="join-backups-label">Backup routes</span>
+                        <button class="join-alt-chip" type="button" onclick="copyToClipboard('alt.8b8t.me', 'alt.8b8t.me copied!')">alt.8b8t.me</button>
+                        <button class="join-alt-chip" type="button" onclick="copyToClipboard('alt2.8b8t.me', 'alt2.8b8t.me copied!')">alt2.8b8t.me</button>
+                        <button class="join-alt-chip" type="button" onclick="copyToClipboard('alt3.8b8t.me', 'alt3.8b8t.me copied!')">alt3.8b8t.me</button>
+                    </div>
+                </section>
 
-        <section class="join-section" id="tips">
-            <div class="join-container">
-                <div class="join-section-heading">
-                    <h2>Good to Know</h2>
-                </div>
+                <section class="join-section" id="tips">
+                    <div class="join-section-heading">
+                        <h2>Good to know.</h2>
+                    </div>
 
-                <div class="join-tips-grid">
-                    <!-- 
-                    <div class="join-tip">
-                        <div class="join-tip-icon"><i class="fa-solid fa-right-to-bracket"></i></div>
-                        <div>
-                            <h4>Cracked Players Welcome</h4>
-                            <p>Any username works — you don't need to own the game.</p>
-                        </div>
-                    </div>-->
-                    <div class="join-tip">
-                        <div class="join-tip-icon"><i class="fa-solid fa-cube"></i></div>
-                        <div>
-                            <h4>Any Version, 1.8 – 1.21.1</h4>
-                            <p>1.21.1 is what the server runs on and gives the smoothest ride.</p>
-                        </div>
+                    <div class="join-tips-grid">
+                        <article class="join-tip">
+                            <div class="join-tip-icon"><i class="fa-solid fa-cube"></i></div>
+                            <div>
+                                <h4>Versions 1.8–1.21.1</h4>
+                                <p>1.21.1 is the server's native version and provides the smoothest experience.</p>
+                            </div>
+                        </article>
+                        <article class="join-tip">
+                            <div class="join-tip-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <h4>VPNs welcome</h4>
+                                <p>VPN use is allowed and recommended. We don't log IPs without consent.</p>
+                            </div>
+                        </article>
+                        <article class="join-tip">
+                            <div class="join-tip-icon"><i class="fa-solid fa-wifi"></i></div>
+                            <div>
+                                <h4>Connection trouble?</h4>
+                                <p>Try a backup address. Each route connects to the same server.</p>
+                            </div>
+                        </article>
                     </div>
-                    <div class="join-tip">
-                        <div class="join-tip-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div>
-                            <h4>VPNs Welcome</h4>
-                            <p>Allowed and recommended. We don't log IPs without consent.</p>
-                        </div>
-                    </div>
-                    <div class="join-tip">
-                        <div class="join-tip-icon"><i class="fa-solid fa-wifi"></i></div>
-                        <div>
-                            <h4>Lag or Can't Connect?</h4>
-                            <p>Try a backup address — they're the same server on different routes.</p>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </section>
     </main>
 
     <div id="footer-placeholder"></div>
 
-    <div class="join-copy-toast" id="copy-toast"><i class="fa-solid fa-check"></i><span id="copy-toast-text">Copied to clipboard!</span></div>
+    <div class="join-copy-toast" id="copy-toast" role="status" aria-live="polite">
+        <i class="fa-solid fa-check"></i><span id="copy-toast-text">Copied to clipboard!</span>
+    </div>
 
     <script src="assets/components.js?v=20260712"></script>
     <script src="assets/script.js"></script>
@@ -504,6 +133,7 @@
                 clearTimeout(toast._hideTimer);
                 toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 2000);
             };
+
             navigator.clipboard.writeText(text).then(showToast).catch(() => {
                 const input = document.createElement('input');
                 input.value = text;

@@ -7,19 +7,30 @@
     <title>Commands - 8b8t Anarchy</title>
     <link rel="stylesheet" href="assets/font_awesome.css">
     <link rel="stylesheet" href="assets/style.css?v=20260712">
+    <link rel="stylesheet" href="assets/info-pages.css?v=20260719">
 </head>
 
 <body>
     <div id="header-placeholder"></div>
 
-    <main class="commands-section outer">
-        <div class="inner">
-            <div class="section-header">
-                <h1 class="section-title">Server Commands</h1>
-                <p class="section-subtitle">All the current commands available on 8b8t. Note that some commands may require a certain rank which can be purchased on our <a href="https://shop.8b8t.me">shop</a> or by voting depending on the command.
-                </p>
+    <main class="info-page commands-page">
+        <section class="info-hero">
+            <div class="info-hero-bg">
+                <picture>
+                    <source srcset="assets/renders/2025-12-29_03.27.19.avif" type="image/avif">
+                    <img src="assets/renders/2025-12-29_03.27.19.png" alt="8b8t Landscape">
+                </picture>
+                <div class="info-hero-overlay"></div>
             </div>
+            <div class="info-container info-hero-content">
+                <span class="info-kicker">Player reference</span>
+                <h1>Server Commands</h1>
+                <p>Every command currently available on 8b8t. Some commands require a rank from the <a href="https://shop.8b8t.me">shop</a> or access earned by voting.</p>
+            </div>
+        </section>
 
+        <section class="info-body commands-body" id="commands">
+            <div class="info-container">
             <div class="commands-container">
                 <table class="commands-table">
                     <thead>
@@ -268,7 +279,8 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+            </div>
+        </section>
     </main>
 
     <div id="footer-placeholder"></div>
