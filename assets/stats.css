@@ -318,8 +318,17 @@
     background: rgba(255,255,255,0.08);
     flex-shrink: 0;
 }
-.lb-card-name {
+.lb-card-player {
+    display: flex;
     flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+.lb-card-name {
+    display: block;
+    max-width: 100%;
     font-size: 14px;
     font-weight: 600;
     color: #f5f5f7;
@@ -327,6 +336,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.lb-card-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 14px;
+    padding: 1px 5px;
+    border: 1px solid rgba(255, 69, 58, 0.4);
+    border-radius: 4px;
+    background: rgba(255, 69, 58, 0.12);
+    color: #ff6961;
+    font: 800 8px/1 'SFMono-Regular', Consolas, monospace;
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
 .lb-card-val {
     font-size: 13px;

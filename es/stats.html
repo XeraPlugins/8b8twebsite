@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="../assets/font_awesome.css">
 <link rel="stylesheet" href="../assets/style.css?v=20260712">
-    <link rel="stylesheet" href="../assets/stats.css">
+    <link rel="stylesheet" href="../assets/stats.css?v=3">
 </head>
 <body>
 <div id="header-placeholder"></div>
@@ -229,6 +229,8 @@
         { key: 'netherite_mined', label: 'Netherita', icon: 'fa-dragon', color: '#ff0055', format: formatNumber },
     ];
 
+    const BOTTED_OBSIDIAN_PLAYERS = new Set(['i_am_tobias', 'CuloGangTobias']);
+
     document.addEventListener('DOMContentLoaded', () => {
         loadAllLeaderboards();
 
@@ -289,11 +291,15 @@
                 list.innerHTML = players.map((p, j) => {
                     const rankClass = j === 0 ? 'gold' : j === 1 ? 'silver' : j === 2 ? 'bronze' : '';
                     const val = cat.format(p[cat.key] ?? 0);
+                    const isBotted = cat.key === 'obsidian_mined' && BOTTED_OBSIDIAN_PLAYERS.has(p.name);
                     return `
                         <div class="lb-card-row" onclick="searchPlayer('${p.name}')">
                             <span class="lb-card-rank ${rankClass}">#${j + 1}</span>
                             <img class="lb-card-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
-                            <span class="lb-card-name">${p.name}</span>
+                            <span class="lb-card-player">
+                                <span class="lb-card-name">${p.name}</span>
+                                ${isBotted ? '<span class="lb-card-status">Botted</span>' : ''}
+                            </span>
                             <span class="lb-card-val" style="color:${cat.color}">${val}</span>
                         </div>
                     `;
