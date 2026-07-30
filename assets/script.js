@@ -203,7 +203,7 @@ const features = [
   {
     tag: "Updates",
     title: "Latest Minecraft Version",
-    desc: "We are always up to date. We support 1.21+ (Recommended 1.21.8) so you can enjoy the newest blocks and features.",
+    desc: "We are always up to date. Version 26.2 is recommended so you can enjoy the newest blocks and features.",
     img: "https://www.8b8t.me/assets/img/latest.webp",
   },
 ];
