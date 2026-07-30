@@ -160,7 +160,7 @@ switch (preferredLanguage) {
 }
 const headerHTML = `
     <div class="maintenance-banner" role="status">
-        8b8t is back online and updated to 26.2! Join 8b8t.me today. Illegals and the item frame dupe are enabled for 1 month!
+        8b8t is back online and updated to 26.2! Illegal Items/Dupe Event ends on August 12! Join 8b8t.me now!
     </div>
     <nav class="site-nav">
         <div class="nav-container">
