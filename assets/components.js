@@ -159,9 +159,9 @@ switch (preferredLanguage) {
         break;
 }
 const headerHTML = `
-    <div class="maintenance-banner" role="status">
+    <!-- <div class="maintenance-banner" role="status">
         8b8t is back online and updated to 26.2! Illegal Items/Dupe Event ends on August 12! Join 8b8t.me now!
-    </div>
+    </div> -->
     <nav class="site-nav">
         <div class="nav-container">
             <a class="nav-logo" href="index.html">
@@ -180,11 +180,11 @@ const headerHTML = `
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="chat">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
-                <li><a href="shop.html">${header.shop}</a></li>
+                <li><a href="https://shop.8b8t.me/category/261032">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
                  <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
                  <li><a href="terms.html">${header.terms}</a></li>
-                 
+                  
                  <li><button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button></li>
              </ul>
  
@@ -205,6 +205,7 @@ const headerHTML = `
         
             <ul class="mobile-nav-links">
             <button class="language-switcher" onclick="switchLanguage()">${header.switchLanguage}</button>
+                <li><a href="https://shop.8b8t.me/category/261032">${header.shop}</a></li>
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
                 <li><a href="how-to-join.html">${header.howtojoin}</a></li>
@@ -212,7 +213,6 @@ const headerHTML = `
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="chat">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
-                <li><a href="shop.html">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
                  <li><a href="https://blog.8b8t.me/">${header.blog}</a></li>
                  <li><a href="terms.html">${header.terms}</a></li>
