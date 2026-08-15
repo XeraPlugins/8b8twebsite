@@ -864,8 +864,8 @@ async fn main() {
         .layer(cors)
         .with_state(state);
 
-    println!("Server listening on 0.0.0.0:5300");
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:5300").await.unwrap();
+    println!("Server listening on 0.0.0.0:7002");
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:7002").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 
