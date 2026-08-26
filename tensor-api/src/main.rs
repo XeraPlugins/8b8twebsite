@@ -314,7 +314,7 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
 }
 
 async fn sync_from_files(State(state): State<AppState>) -> (StatusCode, Json<ApiResponse>) {
-    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+    let stats_dir = format!("{}/0b0t/players/stats/", state.server_path);
 
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
@@ -826,7 +826,7 @@ async fn main() {
     std::thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().unwrap();
         rt.block_on(async {
-            let stats_dir = format!("{}/0b0t/stats", server_path);
+            let stats_dir = format!("{}/0b0t/players/stats/", server_path);
             let (tx, mut rx) = tokio::sync::mpsc::channel(100);
 
             let mut watcher = RecommendedWatcher::new(
