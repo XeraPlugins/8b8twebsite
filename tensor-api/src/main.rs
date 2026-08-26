@@ -151,7 +151,7 @@ fn read_player_stats(server_path: &str, uuid: &str) -> Option<PlayerStatsJson> {
     if !is_safe_path(uuid) {
         return None;
     }
-    let stats_path = format!("{}/0b0t/stats/{}.json", server_path, uuid);
+    let stats_path = format!("{}/0b0t/players/stats/{}.json", server_path, uuid);
     let content = std::fs::read_to_string(&stats_path).ok()?;
     let stats: StatsJson = serde_json::from_str(&content).ok()?;
 
@@ -242,7 +242,7 @@ async fn sync_single_player(state: &AppState, uuid: &str) -> bool {
     if !is_safe_path(uuid) {
         return false;
     }
-    let stats_path = format!("{}/0b0t/stats/{}.json", state.server_path, uuid);
+    let stats_path = format!("{}/0b0t/players/stats/{}.json", state.server_path, uuid);
     let file_hash = match get_file_hash(&stats_path) {
         Some(h) => h,
         None => return false,
@@ -361,7 +361,7 @@ fn get_block_hash(stats_dir: &str, start_idx: usize, uuids: &[String]) -> String
 }
 
 async fn sync_blocks_on_startup(state: &AppState) -> String {
-    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+    let stats_dir = format!("{}/0b0t/players/stats/", state.server_path);
 
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
@@ -414,7 +414,7 @@ async fn sync_blocks_on_startup(state: &AppState) -> String {
 }
 
 async fn sync_blocks(State(state): State<AppState>) -> (StatusCode, Json<ApiResponse>) {
-    let stats_dir = format!("{}/0b0t/stats", state.server_path);
+    let stats_dir = format!("{}/0b0t/players/stats/", state.server_path);
 
     let entries = match std::fs::read_dir(&stats_dir) {
         Ok(e) => e,
