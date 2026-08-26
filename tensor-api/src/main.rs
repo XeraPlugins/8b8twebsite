@@ -68,7 +68,7 @@ fn read_player_dat(server_path: &str, uuid: &str) -> Option<(String, i64, i64, i
     if !is_safe_path(uuid) {
         return None;
     }
-    let dat_path = format!("{}/0b0t/playerdata/{}.dat", server_path, uuid);
+    let dat_path = format!("{}/0b0t/players/data/{}.dat", server_path, uuid);
 
     let file = match File::open(&dat_path) {
         Ok(f) => f,
