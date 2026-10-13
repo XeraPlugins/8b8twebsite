@@ -19,10 +19,6 @@ function getMetaTags(page) {
             title: "About - 8b8t Network",
             description: "Learn about 8b8t Network - one of the longest running Minecraft servers. Established in 2012, we offer quality gameplay for thousands of players."
         },
-        support: {
-            title: "Support - 8b8t Network",
-            description: "Get help with 8b8t Network. Find answers to common questions, contact our support team, and learn how to join the server."
-        },
         stats: {
             title: "Server Stats - 8b8t Network",
             description: "View real-time player statistics, online counts, and server performance for 8b8t Network Minecraft server."
@@ -92,8 +88,6 @@ switch (preferredLanguage) {
         header = {
             home: "Inicio",
             about: "Acerca de",
-            howtojoin: "Como Jugar",
-            support: "Soporte",
             stats: "Estadísticas",
             chat: "Chat",
             commands: "Comandos",
@@ -110,11 +104,9 @@ switch (preferredLanguage) {
             videos: "Videos",
             voteForServer: "Votar por el servidor",
             server: "Servidor",
-            howToJoin: "Cómo unirse",
             track: "Sitio de Seguimiento",
             shop: "Tienda",
             legalSupport: "Legal y Soporte",
-            helpCenter: "Centro de ayuda",
             termsOfService: "Términos de servicio",
             privacyPolicy: "Política de privacidad",
             contactUs: "Contáctenos",
@@ -126,8 +118,6 @@ switch (preferredLanguage) {
         header = {
             home: "Home",
             about: "About",
-            howtojoin: "How To Join",
-            support: "Support",
             stats: "Stats",
             chat: "Chat",
             commands: "Commands",
@@ -144,13 +134,11 @@ switch (preferredLanguage) {
             videos: "Videos",
             voteForServer: "Vote for Server",
             server: "Server",
-            howToJoin: "How to Join",
             blog: "Blog",
             track: "Track Site",
             status: "Server Status",
             shop: "Shop",
             legalSupport: "Legal & Support",
-            helpCenter: "Help Center",
             termsOfService: "Terms of Service",
             privacyPolicy: "Privacy Policy",
             contactUs: "Contact Us",
@@ -175,8 +163,6 @@ const headerHTML = `
             <ul class="nav-links">
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
-                <li><a href="how-to-join.html">${header.howtojoin}</a></li>
-                <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="chat">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
@@ -208,8 +194,6 @@ const headerHTML = `
                 <li><a href="https://shop.8b8t.me/category/261032">${header.shop}</a></li>
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
-                <li><a href="how-to-join.html">${header.howtojoin}</a></li>
-                <li><a href="support.html">${header.support}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
                 <li><a href="chat">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
@@ -238,7 +222,6 @@ const footerHTML = `
                 <div class="footer-column">
                     <h4>${footer.server}</h4>
                     <ul class="footer-links">
-                        <li><a href="https://www.8b8t.me/how-to-join">${footer.howToJoin}</a></li>
                         <li><a href="https://track.8b8t.me/">${footer.track}</a></li>
                         <li><a href="https://status.xera.ca">${footer.status}</a></li>
                         <li><a href="shop.html">${footer.shop}</a></li>
@@ -248,10 +231,9 @@ const footerHTML = `
                  <div class="footer-column">
                      <h4>${footer.legalSupport}</h4>
                     <ul class="footer-links">
-                        <li><a href="https://www.8b8t.me/support">${footer.helpCenter}</a></li>
                         <li><a href="terms.html">${footer.termsOfService}</a></li>
                         <li><a href="privacy.html">${footer.privacyPolicy}</a></li>
-                        <li><a href="https://www.8b8t.me/support">${footer.contactUs}</a></li>
+                        <li><a href="mailto:contact@8b8t.me">${footer.contactUs}</a></li>
                     </ul>
                 </div>
             </div>

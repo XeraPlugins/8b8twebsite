@@ -214,7 +214,7 @@
 
 <div id="footer-placeholder"></div>
 
-<script src="../assets/components.js?v=20260730-motd26-2"></script>
+<script src="../assets/components.js?v=20261013-navigation"></script>
 <script>
     const API_URL = 'https://api.xera.ca';
 
@@ -228,8 +228,6 @@
         { key: 'obsidian_mined', label: 'Obsidiana', icon: 'fa-gem', color: '#5865f2', format: formatNumber },
         { key: 'netherite_mined', label: 'Netherita', icon: 'fa-dragon', color: '#ff0055', format: formatNumber },
     ];
-
-    const BOTTED_OBSIDIAN_PLAYERS = new Set(['i_am_tobias', 'CuloGangTobias']);
 
     document.addEventListener('DOMContentLoaded', () => {
         loadAllLeaderboards();
@@ -291,14 +289,12 @@
                 list.innerHTML = players.map((p, j) => {
                     const rankClass = j === 0 ? 'gold' : j === 1 ? 'silver' : j === 2 ? 'bronze' : '';
                     const val = cat.format(p[cat.key] ?? 0);
-                    const isBotted = cat.key === 'obsidian_mined' && BOTTED_OBSIDIAN_PLAYERS.has(p.name);
                     return `
                         <div class="lb-card-row" onclick="searchPlayer('${p.name}')">
                             <span class="lb-card-rank ${rankClass}">#${j + 1}</span>
                             <img class="lb-card-avatar" src="${p.skin_url}" alt="${p.name}" onerror="this.src='assets/img/default-skin.png'">
                             <span class="lb-card-player">
                                 <span class="lb-card-name">${p.name}</span>
-                                ${isBotted ? '<span class="lb-card-status">Botted</span>' : ''}
                             </span>
                             <span class="lb-card-val" style="color:${cat.color}">${val}</span>
                         </div>

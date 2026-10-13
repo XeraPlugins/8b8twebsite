@@ -336,20 +336,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.lb-card-status {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    min-height: 14px;
-    padding: 1px 5px;
-    border: 1px solid rgba(255, 69, 58, 0.4);
-    border-radius: 4px;
-    background: rgba(255, 69, 58, 0.12);
-    color: #ff6961;
-    font: 800 8px/1 'SFMono-Regular', Consolas, monospace;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
 .lb-card-val {
     font-size: 13px;
     font-weight: 700;

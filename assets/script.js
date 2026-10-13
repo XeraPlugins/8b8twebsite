@@ -1600,7 +1600,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.protocol !== "file:") {
       const onSpanishPage = path.includes("/es/");
       const page = path.split("/").pop() || "index.html";
-      const spanishPages = ["about.html", "commands.html", "index.html", "lce.html", "privacy.html", "stats.html", "support.html", "terms.html", "vote.html"];
+      const spanishPages = ["about.html", "commands.html", "index.html", "lce.html", "privacy.html", "stats.html", "terms.html", "vote.html"];
 
       if (preffedLanguage === "es" && !onSpanishPage && spanishPages.includes(page)) {
         window.location.href = "/es/" + page;
