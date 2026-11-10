@@ -158,7 +158,6 @@ const headerHTML = `
                 <li><a href="index.html">${header.home}</a></li>
                 <li><a href="about.html">${header.about}</a></li>
                 <li><a href="stats.html">${header.stats}</a></li>
-                <li><a href="chat">${header.chat}</a></li>
                 <li><a href="commands.html">${header.commands}</a></li>
                 <li><a href="https://shop.8b8t.me/category/261032">${header.shop}</a></li>
                  <li><a href="https://www.8b8t.me/vote">${header.vote}</a></li>
