@@ -23,10 +23,6 @@ function getMetaTags(page) {
             title: "Server Stats - 8b8t Network",
             description: "View real-time player statistics, online counts, and server performance for 8b8t Network Minecraft server."
         },
-        chat: {
-            title: "Chat Bridge - 8b8t Network",
-            description: "Access the 8b8t Minecraft server chat from the website with an in-game linked account."
-        },
         commands: {
             title: "Commands - 8b8t Network",
             description: "Browse all available commands on 8b8t Network. Learn how to use chat, economy, spawn, and more."
@@ -89,7 +85,6 @@ switch (preferredLanguage) {
             home: "Inicio",
             about: "Acerca de",
             stats: "Estadísticas",
-            chat: "Chat",
             commands: "Comandos",
             track: "Sitio de Seguimiento",
             shop: "Tienda",
@@ -119,7 +114,6 @@ switch (preferredLanguage) {
             home: "Home",
             about: "About",
             stats: "Stats",
-            chat: "Chat",
             commands: "Commands",
             track: "Track Site",
             shop: "Shop",
